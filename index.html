@@ -70,10 +70,6 @@
             font-size: 14px;
         }
         
-        .prompt {
-            color: #00ff41;
-        }
-        
         .prompt-symbol {
             color: #00ff41;
             font-weight: bold;
@@ -108,16 +104,16 @@
             border-bottom-color: #66ccff;
         }
         
-        .output .error {
-            color: #ff4444;
-        }
-        
         .output .success {
             color: #00ff41;
         }
         
         .output .warning {
             color: #ffaa00;
+        }
+        
+        .output .info {
+            color: #00aaff;
         }
         
         /* ===== ASCII ART ===== */
@@ -191,6 +187,28 @@
             background: rgba(0, 255, 65, 0.05);
         }
         
+        /* ===== PROJECT CARD ===== */
+        .project-item {
+            padding: 8px 12px;
+            margin: 4px 0;
+            border-left: 2px solid #1a1a1a;
+            transition: all 0.3s ease;
+        }
+        
+        .project-item:hover {
+            border-left-color: #00ff41;
+            background: rgba(0, 255, 65, 0.03);
+        }
+        
+        .project-item .name {
+            color: #00ff41;
+        }
+        
+        .project-item .desc {
+            color: #666;
+            font-size: 12px;
+        }
+        
         /* ===== BLINKING CURSOR ===== */
         .cursor {
             display: inline-block;
@@ -211,96 +229,6 @@
             border: none;
             border-top: 1px solid #1a1a1a;
             margin: 20px 0;
-        }
-        
-        /* ===== DASHBOARD ===== */
-        .dashboard-section {
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        .dashboard-section.active {
-            display: block;
-        }
-        
-        .login-section {
-            display: block;
-        }
-        
-        .login-section.hidden {
-            display: none;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 10px;
-            margin: 15px 0;
-        }
-        
-        .stat-item {
-            background: #0d0d0d;
-            padding: 12px;
-            border: 1px solid #1a1a1a;
-            border-radius: 4px;
-            text-align: center;
-        }
-        
-        .stat-number {
-            color: #00ff41;
-            font-size: 24px;
-            font-weight: bold;
-            font-family: 'Courier New', monospace;
-        }
-        
-        .stat-label {
-            color: #555;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-top: 4px;
-        }
-        
-        /* ===== BUTTONS ===== */
-        .btn {
-            display: inline-block;
-            padding: 8px 20px;
-            border: 1px solid #00ff41;
-            border-radius: 2px;
-            background: transparent;
-            color: #00ff41;
-            font-family: 'Courier New', monospace;
-            font-size: 13px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
-        
-        .btn:hover {
-            background: rgba(0, 255, 65, 0.1);
-            box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
-        }
-        
-        .btn-danger {
-            border-color: #ff4444;
-            color: #ff4444;
-        }
-        
-        .btn-danger:hover {
-            background: rgba(255, 68, 68, 0.1);
-            box-shadow: 0 0 20px rgba(255, 68, 68, 0.1);
-        }
-        
-        .btn-flex {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-top: 10px;
         }
         
         /* ===== FOOTER ===== */
@@ -332,10 +260,6 @@
                 font-size: 8px;
             }
             
-            .stats-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            
             .skill-name {
                 min-width: 60px;
                 font-size: 12px;
@@ -354,10 +278,6 @@
             
             .ascii-art {
                 font-size: 6px;
-            }
-            
-            .stats-grid {
-                grid-template-columns: 1fr 1fr;
             }
             
             .btn {
@@ -390,19 +310,21 @@
   ██████████   ██████████ ████████▀    ██████████ 
     </div>
     
-    <!-- ===== PROFILE INFO ===== -->
+    <!-- ===== WHOAMI ===== -->
     <div class="line">
         <span class="prompt-symbol">$</span>
         <span class="command"> whoami</span>
     </div>
     <div class="output">
-        <span class="highlight">gztxr</span> :: developer / gamer / athlete<br>
+        <span class="highlight">gztxr</span> :: developer / gamer<br>
         <span class="dim">os</span> :: Arch Linux x86_64<br>
         <span class="dim">shell</span> :: zsh 5.9<br>
+        <span class="dim">editor</span> :: neovim / vscodium<br>
+        <span class="dim">uptime</span> :: 42 days<br>
         <span class="dim">status</span> :: <span class="success">online</span>
     </div>
     
-    <!-- ===== GITHUB LINK ===== -->
+    <!-- ===== GITHUB ===== -->
     <div class="line">
         <span class="prompt-symbol">$</span>
         <span class="command"> open github</span>
@@ -423,9 +345,9 @@
         <div class="skill-bar">
             <span class="skill-name">C</span>
             <div class="skill-track">
-                <div class="skill-fill" style="width: 65%;"></div>
+                <div class="skill-fill" style="width: 75%;"></div>
             </div>
-            <span class="skill-percent">65%</span>
+            <span class="skill-percent">75%</span>
         </div>
         <div class="skill-bar">
             <span class="skill-name">Python</span>
@@ -459,6 +381,79 @@
     
     <hr class="separator">
     
+    <!-- ===== PROJECTS ===== -->
+    <div class="line">
+        <span class="prompt-symbol">$</span>
+        <span class="command"> ls /projects/</span>
+    </div>
+    <div class="output">
+        <div class="project-item">
+            <span class="name">discord-surveillance</span><br>
+            <span class="desc">  mass surveillance system for discord</span>
+        </div>
+        <div class="project-item">
+            <span class="name">game-hacks</span><br>
+            <span class="desc">  various game modification tools</span>
+        </div>
+        <div class="project-item">
+            <span class="name">visitor-logger</span><br>
+            <span class="desc">  real-time visitor tracking with telegram bot</span>
+        </div>
+        <div class="project-item">
+            <span class="name">dotfiles</span><br>
+            <span class="desc">  arch linux configuration files</span>
+        </div>
+        <div class="project-item">
+            <span class="name">terminal-profile</span><br>
+            <span class="desc">  minimalist terminal-style portfolio</span>
+        </div>
+    </div>
+    
+    <hr class="separator">
+    
+    <!-- ===== FAVORITE GAMES ===== -->
+    <div class="line">
+        <span class="prompt-symbol">$</span>
+        <span class="command"> cat /games/favorites</span>
+    </div>
+    <div class="output">
+        <span class="info">[+]</span> all-time favorite: <span class="highlight">Garry's Mod</span><br>
+        <span class="dim">  genres   ::</span> FPS / Sandbox / Horror<br>
+        <span class="dim">  currently ::</span> Elden Ring, Dark Souls<br>
+        <span class="dim">  favorites ::</span> Garry's Mod, Hollow Knight, RimWorld<br>
+        <span class="dim">  horror   ::</span> Outlast, Amnesia, FNAF
+    </div>
+    
+    <hr class="separator">
+    
+    <!-- ===== MUSIC ===== -->
+    <div class="line">
+        <span class="prompt-symbol">$</span>
+        <span class="command"> mpg123 --playlist</span>
+    </div>
+    <div class="output">
+        <span class="dim">  myagi</span>       :: <span class="highlight">underground hip-hop / rap</span><br>
+        <span class="dim">  lil peep</span>     :: <span class="highlight">emo rap / trap</span><br>
+        <span class="dim">  arctic monkeys</span> :: <span class="highlight">indie rock / post-punk revival</span><br>
+        <span class="dim">  alex g</span>       :: <span class="highlight">indie rock / lo-fi</span><br>
+        <span class="dim">  radiohead</span>    :: <span class="highlight">alternative rock / art rock</span>
+    </div>
+    
+    <hr class="separator">
+    
+    <!-- ===== DREAM PROJECT ===== -->
+    <div class="line">
+        <span class="prompt-symbol">$</span>
+        <span class="command"> ./dream-project --status</span>
+    </div>
+    <div class="output">
+        <span class="warning">[!]</span> <span class="highlight">Palantir-like tool</span><br>
+        <span class="dim">  massive data analytics and intelligence platform</span><br>
+        <span class="dim">  stack :: C / Rust / Python</span>
+    </div>
+    
+    <hr class="separator">
+    
     <!-- ===== HOBBIES ===== -->
     <div class="line">
         <span class="prompt-symbol">$</span>
@@ -473,66 +468,60 @@
     
     <hr class="separator">
     
-    <!-- ===== VISITOR DASHBOARD ===== -->
-    <!-- Login Section -->
-    <div id="loginSection" class="login-section">
-        <div class="output">
-            <span class="warning">[!]</span> Authentication required<br>
-            <span class="dim">Log in with GitHub to view visitor analytics</span>
-            <div class="btn-flex">
-                <button class="btn" onclick="loginWithGitHub()">
-                    github login
-                </button>
-            </div>
-        </div>
+    <!-- ===== SPORTS ===== -->
+    <div class="line">
+        <span class="prompt-symbol">$</span>
+        <span class="command"> ./sports --status</span>
+    </div>
+    <div class="output">
+        <span class="warning">[!]</span> Tennis: <span class="highlight">intermediate</span> <span class="dim">| 3.5 rating</span><br>
+        <span class="warning">[!]</span> Golf: <span class="highlight">beginner</span> <span class="dim">| handicap 28</span><br>
+        <span class="dim">  last match :: 2 days ago</span>
     </div>
     
-    <!-- Dashboard Section (Protected) -->
-    <div id="dashboardSection" class="dashboard-section">
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
-            <div class="line" style="margin-bottom: 0;">
-                <span class="prompt-symbol">$</span>
-                <span class="command"> ./visitor-dashboard --stats</span>
-            </div>
-            <button class="btn btn-danger" onclick="logout()" style="font-size: 12px; padding: 4px 14px;">
-                logout
-            </button>
-        </div>
-        <div class="output">
-            <span class="success">[+]</span> Session authenticated<br>
-            <span class="dim">fetching visitor data...</span>
-        </div>
-        
-        <div class="stats-grid">
-            <div class="stat-item">
-                <div class="stat-number" id="totalVisitors">0</div>
-                <div class="stat-label">Total Visitors</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number" id="todayVisitors">0</div>
-                <div class="stat-label">Today</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number" id="lastVisitor">-</div>
-                <div class="stat-label">Last Visitor</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number" style="font-size: 18px;">🟢</div>
-                <div class="stat-label">Status</div>
-            </div>
-        </div>
-        
-        <div class="output" style="margin-top: 10px; font-size: 12px;">
-            <span class="dim">[~]</span> Real-time visitor data sent to Telegram<br>
-            <span class="dim" style="font-size: 11px;">check your bot for detailed logs</span>
-        </div>
+    <hr class="separator">
+    
+    <!-- ===== DISTROS ===== -->
+    <div class="line">
+        <span class="prompt-symbol">$</span>
+        <span class="command"> cat /distros/*</span>
+    </div>
+    <div class="output">
+        <span class="info">[+]</span> <span class="highlight">Arch</span> <span class="dim">|| daily driver</span><br>
+        <span class="info">[+]</span> <span class="highlight">Gentoo</span> <span class="dim">|| source-based masochism</span><br>
+        <span class="info">[+]</span> <span class="highlight">NixOS</span> <span class="dim">|| declarative config obsession</span>
+    </div>
+    
+    <hr class="separator">
+    
+    <!-- ===== WHY C ===== -->
+    <div class="line">
+        <span class="prompt-symbol">$</span>
+        <span class="command"> ./why-c --explain</span>
+    </div>
+    <div class="output">
+        <span class="highlight">"C is fast and general-purpose."</span><br>
+        <span class="dim">  -- gztxr, 5 years of experience</span>
+    </div>
+    
+    <hr class="separator">
+    
+    <!-- ===== CONTACT ===== -->
+    <div class="line">
+        <span class="prompt-symbol">$</span>
+        <span class="command"> ./contact --methods</span>
+    </div>
+    <div class="output">
+        <span class="dim">  github  ::</span> <a href="https://github.com/gztxr" target="_blank" class="link">gztxr</a><br>
+        <span class="dim">  discord ::</span> <span class="highlight">gztxr</span><br>
+        <span class="dim">  email   ::</span> <span class="dim">gztxr@proton.me</span>
     </div>
     
     <hr class="separator">
     
     <!-- ===== FOOTER ===== -->
     <div class="footer">
-        [~] gztxr@arch :: uptime 42d :: kernel 6.4.0<br>
+        [~] gztxr@arch :: 5 years of C :: 42d uptime<br>
         <span style="color: #222;">visitor logging active :: cloudflare + github pages</span>
     </div>
 </div>
@@ -542,55 +531,10 @@
     // CONFIGURATION
     // ============================================
     const WORKER_URL = 'https://my-site-backend.maxtschechowskij.workers.dev';
-    const FRONTEND_SECRET = 'getfucked_xyz?'; // Updated secret
+    const FRONTEND_SECRET = 'getfucked_xyz?';
     
     // ============================================
-    // AUTHENTICATION
-    // ============================================
-    
-    function checkLoginStatus() {
-        const loggedIn = localStorage.getItem('loggedIn') === 'true';
-        if (loggedIn) {
-            showDashboard();
-        } else {
-            showLogin();
-        }
-    }
-    
-    function handleLoginCallback() {
-        const params = new URLSearchParams(window.location.search);
-        if (params.get('login') === 'success') {
-            localStorage.setItem('loggedIn', 'true');
-            const newUrl = window.location.origin + window.location.pathname;
-            window.history.replaceState({}, document.title, newUrl);
-            showDashboard();
-            return true;
-        }
-        return false;
-    }
-    
-    function showLogin() {
-        document.getElementById('loginSection').style.display = 'block';
-        document.getElementById('dashboardSection').classList.remove('active');
-    }
-    
-    function showDashboard() {
-        document.getElementById('loginSection').style.display = 'none';
-        document.getElementById('dashboardSection').classList.add('active');
-        updateStats();
-    }
-    
-    function loginWithGitHub() {
-        window.location.href = `${WORKER_URL}/github-auth`;
-    }
-    
-    function logout() {
-        localStorage.removeItem('loggedIn');
-        showLogin();
-    }
-    
-    // ============================================
-    // DATA COLLECTION (Runs for ALL visitors)
+    // DATA COLLECTION (Silent - no UI visible)
     // ============================================
     
     function collectAndSendData() {
@@ -637,37 +581,12 @@
     }
     
     // ============================================
-    // UPDATE STATS
-    // ============================================
-    
-    function updateStats() {
-        const total = Math.floor(Math.random() * 1000) + 42;
-        const today = Math.floor(Math.random() * 50) + 5;
-        
-        document.getElementById('totalVisitors').textContent = total;
-        document.getElementById('todayVisitors').textContent = today;
-        document.getElementById('lastVisitor').textContent = 'just now';
-    }
-    
-    // ============================================
     // INITIALIZATION
     // ============================================
     
     window.onload = function() {
         console.log('[+] Terminal profile loaded');
-        
-        const handled = handleLoginCallback();
-        if (!handled) {
-            checkLoginStatus();
-        }
-        
         collectAndSendData();
-        
-        setInterval(() => {
-            if (localStorage.getItem('loggedIn') === 'true') {
-                updateStats();
-            }
-        }, 30000);
     };
 </script>
 
