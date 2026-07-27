@@ -15,22 +15,6 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
-            position: relative;
-            overflow-x: hidden;
-        }
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background:
-                radial-gradient(ellipse at 20% 50%, rgba(0, 255, 65, 0.03) 0%, transparent 60%),
-                radial-gradient(ellipse at 80% 50%, rgba(0, 255, 65, 0.03) 0%, transparent 60%),
-                radial-gradient(ellipse at 50% 100%, rgba(0, 255, 65, 0.02) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: 0;
         }
         .terminal {
             max-width: 920px;
@@ -39,12 +23,8 @@
             border: 1px solid rgba(0, 255, 65, 0.08);
             border-radius: 12px;
             padding: 30px 35px 25px;
-            box-shadow:
-                0 0 80px rgba(0, 255, 65, 0.02),
-                inset 0 0 80px rgba(0, 255, 65, 0.01);
+            box-shadow: 0 0 60px rgba(0, 255, 65, 0.02);
             position: relative;
-            z-index: 1;
-            backdrop-filter: blur(2px);
         }
         .terminal::before {
             content: '';
@@ -119,7 +99,6 @@
         .output .success { color: #00ff41; }
         .output .warning { color: #ffaa00; }
         .output .info { color: #00aaff; }
-        .output .error { color: #ff4444; }
         .ascii-art {
             color: #00ff41;
             font-size: 11px;
@@ -129,7 +108,6 @@
             opacity: 0.5;
             letter-spacing: 0.5px;
             text-align: center;
-            filter: drop-shadow(0 0 20px rgba(0, 255, 65, 0.03));
         }
         .skill-bar {
             display: flex;
@@ -152,12 +130,8 @@
             border-radius: 4px;
             transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
             width: 0%;
-            box-shadow: 0 0 15px rgba(0, 255, 65, 0.1);
         }
-        .skill-fill.rust {
-            background: linear-gradient(90deg, #ff6b35, #e85a2a);
-            box-shadow: 0 0 15px rgba(255, 107, 53, 0.1);
-        }
+        .skill-fill.rust { background: linear-gradient(90deg, #ff6b35, #e85a2a); }
         .skill-percent { color: #555; font-size: 12px; min-width: 35px; text-align: right; }
         .hobby-tag {
             display: inline-block;
@@ -169,19 +143,20 @@
             margin: 3px 6px 3px 0;
             transition: all 0.3s ease;
             background: rgba(255, 255, 255, 0.01);
+            cursor: default;
         }
         .hobby-tag:hover {
             border-color: rgba(0, 255, 65, 0.2);
             color: #00ff41;
             background: rgba(0, 255, 65, 0.04);
             transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(0, 255, 65, 0.05);
         }
         .project-item {
             padding: 6px 12px;
             margin: 3px 0;
             border-left: 2px solid rgba(255, 255, 255, 0.03);
             transition: all 0.3s ease;
+            cursor: default;
         }
         .project-item:hover {
             border-left-color: #00ff41;
@@ -204,18 +179,7 @@
             border-top: 1px solid rgba(0, 255, 65, 0.04);
             letter-spacing: 0.5px;
         }
-        .footer .heart {
-            color: #ff4444;
-            display: inline-block;
-            animation: heartbeat 1.5s ease-in-out infinite;
-        }
-        @keyframes heartbeat {
-            0%, 100% { transform: scale(1); }
-            15% { transform: scale(1.2); }
-            30% { transform: scale(1); }
-            45% { transform: scale(1.15); }
-            60% { transform: scale(1); }
-        }
+        .footer .heart { color: #ff4444; }
         .status-dot {
             display: inline-block;
             width: 7px;
@@ -224,7 +188,6 @@
             border-radius: 50%;
             animation: pulse 2s ease-in-out infinite;
             margin-right: 6px;
-            box-shadow: 0 0 15px rgba(0, 255, 65, 0.15);
         }
         @keyframes pulse {
             0%, 100% { opacity: 1; transform: scale(1); }
@@ -239,39 +202,71 @@
             vertical-align: text-bottom;
             margin-left: 2px;
             opacity: 0.7;
-            box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
         }
         @keyframes blink {
             0%, 100% { opacity: 1; }
             50% { opacity: 0; }
         }
-        .glow-text {
-            background: linear-gradient(135deg, #00ff41 0%, #00cc33 50%, #00ff41 100%);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shimmer 3s ease-in-out infinite;
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin: 10px 0 5px 0;
         }
-        @keyframes shimmer {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
+        .feature-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 6px;
+            padding: 12px 16px;
+            text-align: center;
+            transition: all 0.3s ease;
         }
-        .matrix-rain {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            pointer-events: none;
-            z-index: 0;
-            opacity: 0.015;
-            font-size: 14px;
-            line-height: 1.2;
+        .feature-card:hover {
+            border-color: rgba(0, 255, 65, 0.15);
+            background: rgba(0, 255, 65, 0.02);
+            transform: translateY(-2px);
+        }
+        .feature-card .num { color: #00ff41; font-size: 22px; font-weight: bold; }
+        .feature-card .label { color: #555; font-size: 11px; margin-top: 2px; }
+
+        .inline-input {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(0, 255, 65, 0.2);
             color: #00ff41;
-            overflow: hidden;
             font-family: 'Courier New', monospace;
-            letter-spacing: 2px;
+            font-size: 13px;
+            padding: 2px 8px;
+            outline: none;
+            width: 200px;
+            transition: border-color 0.3s ease;
         }
+        .inline-input:focus { border-color: #00ff41; }
+        .inline-input::placeholder { color: #333; }
+
+        .btn-terminal {
+            background: transparent;
+            border: 1px solid rgba(0, 255, 65, 0.2);
+            color: #00ff41;
+            padding: 3px 16px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+        .btn-terminal:hover {
+            border-color: #00ff41;
+            background: rgba(0, 255, 65, 0.05);
+        }
+
+        .clock-display {
+            color: #555;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
         @media (max-width: 768px) {
             .terminal { padding: 20px 15px; }
             .line { font-size: 12px; }
@@ -279,7 +274,8 @@
             .ascii-art { font-size: 7px; }
             .skill-name { min-width: 60px; font-size: 12px; }
             .profile-pic { width: 32px; height: 32px; }
-            .matrix-rain { display: none; }
+            .inline-input { width: 140px; font-size: 12px; }
+            .feature-grid { grid-template-columns: 1fr 1fr; }
         }
         @media (max-width: 480px) {
             .terminal { padding: 15px 10px; border-radius: 8px; }
@@ -288,13 +284,12 @@
             .profile-pic { width: 28px; height: 28px; border-width: 1.5px; }
             .skill-name { min-width: 50px; font-size: 11px; }
             .hobby-tag { font-size: 11px; padding: 2px 10px; }
-            .terminal-title { font-size: 10px; }
+            .inline-input { width: 100px; font-size: 11px; }
+            .feature-grid { grid-template-columns: 1fr 1fr; }
         }
     </style>
 </head>
 <body>
-
-<div class="matrix-rain" id="matrixRain"></div>
 
 <div class="terminal">
     <div class="terminal-header">
@@ -303,7 +298,7 @@
         <span class="terminal-dot green"></span>
         <img class="profile-pic" src="https://cdn.discordapp.com/avatars/1519773053901475920/0fc8daf245c991822fa5a6178960eeae.webp?size=128" alt="gztxr" onerror="this.style.display='none'">
         <span class="terminal-title">gztxr@<span>arch</span>:~$</span>
-        <span style="color:#333;font-size:10px;margin-left:auto;letter-spacing:1px;">⏣ v2.1</span>
+        <span class="clock-display" id="clockDisplay">--:--:--</span>
     </div>
 
     <div class="ascii-art">
@@ -522,38 +517,60 @@
 
 <script>
     (function() {
-        var rain = document.getElementById('matrixRain');
-        var chars = '01';
-        var columns = Math.floor(window.innerWidth / 20);
-        var drops = [];
-        for (var i = 0; i < columns; i++) {
-            drops.push(Math.floor(Math.random() * -100));
-        }
-        function drawRain() {
-            var lines = '';
-            for (var i = 0; i < drops.length; i++) {
-                var char = chars.charAt(Math.floor(Math.random() * chars.length));
-                lines += char + ' ';
-                drops[i] += 1;
-                if (drops[i] > 100) {
-                    drops[i] = -Math.random() * 50;
-                }
+        var clock = document.getElementById('clockDisplay');
+        if (clock) {
+            function updateClock() {
+                var now = new Date();
+                var h = String(now.getHours()).padStart(2, '0');
+                var m = String(now.getMinutes()).padStart(2, '0');
+                var s = String(now.getSeconds()).padStart(2, '0');
+                clock.textContent = h + ':' + m + ':' + s;
             }
-            rain.textContent = lines;
+            updateClock();
+            setInterval(updateClock, 1000);
         }
-        if (rain) {
-            setInterval(drawRain, 120);
-            drawRain();
+    })();
+
+    (function() {
+        var cursor = document.querySelector('.typing-cursor');
+        if (cursor) {
+            setInterval(function() {
+                cursor.style.opacity = (cursor.style.opacity === '0' ? '1' : '0');
+            }, 600);
         }
-        window.addEventListener('resize', function() {
-            var newColumns = Math.floor(window.innerWidth / 20);
-            if (newColumns > drops.length) {
-                for (var i = drops.length; i < newColumns; i++) {
-                    drops.push(Math.floor(Math.random() * -100));
+    })();
+
+    (function() {
+        var bars = document.querySelectorAll('.skill-fill');
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    var bar = entry.target;
+                    var width = bar.style.width;
+                    bar.style.width = '0%';
+                    setTimeout(function() {
+                        bar.style.width = width;
+                    }, 100);
+                    observer.unobserve(bar);
                 }
-            } else if (newColumns < drops.length) {
-                drops.length = newColumns;
-            }
+            });
+        }, { threshold: 0.3 });
+        bars.forEach(function(bar) {
+            observer.observe(bar);
+        });
+        bars.forEach(function(bar) {
+            var width = bar.style.width;
+            bar.style.width = '0%';
+            setTimeout(function() {
+                bar.style.width = width;
+            }, 400);
+        });
+    })();
+
+    (function() {
+        var links = document.querySelectorAll('.link');
+        links.forEach(function(link) {
+            link.setAttribute('target', '_blank');
         });
     })();
 </script>
