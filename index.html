@@ -156,7 +156,6 @@
             margin: 3px 0;
             border-left: 2px solid rgba(255, 255, 255, 0.03);
             transition: all 0.3s ease;
-            cursor: default;
         }
         .project-item:hover {
             border-left-color: #00ff41;
@@ -165,6 +164,59 @@
         }
         .project-item .name { color: #00ff41; }
         .project-item .desc { color: #666; font-size: 12px; }
+        .project-item .info-btn {
+            background: transparent;
+            border: 1px solid rgba(0, 170, 255, 0.15);
+            color: #00aaff;
+            padding: 0px 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 10px;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+        .project-item .info-btn:hover {
+            border-color: #00aaff;
+            background: rgba(0, 170, 255, 0.05);
+            box-shadow: 0 0 20px rgba(0, 170, 255, 0.05);
+        }
+        .project-item .info-btn.active {
+            border-color: #ffaa00;
+            color: #ffaa00;
+        }
+        .project-detail {
+            display: none;
+            padding: 8px 12px 4px 20px;
+            color: #888;
+            font-size: 12px;
+            line-height: 1.6;
+            border-left: 1px dashed rgba(0, 255, 65, 0.08);
+            margin-top: 2px;
+            margin-bottom: 4px;
+        }
+        .project-detail.visible {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(-5px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .project-detail .label { color: #555; }
+        .project-detail .value { color: #a8a8a8; }
+        .project-detail .tech {
+            display: inline-block;
+            padding: 1px 8px;
+            border: 1px solid rgba(0, 255, 65, 0.06);
+            border-radius: 10px;
+            color: #555;
+            font-size: 10px;
+            margin: 2px 3px 2px 0;
+            background: rgba(255, 255, 255, 0.02);
+        }
+        .project-detail .tech:hover { border-color: rgba(0, 255, 65, 0.1); }
         .separator {
             border: none;
             border-top: 1px solid rgba(0, 255, 65, 0.04);
@@ -207,60 +259,6 @@
             0%, 100% { opacity: 1; }
             50% { opacity: 0; }
         }
-
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 10px;
-            margin: 10px 0 5px 0;
-        }
-        .feature-card {
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.04);
-            border-radius: 6px;
-            padding: 12px 16px;
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-        .feature-card:hover {
-            border-color: rgba(0, 255, 65, 0.15);
-            background: rgba(0, 255, 65, 0.02);
-            transform: translateY(-2px);
-        }
-        .feature-card .num { color: #00ff41; font-size: 22px; font-weight: bold; }
-        .feature-card .label { color: #555; font-size: 11px; margin-top: 2px; }
-
-        .inline-input {
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid rgba(0, 255, 65, 0.2);
-            color: #00ff41;
-            font-family: 'Courier New', monospace;
-            font-size: 13px;
-            padding: 2px 8px;
-            outline: none;
-            width: 200px;
-            transition: border-color 0.3s ease;
-        }
-        .inline-input:focus { border-color: #00ff41; }
-        .inline-input::placeholder { color: #333; }
-
-        .btn-terminal {
-            background: transparent;
-            border: 1px solid rgba(0, 255, 65, 0.2);
-            color: #00ff41;
-            padding: 3px 16px;
-            font-family: 'Courier New', monospace;
-            font-size: 12px;
-            cursor: pointer;
-            border-radius: 3px;
-            transition: all 0.3s ease;
-        }
-        .btn-terminal:hover {
-            border-color: #00ff41;
-            background: rgba(0, 255, 65, 0.05);
-        }
-
         .clock-display {
             color: #555;
             font-size: 12px;
@@ -274,8 +272,8 @@
             .ascii-art { font-size: 7px; }
             .skill-name { min-width: 60px; font-size: 12px; }
             .profile-pic { width: 32px; height: 32px; }
-            .inline-input { width: 140px; font-size: 12px; }
-            .feature-grid { grid-template-columns: 1fr 1fr; }
+            .project-item .info-btn { font-size: 9px; padding: 0px 8px; }
+            .project-detail { font-size: 11px; padding-left: 14px; }
         }
         @media (max-width: 480px) {
             .terminal { padding: 15px 10px; border-radius: 8px; }
@@ -284,8 +282,8 @@
             .profile-pic { width: 28px; height: 28px; border-width: 1.5px; }
             .skill-name { min-width: 50px; font-size: 11px; }
             .hobby-tag { font-size: 11px; padding: 2px 10px; }
-            .inline-input { width: 100px; font-size: 11px; }
-            .feature-grid { grid-template-columns: 1fr 1fr; }
+            .project-item .info-btn { font-size: 8px; padding: 0px 6px; }
+            .project-detail { font-size: 10px; padding-left: 10px; }
         }
     </style>
 </head>
@@ -382,28 +380,58 @@
 
     <div class="line">
         <span class="prompt-symbol">$</span>
-        <span class="command"> ls /projects/</span>
+        <span class="command"> ls -la /projects/</span>
     </div>
     <div class="output">
         <div class="project-item">
-            <span class="name">discord-surveillance</span><br>
-            <span class="desc">  mass surveillance system for discord</span>
+            <span class="name">discord-surveillance</span>
+            <button class="info-btn" onclick="toggleInfo(this)">[i]</button>
+            <span class="desc" style="display:block;margin-top:2px;">  mass surveillance system for discord</span>
+            <div class="project-detail">
+                <span class="label">status</span> :: <span class="value">active development</span><br>
+                <span class="label">tech</span> :: <span class="tech">Python</span> <span class="tech">Discord API</span> <span class="tech">SQLite</span><br>
+                <span class="label">description</span> :: monitors discord servers for suspicious activity, logs messages, and generates reports
+            </div>
         </div>
         <div class="project-item">
-            <span class="name">game-hacks</span><br>
-            <span class="desc">  various game modification tools</span>
+            <span class="name">game-hacks</span>
+            <button class="info-btn" onclick="toggleInfo(this)">[i]</button>
+            <span class="desc" style="display:block;margin-top:2px;">  various game modification tools</span>
+            <div class="project-detail">
+                <span class="label">status</span> :: <span class="value">experimental</span><br>
+                <span class="label">tech</span> :: <span class="tech">C</span> <span class="tech">Assembly</span> <span class="tech">Cheat Engine</span><br>
+                <span class="label">description</span> :: memory manipulation tools for single-player games, trainer development framework
+            </div>
         </div>
         <div class="project-item">
-            <span class="name">visitor-logger</span><br>
-            <span class="desc">  real-time visitor tracking</span>
+            <span class="name">visitor-logger</span>
+            <button class="info-btn" onclick="toggleInfo(this)">[i]</button>
+            <span class="desc" style="display:block;margin-top:2px;">  real-time visitor tracking</span>
+            <div class="project-detail">
+                <span class="label">status</span> :: <span class="value">completed</span><br>
+                <span class="label">tech</span> :: <span class="tech">HTML</span> <span class="tech">CSS</span> <span class="tech">JavaScript</span> <span class="tech">Discord Webhook</span><br>
+                <span class="label">description</span> :: lightweight visitor logger that collects browser data and sends it to discord via webhooks
+            </div>
         </div>
         <div class="project-item">
-            <span class="name">dotfiles</span><br>
-            <span class="desc">  arch linux configuration files</span>
+            <span class="name">dotfiles</span>
+            <button class="info-btn" onclick="toggleInfo(this)">[i]</button>
+            <span class="desc" style="display:block;margin-top:2px;">  arch linux configuration files</span>
+            <div class="project-detail">
+                <span class="label">status</span> :: <span class="value">active development</span><br>
+                <span class="label">tech</span> :: <span class="tech">bash</span> <span class="tech">zsh</span> <span class="tech">neovim</span> <span class="tech">i3</span><br>
+                <span class="label">description</span> :: collection of dotfiles for arch linux, includes neovim config, zsh plugins, and i3wm settings
+            </div>
         </div>
         <div class="project-item">
-            <span class="name">terminal-profile</span><br>
-            <span class="desc">  minimalist terminal-style portfolio</span>
+            <span class="name">terminal-profile</span>
+            <button class="info-btn" onclick="toggleInfo(this)">[i]</button>
+            <span class="desc" style="display:block;margin-top:2px;">  minimalist terminal-style portfolio</span>
+            <div class="project-detail">
+                <span class="label">status</span> :: <span class="value">active development</span><br>
+                <span class="label">tech</span> :: <span class="tech">HTML</span> <span class="tech">CSS</span> <span class="tech">JavaScript</span><br>
+                <span class="label">description</span> :: terminal-inspired personal portfolio with interactive elements and project info viewer
+            </div>
         </div>
     </div>
 
@@ -490,7 +518,7 @@
     </div>
     <div class="output">
         <span class="highlight">"C is fast and general-purpose."</span><br>
-        <span class="dim">  -- gztxr, 5 years of experience</span>
+        <span class="dim">  -- gztxr, 1 year of experience</span>
     </div>
 
     <hr class="separator">
@@ -516,6 +544,29 @@
 </div>
 
 <script>
+    function toggleInfo(btn) {
+        var detail = btn.parentElement.querySelector('.project-detail');
+        if (detail) {
+            var isVisible = detail.classList.contains('visible');
+            // Close all others
+            document.querySelectorAll('.project-detail.visible').forEach(function(d) {
+                if (d !== detail) {
+                    d.classList.remove('visible');
+                    var otherBtn = d.parentElement.querySelector('.info-btn');
+                    if (otherBtn) otherBtn.classList.remove('active');
+                }
+            });
+            // Toggle this one
+            if (isVisible) {
+                detail.classList.remove('visible');
+                btn.classList.remove('active');
+            } else {
+                detail.classList.add('visible');
+                btn.classList.add('active');
+            }
+        }
+    }
+
     (function() {
         var clock = document.getElementById('clockDisplay');
         if (clock) {
@@ -532,32 +583,7 @@
     })();
 
     (function() {
-        var cursor = document.querySelector('.typing-cursor');
-        if (cursor) {
-            setInterval(function() {
-                cursor.style.opacity = (cursor.style.opacity === '0' ? '1' : '0');
-            }, 600);
-        }
-    })();
-
-    (function() {
         var bars = document.querySelectorAll('.skill-fill');
-        var observer = new IntersectionObserver(function(entries) {
-            entries.forEach(function(entry) {
-                if (entry.isIntersecting) {
-                    var bar = entry.target;
-                    var width = bar.style.width;
-                    bar.style.width = '0%';
-                    setTimeout(function() {
-                        bar.style.width = width;
-                    }, 100);
-                    observer.unobserve(bar);
-                }
-            });
-        }, { threshold: 0.3 });
-        bars.forEach(function(bar) {
-            observer.observe(bar);
-        });
         bars.forEach(function(bar) {
             var width = bar.style.width;
             bar.style.width = '0%';
