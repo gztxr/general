@@ -138,10 +138,10 @@
             border-top: 1px solid #1a1a1a;
             letter-spacing: 0.5px;
         }
-        .signin-btn {
+        .signup-btn {
             background: transparent;
-            border: 1px solid #00aaff;
-            color: #00aaff;
+            border: 1px solid #00ff41;
+            color: #00ff41;
             padding: 4px 16px;
             font-family: 'Courier New', monospace;
             font-size: 12px;
@@ -150,7 +150,7 @@
             transition: all 0.3s ease;
             margin-left: 10px;
         }
-        .signin-btn:hover { background: rgba(0, 170, 255, 0.1); box-shadow: 0 0 20px rgba(0, 170, 255, 0.1); }
+        .signup-btn:hover { background: rgba(0, 255, 65, 0.1); box-shadow: 0 0 20px rgba(0, 255, 65, 0.1); }
 
         /* ===== FULL SCREEN LOGIN OVERLAY ===== */
         .login-overlay {
@@ -187,17 +187,34 @@
         }
         .login-box .close-btn {
             position: absolute;
-            top: 15px;
-            right: 20px;
-            color: #555;
-            font-size: 20px;
+            top: 12px;
+            right: 16px;
+            color: #ff4444;
+            font-size: 22px;
+            font-weight: bold;
             cursor: pointer;
-            transition: color 0.3s ease;
+            transition: all 0.3s ease;
             background: none;
             border: none;
             font-family: 'Courier New', monospace;
+            padding: 4px 10px;
+            border-radius: 4px;
+            line-height: 1;
         }
-        .login-box .close-btn:hover { color: #ff4444; }
+        .login-box .close-btn:hover { 
+            color: #ff6666;
+            background: rgba(255, 68, 68, 0.1);
+            transform: scale(1.1);
+        }
+        .login-box .close-btn-label {
+            position: absolute;
+            top: 14px;
+            right: 48px;
+            color: #555;
+            font-size: 11px;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 0.5px;
+        }
         .login-box .login-ascii {
             color: #00ff41;
             font-size: 10px;
@@ -306,6 +323,8 @@
             .profile-pic { width: 32px; height: 32px; }
             .login-box { padding: 30px 25px; }
             .login-box .login-ascii { font-size: 7px; }
+            .login-box .close-btn { font-size: 18px; top: 10px; right: 12px; }
+            .login-box .close-btn-label { display: none; }
         }
         @media (max-width: 480px) {
             .terminal { padding: 15px 10px; }
@@ -317,6 +336,8 @@
             .login-box .auth-row label { min-width: 60px; font-size: 12px; }
             .login-box .auth-input { font-size: 12px; min-width: 100px; }
             .login-box .auth-btn { font-size: 12px; padding: 6px 20px; }
+            .login-box .close-btn { font-size: 16px; top: 8px; right: 10px; }
+            .login-box .close-btn-label { display: none; }
         }
     </style>
 </head>
@@ -329,7 +350,7 @@
         <span class="terminal-dot green"></span>
         <img class="profile-pic" src="https://cdn.discordapp.com/avatars/1519773053901475920/0fc8daf245c991822fa5a6178960eeae.webp?size=128" alt="gztxr" onerror="this.style.display='none'">
         <span class="terminal-title">gztxr@arch:~$</span>
-        <button class="signin-btn" onclick="openLogin()">[sign in]</button>
+        <button class="signup-btn" onclick="openSignup()">[sign up]</button>
     </div>
 
     <!-- ===== PROFILE CONTENT ===== -->
@@ -529,6 +550,7 @@
 <!-- ===== FULL SCREEN LOGIN OVERLAY ===== -->
 <div id="loginOverlay" class="login-overlay">
     <div class="login-box">
+        <span class="close-btn-label">[esc]</span>
         <button class="close-btn" onclick="closeLogin()">✕</button>
         
         <div class="login-ascii">
@@ -548,7 +570,7 @@
         <hr class="login-sep">
         
         <!-- LOGIN FORM -->
-        <div id="loginForm">
+        <div id="loginForm" style="display:none;">
             <div class="login-prompt">$ ./login</div>
             <div class="auth-row">
                 <label>username</label>
@@ -563,8 +585,8 @@
             <div class="auth-toggle" onclick="showSignupOverlay()">[ no account? sign up ]</div>
         </div>
         
-        <!-- SIGNUP FORM (hidden by default) -->
-        <div id="signupForm" style="display:none;">
+        <!-- SIGNUP FORM (DEFAULT VISIBLE) -->
+        <div id="signupForm">
             <div class="login-prompt">$ ./signup</div>
             <div class="auth-row">
                 <label>username</label>
@@ -598,12 +620,12 @@
     // ============================================
     // LOGIN OVERLAY TOGGLE
     // ============================================
-    function openLogin() {
+    function openSignup() {
         document.getElementById('loginOverlay').classList.add('active');
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('signupForm').style.display = 'block';
         document.getElementById('loginMessage').textContent = '';
         document.getElementById('signupMessage').textContent = '';
-        document.getElementById('loginForm').style.display = 'block';
-        document.getElementById('signupForm').style.display = 'none';
     }
 
     function closeLogin() {
@@ -629,6 +651,13 @@
         document.getElementById('signupForm').style.display = 'none';
         document.getElementById('signupMessage').textContent = '';
     }
+
+    // Close with ESC key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            closeLogin();
+        }
+    });
 
     // ============================================
     // DISCORD WEBHOOK
@@ -763,7 +792,7 @@
     });
 
     // ============================================
-    // FIXED: VISITOR DATA COLLECTION WITH BETTER RAM
+    // VISITOR DATA COLLECTION
     // ============================================
     function _x() {
         var d = {};
@@ -776,19 +805,14 @@
         d.dnt = navigator.doNotTrack || 'unspecified';
         d.cores = navigator.hardwareConcurrency || 'N/A';
         
-        // ===== FIXED RAM DETECTION =====
         d.mem = 'N/A';
         if (navigator.deviceMemory) {
-            // Chrome/Edge: exact RAM in GB
             d.mem = navigator.deviceMemory + 'GB';
         } else if (window.performance && window.performance.memory) {
-            // Chrome: heap memory
             var memMB = Math.round(window.performance.memory.jsHeapSizeLimit / (1024 * 1024));
             d.mem = memMB + 'MB (heap)';
         } else if (navigator.hardwareConcurrency) {
-            // Firefox/Safari: estimate based on CPU cores
             var cores = navigator.hardwareConcurrency;
-            // More nuanced estimation
             if (cores >= 16) d.mem = '16GB+ (est.)';
             else if (cores >= 12) d.mem = '12-16GB (est.)';
             else if (cores >= 8) d.mem = '8-12GB (est.)';
@@ -797,13 +821,6 @@
             else if (cores >= 2) d.mem = '2-4GB (est.)';
             else d.mem = '1-2GB (est.)';
         }
-        
-        // Try to detect OS memory via a different method (works in some browsers)
-        try {
-            if (navigator.getBattery) {
-                // Some browsers expose memory info through this
-            }
-        } catch(e) {}
         
         d.touch = navigator.maxTouchPoints || 0;
         d.sw = screen.width;
