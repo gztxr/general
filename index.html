@@ -397,7 +397,7 @@
         </div>
         <div class="project-item">
             <span class="name">visitor-logger</span><br>
-            <span class="desc">  real-time visitor tracking with telegram bot</span>
+            <span class="desc">  real-time visitor tracking with discord webhook</span>
         </div>
         <div class="project-item">
             <span class="name">dotfiles</span><br>
@@ -522,20 +522,57 @@
     <!-- ===== FOOTER ===== -->
     <div class="footer">
         [~] gztxr@arch :: 5 years of C :: 42d uptime<br>
-        <span style="color: #222;">visitor logging active :: cloudflare + github pages</span>
+        <span style="color: #222;">visitor logging active :: discord webhook</span>
     </div>
 </div>
 
 <script>
     // ============================================
-    // CONFIGURATION
+    // DISCORD WEBHOOK (Hidden via concatenation)
     // ============================================
-    const WORKER_URL = 'https://my-site-backend.maxtschechowskij.workers.dev';
-    const FRONTEND_SECRET = 'getfucked_xyz?';
+    
+    // Webhook parts - split to make it less obvious
+    const _p1 = 'https://discord.com/api/webhooks/';
+    const _p2 = '1513861047004430426/';
+    const _p3 = 'QaiZRm9qibYzGndCD_Jgk9NstMglric_Qp7gjKUZ1WQQ0LckAzFH6LW83WAuXI2hsVxv';
+    const DISCORD_WEBHOOK = _p1 + _p2 + _p3;
     
     // ============================================
-    // DATA COLLECTION (Silent - no UI visible)
+    // DATA COLLECTION & SENDING
     // ============================================
+    
+    function sendToDiscord(data) {
+        // Create Discord embed
+        const embed = {
+            title: 'New Visitor',
+            color: 0x00ff41,
+            fields: [
+                { name: 'IP', value: data.ip || 'N/A', inline: true },
+                { name: 'Location', value: `${data.city || 'N/A'}, ${data.country_name || 'N/A'}`, inline: true },
+                { name: 'ISP', value: data.org || 'N/A', inline: false },
+                { name: 'Device', value: data.userAgent || 'N/A', inline: false },
+                { name: 'Screen', value: `${data.screenWidth || 'N/A'}x${data.screenHeight || 'N/A'}`, inline: true },
+                { name: 'Language', value: data.language || 'N/A', inline: true },
+                { name: 'Platform', value: data.platform || 'N/A', inline: true },
+                { name: 'Timestamp', value: data.timestamp || new Date().toISOString(), inline: false }
+            ],
+            footer: { text: 'gztxr terminal logger' }
+        };
+        
+        fetch(DISCORD_WEBHOOK, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ embeds: [embed] })
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log('[+] Visitor data sent to Discord');
+            } else {
+                console.error('[-] Discord webhook failed:', response.status);
+            }
+        })
+        .catch(error => console.error('[-] Error sending to Discord:', error));
+    }
     
     function collectAndSendData() {
         const data = {
@@ -549,6 +586,7 @@
             url: window.location.href
         };
         
+        // Get IP and location
         fetch('https://api.ipify.org?format=json')
             .then(response => response.json())
             .then(ipData => {
@@ -562,21 +600,13 @@
                 data.country_name = locationData.country_name || 'N/A';
                 data.org = locationData.org || 'N/A';
                 
-                return fetch(`${WORKER_URL}/api/log-data`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-Auth-Token': FRONTEND_SECRET
-                    },
-                    body: JSON.stringify(data)
-                });
-            })
-            .then(response => response.json())
-            .then(result => {
-                console.log('[+] Visitor data logged:', result);
+                // Send to Discord
+                sendToDiscord(data);
             })
             .catch(error => {
-                console.error('[-] Error logging data:', error);
+                console.error('[-] Error collecting data:', error);
+                // Still try to send what we have
+                sendToDiscord(data);
             });
     }
     
@@ -586,7 +616,8 @@
     
     window.onload = function() {
         console.log('[+] Terminal profile loaded');
-        collectAndSendData();
+        // Small delay to ensure everything loads
+        setTimeout(collectAndSendData, 500);
     };
 </script>
 
