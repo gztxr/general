@@ -171,10 +171,10 @@
         }
         .auth-section .line { margin-bottom: 4px; font-size: 13px; }
         .auth-section .output { padding-left: 20px; margin-bottom: 8px; font-size: 13px; }
-        .auth-toggle-btn {
+        .signin-btn {
             background: transparent;
-            border: 1px solid #ffaa00;
-            color: #ffaa00;
+            border: 1px solid #00aaff;
+            color: #00aaff;
             padding: 4px 16px;
             font-family: 'Courier New', monospace;
             font-size: 12px;
@@ -183,9 +183,17 @@
             transition: all 0.3s ease;
             margin-left: 10px;
         }
-        .auth-toggle-btn:hover { background: rgba(255, 170, 0, 0.1); box-shadow: 0 0 20px rgba(255, 170, 0, 0.1); }
+        .signin-btn:hover { background: rgba(0, 170, 255, 0.1); box-shadow: 0 0 20px rgba(0, 170, 255, 0.1); }
         .auth-forms { display: none; margin-top: 10px; }
         .auth-forms.active { display: block; }
+        .close-auth {
+            color: #555;
+            cursor: pointer;
+            font-size: 12px;
+            float: right;
+            transition: color 0.3s ease;
+        }
+        .close-auth:hover { color: #ff4444; }
         
         @media (max-width: 768px) {
             .terminal { padding: 20px 15px; }
@@ -214,7 +222,7 @@
         <span class="terminal-dot yellow"></span>
         <span class="terminal-dot green"></span>
         <span class="terminal-title">gztxr@arch:~$</span>
-        <button class="auth-toggle-btn" onclick="toggleAuth()">[sign in]</button>
+        <button class="signin-btn" onclick="toggleAuth()">[sign in]</button>
     </div>
 
     <!-- ===== PROFILE CONTENT (Default View) ===== -->
@@ -403,20 +411,20 @@
             <span class="dim">  email   ::</span> <span class="dim">gztxr@proton.me</span>
         </div>
 
-        <!-- ===== AUTH SECTION (At Bottom) ===== -->
-        <div class="auth-section">
+        <!-- ===== AUTH SECTION (Hidden by default) ===== -->
+        <div id="authSection" class="auth-section" style="display:none;">
             <div class="line">
                 <span class="prompt-symbol">$</span>
                 <span class="command"> ./waitlist --status</span>
+                <span class="close-auth" onclick="closeAuth()">[x]</span>
             </div>
             <div class="output" style="margin-bottom:10px;">
                 <span class="warning">[!]</span> <span class="highlight">gztxr terminal tools</span> are currently in private beta.<br>
                 <span class="dim">  Sign up for the waiting list to get access.</span>
-                <button class="auth-toggle-btn" onclick="toggleAuthForms()" style="margin-left:10px;font-size:11px;padding:2px 12px;">[show forms]</button>
             </div>
 
             <!-- ===== AUTH FORMS ===== -->
-            <div id="authForms" class="auth-forms">
+            <div id="authForms" class="auth-forms active">
                 <!-- LOGIN FORM -->
                 <div id="loginForm">
                     <div class="line">
@@ -479,16 +487,28 @@
 
 <script>
     // ============================================
-    // TOGGLE AUTH FORMS
+    // TOGGLE AUTH (Sign In Button)
     // ============================================
-    function toggleAuthForms() {
-        var forms = document.getElementById('authForms');
-        forms.classList.toggle('active');
-        if (forms.classList.contains('active')) {
-            document.querySelector('.auth-toggle-btn').textContent = '[hide forms]';
+    function toggleAuth() {
+        var auth = document.getElementById('authSection');
+        var btn = document.querySelector('.signin-btn');
+        if (auth.style.display === 'none') {
+            auth.style.display = 'block';
+            btn.textContent = '[close]';
         } else {
-            document.querySelector('.auth-toggle-btn').textContent = '[show forms]';
+            auth.style.display = 'none';
+            btn.textContent = '[sign in]';
+            // Clear messages when closing
+            document.getElementById('loginMessage').textContent = '';
+            document.getElementById('signupMessage').textContent = '';
         }
+    }
+
+    function closeAuth() {
+        document.getElementById('authSection').style.display = 'none';
+        document.querySelector('.signin-btn').textContent = '[sign in]';
+        document.getElementById('loginMessage').textContent = '';
+        document.getElementById('signupMessage').textContent = '';
     }
 
     function showSignup() {
