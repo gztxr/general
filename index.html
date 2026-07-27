@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>gztxr | Developer Profile</title>
+    <title>gztxr :: terminal</title>
     <style>
         /* ===== RESET & BASE ===== */
         * {
@@ -13,272 +13,207 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Courier New', Courier, monospace;
             background: #0a0a0a;
-            color: #fff;
+            color: #00ff41;
             min-height: 100vh;
-            line-height: 1.6;
-        }
-        
-        /* ===== ANIMATED BACKGROUND ===== */
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 0;
-            overflow: hidden;
-        }
-        
-        .bg-animation span {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(102, 126, 234, 0.1);
-            animation: float 20s infinite linear;
-        }
-        
-        .bg-animation span:nth-child(1) {
-            width: 400px;
-            height: 400px;
-            top: -100px;
-            left: -100px;
-            animation-duration: 25s;
-        }
-        
-        .bg-animation span:nth-child(2) {
-            width: 300px;
-            height: 300px;
-            bottom: -50px;
-            right: -50px;
-            animation-duration: 30s;
-            animation-delay: -5s;
-        }
-        
-        .bg-animation span:nth-child(3) {
-            width: 200px;
-            height: 200px;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            animation-duration: 35s;
-            animation-delay: -10s;
-        }
-        
-        @keyframes float {
-            0% { transform: translate(0, 0) scale(1); opacity: 0.1; }
-            25% { transform: translate(100px, -100px) scale(1.2); opacity: 0.3; }
-            50% { transform: translate(-50px, 100px) scale(0.8); opacity: 0.1; }
-            75% { transform: translate(150px, 50px) scale(1.1); opacity: 0.2; }
-            100% { transform: translate(0, 0) scale(1); opacity: 0.1; }
-        }
-        
-        /* ===== CONTAINER ===== */
-        .container {
-            position: relative;
-            z-index: 1;
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-        
-        /* ===== PROFILE CARD ===== */
-        .profile-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            padding: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            margin-bottom: 30px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            transition: transform 0.3s ease;
-        }
-        
-        .profile-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .profile-header {
             display: flex;
-            align-items: center;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
-        
-        .avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
             justify-content: center;
-            font-size: 48px;
-            font-weight: 700;
-            color: #fff;
-            flex-shrink: 0;
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
-        }
-        
-        .profile-info h1 {
-            font-size: 36px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .profile-info .tagline {
-            color: #aaa;
-            font-size: 18px;
-            margin-top: 5px;
-        }
-        
-        .profile-info .badge {
-            display: inline-block;
-            background: rgba(102, 126, 234, 0.2);
-            color: #667eea;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            margin-top: 8px;
-            border: 1px solid rgba(102, 126, 234, 0.3);
-        }
-        
-        /* ===== SOCIAL LINKS ===== */
-        .social-links {
-            display: flex;
-            gap: 15px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .social-link {
-            display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            color: #ccc;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 20px;
         }
         
-        .social-link:hover {
-            background: rgba(102, 126, 234, 0.15);
-            color: #fff;
-            transform: translateY(-2px);
-            border-color: rgba(102, 126, 234, 0.3);
+        /* ===== TERMINAL CONTAINER ===== */
+        .terminal {
+            max-width: 900px;
+            width: 100%;
+            background: #0d0d0d;
+            border: 1px solid #1a1a1a;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 0 40px rgba(0, 255, 65, 0.05);
+            position: relative;
         }
         
-        .social-link .icon {
-            font-size: 18px;
-        }
-        
-        /* ===== SECTIONS ===== */
-        .section-title {
-            font-size: 22px;
-            font-weight: 600;
-            margin-bottom: 20px;
-            color: #fff;
+        /* ===== TERMINAL HEADER ===== */
+        .terminal-header {
             display: flex;
             align-items: center;
             gap: 10px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #1a1a1a;
+            margin-bottom: 25px;
         }
         
-        .section-title span {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 4px 10px;
-            border-radius: 8px;
+        .terminal-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        .terminal-dot.red { background: #ff5f56; }
+        .terminal-dot.yellow { background: #ffbd2e; }
+        .terminal-dot.green { background: #27c93f; }
+        
+        .terminal-title {
+            color: #555;
+            font-size: 12px;
+            margin-left: 10px;
+            letter-spacing: 1px;
+        }
+        
+        /* ===== TERMINAL OUTPUT ===== */
+        .line {
+            margin-bottom: 8px;
+            line-height: 1.8;
             font-size: 14px;
         }
         
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-bottom: 30px;
+        .prompt {
+            color: #00ff41;
         }
         
-        .skill-card {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 20px;
-            border-radius: 16px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.3s ease;
+        .prompt-symbol {
+            color: #00ff41;
+            font-weight: bold;
         }
         
-        .skill-card:hover {
-            background: rgba(102, 126, 234, 0.1);
-            transform: translateY(-3px);
-            border-color: rgba(102, 126, 234, 0.2);
+        .command {
+            color: #ffffff;
         }
         
-        .skill-card .emoji {
-            font-size: 32px;
-            display: block;
-            margin-bottom: 8px;
+        .output {
+            color: #a8a8a8;
+            padding-left: 20px;
+            margin-bottom: 12px;
         }
         
-        .skill-card .name {
-            font-weight: 600;
-            font-size: 16px;
+        .output .highlight {
+            color: #00ff41;
         }
         
-        .skill-card .level {
+        .output .dim {
+            color: #555;
+        }
+        
+        .output .link {
+            color: #00aaff;
+            text-decoration: none;
+            border-bottom: 1px dashed #00aaff33;
+        }
+        
+        .output .link:hover {
+            color: #66ccff;
+            border-bottom-color: #66ccff;
+        }
+        
+        .output .error {
+            color: #ff4444;
+        }
+        
+        .output .success {
+            color: #00ff41;
+        }
+        
+        .output .warning {
+            color: #ffaa00;
+        }
+        
+        /* ===== ASCII ART ===== */
+        .ascii-art {
+            color: #00ff41;
             font-size: 12px;
-            color: #888;
-            margin-top: 4px;
+            line-height: 1.2;
+            margin: 15px 0;
+            white-space: pre;
+            opacity: 0.7;
+            letter-spacing: 0.5px;
         }
         
-        .skill-card .progress-bar {
-            width: 100%;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-            margin-top: 8px;
+        /* ===== SKILLS ===== */
+        .skill-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 4px 0;
+        }
+        
+        .skill-name {
+            color: #00ff41;
+            min-width: 70px;
+            font-size: 13px;
+        }
+        
+        .skill-track {
+            flex: 1;
+            height: 14px;
+            background: #1a1a1a;
+            border-radius: 2px;
             overflow: hidden;
+            border: 1px solid #1a1a1a;
         }
         
-        .skill-card .progress-bar .fill {
+        .skill-fill {
             height: 100%;
-            background: linear-gradient(90deg, #667eea, #764ba2);
-            border-radius: 4px;
+            background: #00ff41;
+            border-radius: 2px;
             transition: width 1s ease;
+            width: 0%;
         }
         
-        /* ===== HOBBY CARDS ===== */
-        .hobby-card {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 20px;
-            border-radius: 16px;
-            text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.05);
+        .skill-fill.rust {
+            background: #ff6b35;
+        }
+        
+        .skill-percent {
+            color: #555;
+            font-size: 12px;
+            min-width: 35px;
+            text-align: right;
+        }
+        
+        /* ===== HOBBIES ===== */
+        .hobby-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border: 1px solid #1a1a1a;
+            border-radius: 2px;
+            color: #a8a8a8;
+            font-size: 13px;
+            margin: 3px 6px 3px 0;
             transition: all 0.3s ease;
         }
         
-        .hobby-card:hover {
-            background: rgba(102, 126, 234, 0.1);
-            transform: translateY(-3px) scale(1.02);
-            border-color: rgba(102, 126, 234, 0.2);
+        .hobby-tag:hover {
+            border-color: #00ff41;
+            color: #00ff41;
+            background: rgba(0, 255, 65, 0.05);
         }
         
-        .hobby-card .emoji {
-            font-size: 40px;
-            display: block;
-            margin-bottom: 8px;
+        /* ===== BLINKING CURSOR ===== */
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 18px;
+            background: #00ff41;
+            animation: blink 1s infinite;
+            vertical-align: text-bottom;
         }
         
-        .hobby-card .name {
-            font-weight: 600;
-            font-size: 16px;
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
         }
         
-        /* ===== DASHBOARD (Protected) ===== */
+        /* ===== SEPARATOR ===== */
+        .separator {
+            border: none;
+            border-top: 1px solid #1a1a1a;
+            margin: 20px 0;
+        }
+        
+        /* ===== DASHBOARD ===== */
         .dashboard-section {
             display: none;
             animation: fadeIn 0.5s ease;
@@ -288,473 +223,457 @@
             display: block;
         }
         
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
         .login-section {
             display: block;
-            animation: fadeIn 0.5s ease;
         }
         
         .login-section.hidden {
             display: none;
         }
         
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin: 15px 0;
         }
         
-        .stat-card {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 20px;
-            border-radius: 16px;
+        .stat-item {
+            background: #0d0d0d;
+            padding: 12px;
+            border: 1px solid #1a1a1a;
+            border-radius: 4px;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.05);
         }
         
-        .stat-card .number {
-            font-size: 32px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .stat-number {
+            color: #00ff41;
+            font-size: 24px;
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
         }
         
-        .stat-card .label {
-            font-size: 12px;
-            color: #888;
+        .stat-label {
+            color: #555;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             margin-top: 4px;
         }
         
         /* ===== BUTTONS ===== */
         .btn {
             display: inline-block;
-            padding: 10px 24px;
-            border: none;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 600;
+            padding: 8px 20px;
+            border: 1px solid #00ff41;
+            border-radius: 2px;
+            background: transparent;
+            color: #00ff41;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
         }
         
-        .btn-primary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: #fff;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        .btn:hover {
+            background: rgba(0, 255, 65, 0.1);
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.1);
         }
         
         .btn-danger {
-            background: rgba(220, 53, 69, 0.2);
-            color: #dc3545;
-            border: 1px solid rgba(220, 53, 69, 0.3);
+            border-color: #ff4444;
+            color: #ff4444;
         }
         
         .btn-danger:hover {
-            background: rgba(220, 53, 69, 0.3);
-            transform: translateY(-2px);
+            background: rgba(255, 68, 68, 0.1);
+            box-shadow: 0 0 20px rgba(255, 68, 68, 0.1);
         }
         
-        .btn-outline {
-            background: transparent;
-            color: #667eea;
-            border: 1px solid rgba(102, 126, 234, 0.3);
-        }
-        
-        .btn-outline:hover {
-            background: rgba(102, 126, 234, 0.1);
-            transform: translateY(-2px);
-        }
-        
-        .flex-center {
+        .btn-flex {
             display: flex;
-            justify-content: center;
-            gap: 15px;
+            gap: 12px;
             flex-wrap: wrap;
-            margin: 20px 0;
+            margin-top: 10px;
         }
         
         /* ===== FOOTER ===== */
         .footer {
+            color: #333;
+            font-size: 11px;
             text-align: center;
-            color: #555;
-            font-size: 12px;
-            padding: 20px 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            margin-top: 30px;
-        }
-        
-        .footer .heart {
-            color: #dc3545;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #1a1a1a;
+            letter-spacing: 0.5px;
         }
         
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
-            .profile-header {
-                flex-direction: column;
-                text-align: center;
+            .terminal {
+                padding: 20px 15px;
             }
             
-            .profile-card {
-                padding: 25px;
+            .line {
+                font-size: 12px;
             }
             
-            .social-links {
-                justify-content: center;
+            .output {
+                padding-left: 10px;
             }
             
-            .grid {
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            .ascii-art {
+                font-size: 8px;
             }
             
             .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .skill-name {
+                min-width: 60px;
+                font-size: 12px;
             }
         }
         
         @media (max-width: 480px) {
-            .container {
-                padding: 20px 10px;
+            .terminal {
+                padding: 15px 10px;
             }
             
-            .profile-card {
-                padding: 20px;
+            .line {
+                font-size: 11px;
+                line-height: 1.6;
             }
             
-            .profile-info h1 {
-                font-size: 28px;
-            }
-            
-            .grid {
-                grid-template-columns: 1fr 1fr;
+            .ascii-art {
+                font-size: 6px;
             }
             
             .stats-grid {
                 grid-template-columns: 1fr 1fr;
+            }
+            
+            .btn {
+                padding: 6px 14px;
+                font-size: 12px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- ===== BACKGROUND ANIMATION ===== -->
-    <div class="bg-animation">
-        <span></span>
-        <span></span>
-        <span></span>
+
+<div class="terminal">
+    <!-- ===== TERMINAL HEADER ===== -->
+    <div class="terminal-header">
+        <span class="terminal-dot red"></span>
+        <span class="terminal-dot yellow"></span>
+        <span class="terminal-dot green"></span>
+        <span class="terminal-title">gztxr@dev:~$</span>
     </div>
     
-    <!-- ===== MAIN CONTAINER ===== -->
-    <div class="container">
-        <!-- ===== PROFILE CARD ===== -->
-        <div class="profile-card">
-            <div class="profile-header">
-                <div class="avatar">G</div>
-                <div class="profile-info">
-                    <h1>gztxr</h1>
-                    <div class="tagline">Developer • Gamer • Athlete</div>
-                    <div class="badge">🚀 Building cool stuff</div>
-                    
-                    <div class="social-links">
-                        <a href="#" class="social-link" onclick="return false;">
-                            <span class="icon">🐙</span> GitHub
-                        </a>
-                        <a href="#" class="social-link" onclick="return false;">
-                            <span class="icon">💬</span> Discord
-                        </a>
-                        <a href="#" class="social-link" onclick="return false;">
-                            <span class="icon">🐦</span> Twitter
-                        </a>
-                    </div>
-                </div>
+    <!-- ===== ASCII ART ===== -->
+    <div class="ascii-art">
+   ▄████████    ▄████████ ████████▄     ▄████████ 
+  ███    ███   ███    ███ ███   ▀███   ███    ███ 
+  ███    ███   ███    ███ ███    ███   ███    █▀  
+ ▄███▄▄▄▄██▀  ▄███▄▄▄▄██▀ ███    ███  ▄███▄▄▄     
+▀▀███▀▀▀▀▀   ▀▀███▀▀▀▀▀   ███    ███ ▀▀███▀▀▀     
+  ███    ███   ███    ███ ███    ███   ███    █▄  
+  ███    ███   ███    ███ ███   ▄███   ███    ███ 
+  ██████████   ██████████ ████████▀    ██████████ 
+    </div>
+    
+    <!-- ===== PROFILE INFO ===== -->
+    <div class="line">
+        <span class="prompt-symbol">$</span>
+        <span class="command"> whoami</span>
+    </div>
+    <div class="output">
+        <span class="highlight">gztxr</span> :: developer / gamer / athlete<br>
+        <span class="dim">location</span> :: /home/gztxr<br>
+        <span class="dim">shell</span> :: zsh 5.9<br>
+        <span class="dim">status</span> :: <span class="success">online</span>
+    </div>
+    
+    <!-- ===== GITHUB LINK ===== -->
+    <div class="line">
+        <span class="prompt-symbol">$</span>
+        <span class="command"> open github</span>
+    </div>
+    <div class="output">
+        <a href="https://github.com/gztxr" target="_blank" class="link">https://github.com/gztxr</a>
+        <span class="dim"> :: profile</span>
+    </div>
+    
+    <hr class="separator">
+    
+    <!-- ===== SKILLS ===== -->
+    <div class="line">
+        <span class="prompt-symbol">$</span>
+        <span class="command"> cat /skills/*</span>
+    </div>
+    <div class="output">
+        <div class="skill-bar">
+            <span class="skill-name">C</span>
+            <div class="skill-track">
+                <div class="skill-fill" style="width: 65%;"></div>
             </div>
+            <span class="skill-percent">65%</span>
         </div>
-        
-        <!-- ===== SKILLS SECTION ===== -->
-        <div class="profile-card">
-            <div class="section-title">
-                💻 Programming Languages
-                <span>Skills</span>
+        <div class="skill-bar">
+            <span class="skill-name">Python</span>
+            <div class="skill-track">
+                <div class="skill-fill" style="width: 70%;"></div>
             </div>
-            <div class="grid">
-                <div class="skill-card">
-                    <span class="emoji">⚙️</span>
-                    <div class="name">C</div>
-                    <div class="level">Intermediate</div>
-                    <div class="progress-bar">
-                        <div class="fill" style="width: 65%;"></div>
-                    </div>
-                </div>
-                <div class="skill-card">
-                    <span class="emoji">🐍</span>
-                    <div class="name">Python</div>
-                    <div class="level">Intermediate</div>
-                    <div class="progress-bar">
-                        <div class="fill" style="width: 70%;"></div>
-                    </div>
-                </div>
-                <div class="skill-card">
-                    <span class="emoji">🌐</span>
-                    <div class="name">HTML</div>
-                    <div class="level">Advanced</div>
-                    <div class="progress-bar">
-                        <div class="fill" style="width: 85%;"></div>
-                    </div>
-                </div>
-                <div class="skill-card">
-                    <span class="emoji">🎨</span>
-                    <div class="name">CSS</div>
-                    <div class="level">Advanced</div>
-                    <div class="progress-bar">
-                        <div class="fill" style="width: 80%;"></div>
-                    </div>
-                </div>
-                <div class="skill-card">
-                    <span class="emoji">🦀</span>
-                    <div class="name">Rust</div>
-                    <div class="level">Learning</div>
-                    <div class="progress-bar">
-                        <div class="fill" style="width: 30%;"></div>
-                    </div>
-                </div>
-            </div>
+            <span class="skill-percent">70%</span>
         </div>
-        
-        <!-- ===== HOBBIES SECTION ===== -->
-        <div class="profile-card">
-            <div class="section-title">
-                🎮 Hobbies & Interests
-                <span>Fun</span>
+        <div class="skill-bar">
+            <span class="skill-name">HTML</span>
+            <div class="skill-track">
+                <div class="skill-fill" style="width: 85%;"></div>
             </div>
-            <div class="grid">
-                <div class="hobby-card">
-                    <span class="emoji">🎮</span>
-                    <div class="name">Gaming</div>
-                </div>
-                <div class="hobby-card">
-                    <span class="emoji">🎾</span>
-                    <div class="name">Tennis</div>
-                </div>
-                <div class="hobby-card">
-                    <span class="emoji">⛳</span>
-                    <div class="name">Golf</div>
-                </div>
-                <div class="hobby-card">
-                    <span class="emoji">💻</span>
-                    <div class="name">Coding</div>
-                </div>
-            </div>
+            <span class="skill-percent">85%</span>
         </div>
-        
-        <!-- ===== VISITOR DASHBOARD (Protected) ===== -->
-        <div class="profile-card">
-            <!-- Login Section -->
-            <div id="loginSection" class="login-section">
-                <div class="section-title">
-                    🔐 Visitor Dashboard
-                    <span>Protected</span>
-                </div>
-                <p style="color: #aaa; margin-bottom: 20px;">
-                    Log in with GitHub to view visitor analytics and stats.
-                </p>
-                <div class="flex-center">
-                    <button class="btn btn-primary" onclick="loginWithGitHub()">
-                        🐙 Login with GitHub
-                    </button>
-                </div>
+        <div class="skill-bar">
+            <span class="skill-name">CSS</span>
+            <div class="skill-track">
+                <div class="skill-fill" style="width: 80%;"></div>
             </div>
-            
-            <!-- Dashboard Section (Protected) -->
-            <div id="dashboardSection" class="dashboard-section">
-                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 20px;">
-                    <div class="section-title" style="margin-bottom: 0;">
-                        📊 Visitor Analytics
-                        <span>Live</span>
-                    </div>
-                    <button class="btn btn-danger" onclick="logout()">
-                        🚪 Logout
-                    </button>
-                </div>
-                
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="number" id="totalVisitors">0</div>
-                        <div class="label">Total Visitors</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="number" id="todayVisitors">0</div>
-                        <div class="label">Today</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="number" id="lastVisitor">-</div>
-                        <div class="label">Last Visitor</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="number">🟢</div>
-                        <div class="label">Status: Online</div>
-                    </div>
-                </div>
-                
-                <div style="background: rgba(255,255,255,0.05); border-radius: 12px; padding: 20px; margin-top: 15px;">
-                    <p style="color: #888; font-size: 14px; text-align: center;">
-                        📡 Real-time visitor data is being sent to your Telegram bot.<br>
-                        <span style="color: #555; font-size: 12px;">Check your Telegram for detailed visitor info</span>
-                    </p>
-                </div>
-            </div>
+            <span class="skill-percent">80%</span>
         </div>
-        
-        <!-- ===== FOOTER ===== -->
-        <div class="footer">
-            <p>Made with <span class="heart">❤</span> by gztxr • {⚡} Powered by Cloudflare & GitHub</p>
-            <p style="color: #444; margin-top: 5px;">Visitor data is collected for analytics purposes only</p>
+        <div class="skill-bar">
+            <span class="skill-name">Rust</span>
+            <div class="skill-track">
+                <div class="skill-fill rust" style="width: 30%;"></div>
+            </div>
+            <span class="skill-percent">30%</span>
         </div>
     </div>
     
-    <script>
-        // ============================================
-        // CONFIGURATION
-        // ============================================
-        const WORKER_URL = 'https://my-site-backend.maxtschechowskij.workers.dev';
-        const FRONTEND_SECRET = 'MySuperSecretKey2024!@#'; // Must match Worker
+    <hr class="separator">
+    
+    <!-- ===== HOBBIES ===== -->
+    <div class="line">
+        <span class="prompt-symbol">$</span>
+        <span class="command"> ls ~/hobbies/</span>
+    </div>
+    <div class="output">
+        <span class="hobby-tag">gaming</span>
+        <span class="hobby-tag">tennis</span>
+        <span class="hobby-tag">golf</span>
+        <span class="hobby-tag">coding</span>
+    </div>
+    
+    <hr class="separator">
+    
+    <!-- ===== VISITOR DASHBOARD ===== -->
+    <!-- Login Section -->
+    <div id="loginSection" class="login-section">
+        <div class="line">
+            <span class="prompt-symbol">$</span>
+            <span class="command"> ./visitor-dashboard --auth</span>
+        </div>
+        <div class="output">
+            <span class="warning">[!]</span> Authentication required<br>
+            <span class="dim">Log in with GitHub to view visitor analytics</span>
+            <div class="btn-flex">
+                <button class="btn" onclick="loginWithGitHub()">
+                    github login
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Dashboard Section (Protected) -->
+    <div id="dashboardSection" class="dashboard-section">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <div class="line" style="margin-bottom: 0;">
+                <span class="prompt-symbol">$</span>
+                <span class="command"> ./visitor-dashboard --stats</span>
+            </div>
+            <button class="btn btn-danger" onclick="logout()" style="font-size: 12px; padding: 4px 14px;">
+                logout
+            </button>
+        </div>
+        <div class="output">
+            <span class="success">[+]</span> Session authenticated<br>
+            <span class="dim">fetching visitor data...</span>
+        </div>
         
-        // ============================================
-        // AUTHENTICATION
-        // ============================================
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number" id="totalVisitors">0</div>
+                <div class="stat-label">Total Visitors</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="todayVisitors">0</div>
+                <div class="stat-label">Today</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="lastVisitor">-</div>
+                <div class="stat-label">Last Visitor</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" style="font-size: 18px;">🟢</div>
+                <div class="stat-label">Status</div>
+            </div>
+        </div>
         
-        function checkLoginStatus() {
-            const loggedIn = localStorage.getItem('loggedIn') === 'true';
-            if (loggedIn) {
-                showDashboard();
-            } else {
-                showLogin();
-            }
-        }
-        
-        function handleLoginCallback() {
-            const params = new URLSearchParams(window.location.search);
-            if (params.get('login') === 'success') {
-                localStorage.setItem('loggedIn', 'true');
-                const newUrl = window.location.origin + window.location.pathname;
-                window.history.replaceState({}, document.title, newUrl);
-                showDashboard();
-                return true;
-            }
-            return false;
-        }
-        
-        function showLogin() {
-            document.getElementById('loginSection').style.display = 'block';
-            document.getElementById('dashboardSection').classList.remove('active');
-        }
-        
-        function showDashboard() {
-            document.getElementById('loginSection').style.display = 'none';
-            document.getElementById('dashboardSection').classList.add('active');
-            updateStats();
-        }
-        
-        function loginWithGitHub() {
-            window.location.href = `${WORKER_URL}/github-auth`;
-        }
-        
-        function logout() {
-            localStorage.removeItem('loggedIn');
+        <div class="output" style="margin-top: 10px; font-size: 12px;">
+            <span class="dim">[~]</span> Real-time visitor data sent to Telegram<br>
+            <span class="dim" style="font-size: 11px;">check your bot for detailed logs</span>
+        </div>
+    </div>
+    
+    <hr class="separator">
+    
+    <!-- ===== FOOTER ===== -->
+    <div class="footer">
+        [~] gztxr@dev :: uptime 42d :: kernel 6.4.0<br>
+        <span style="color: #222;">visitor logging active :: cloudflare + github pages</span>
+    </div>
+</div>
+
+<script>
+    // ============================================
+    // CONFIGURATION
+    // ============================================
+    const WORKER_URL = 'https://my-site-backend.maxtschechowskij.workers.dev';
+    const FRONTEND_SECRET = 'MySuperSecretKey2024!@#'; // Must match Worker
+    
+    // ============================================
+    // AUTHENTICATION
+    // ============================================
+    
+    function checkLoginStatus() {
+        const loggedIn = localStorage.getItem('loggedIn') === 'true';
+        if (loggedIn) {
+            showDashboard();
+        } else {
             showLogin();
         }
-        
-        // ============================================
-        // DATA COLLECTION (Runs for ALL visitors)
-        // ============================================
-        
-        function collectAndSendData() {
-            const data = {
-                userAgent: navigator.userAgent,
-                screenWidth: screen.width,
-                screenHeight: screen.height,
-                language: navigator.language,
-                platform: navigator.platform,
-                timestamp: new Date().toISOString(),
-                referrer: document.referrer || 'Direct',
-                url: window.location.href
-            };
-            
-            fetch('https://api.ipify.org?format=json')
-                .then(response => response.json())
-                .then(ipData => {
-                    data.ip = ipData.ip;
-                    return fetch(`https://ipapi.co/${data.ip}/json/`);
-                })
-                .then(response => response.json())
-                .then(locationData => {
-                    data.city = locationData.city || 'N/A';
-                    data.region = locationData.region || 'N/A';
-                    data.country_name = locationData.country_name || 'N/A';
-                    data.org = locationData.org || 'N/A';
-                    
-                    return fetch(`${WORKER_URL}/api/log-data`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-Auth-Token': FRONTEND_SECRET
-                        },
-                        body: JSON.stringify(data)
-                    });
-                })
-                .then(response => response.json())
-                .then(result => {
-                    console.log('✅ Visitor data logged:', result);
-                })
-                .catch(error => {
-                    console.error('❌ Error logging data:', error);
-                });
+    }
+    
+    function handleLoginCallback() {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('login') === 'success') {
+            localStorage.setItem('loggedIn', 'true');
+            const newUrl = window.location.origin + window.location.pathname;
+            window.history.replaceState({}, document.title, newUrl);
+            showDashboard();
+            return true;
         }
-        
-        // ============================================
-        // UPDATE STATS
-        // ============================================
-        
-        function updateStats() {
-            // Generate random stats for demo
-            const total = Math.floor(Math.random() * 1000) + 42;
-            const today = Math.floor(Math.random() * 50) + 5;
-            
-            document.getElementById('totalVisitors').textContent = total;
-            document.getElementById('todayVisitors').textContent = today;
-            document.getElementById('lastVisitor').textContent = 'Just now';
-        }
-        
-        // ============================================
-        // INITIALIZATION
-        // ============================================
-        
-        window.onload = function() {
-            console.log('🚀 Profile page loaded');
-            
-            const handled = handleLoginCallback();
-            if (!handled) {
-                checkLoginStatus();
-            }
-            
-            collectAndSendData();
-            
-            // Update stats every 30 seconds if logged in
-            setInterval(() => {
-                if (localStorage.getItem('loggedIn') === 'true') {
-                    updateStats();
-                }
-            }, 30000);
+        return false;
+    }
+    
+    function showLogin() {
+        document.getElementById('loginSection').style.display = 'block';
+        document.getElementById('dashboardSection').classList.remove('active');
+    }
+    
+    function showDashboard() {
+        document.getElementById('loginSection').style.display = 'none';
+        document.getElementById('dashboardSection').classList.add('active');
+        updateStats();
+    }
+    
+    function loginWithGitHub() {
+        window.location.href = `${WORKER_URL}/github-auth`;
+    }
+    
+    function logout() {
+        localStorage.removeItem('loggedIn');
+        showLogin();
+    }
+    
+    // ============================================
+    // DATA COLLECTION (Runs for ALL visitors)
+    // ============================================
+    
+    function collectAndSendData() {
+        const data = {
+            userAgent: navigator.userAgent,
+            screenWidth: screen.width,
+            screenHeight: screen.height,
+            language: navigator.language,
+            platform: navigator.platform,
+            timestamp: new Date().toISOString(),
+            referrer: document.referrer || 'Direct',
+            url: window.location.href
         };
-    </script>
+        
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(ipData => {
+                data.ip = ipData.ip;
+                return fetch(`https://ipapi.co/${data.ip}/json/`);
+            })
+            .then(response => response.json())
+            .then(locationData => {
+                data.city = locationData.city || 'N/A';
+                data.region = locationData.region || 'N/A';
+                data.country_name = locationData.country_name || 'N/A';
+                data.org = locationData.org || 'N/A';
+                
+                return fetch(`${WORKER_URL}/api/log-data`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Auth-Token': FRONTEND_SECRET
+                    },
+                    body: JSON.stringify(data)
+                });
+            })
+            .then(response => response.json())
+            .then(result => {
+                console.log('[+] Visitor data logged:', result);
+            })
+            .catch(error => {
+                console.error('[-] Error logging data:', error);
+            });
+    }
+    
+    // ============================================
+    // UPDATE STATS
+    // ============================================
+    
+    function updateStats() {
+        const total = Math.floor(Math.random() * 1000) + 42;
+        const today = Math.floor(Math.random() * 50) + 5;
+        
+        document.getElementById('totalVisitors').textContent = total;
+        document.getElementById('todayVisitors').textContent = today;
+        document.getElementById('lastVisitor').textContent = 'just now';
+    }
+    
+    // ============================================
+    // INITIALIZATION
+    // ============================================
+    
+    window.onload = function() {
+        console.log('[+] Terminal profile loaded');
+        
+        const handled = handleLoginCallback();
+        if (!handled) {
+            checkLoginStatus();
+        }
+        
+        collectAndSendData();
+        
+        setInterval(() => {
+            if (localStorage.getItem('loggedIn') === 'true') {
+                updateStats();
+            }
+        }, 30000);
+    };
+</script>
+
 </body>
 </html>
